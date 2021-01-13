@@ -7,8 +7,6 @@ public class Kraken extends Animal{
 
     public Kraken(String name, String gender){
         super(name, gender);
-        this.cost = 30;
-
     }
 
 }
