@@ -28,6 +28,18 @@ public abstract class Animal {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
     public String getGender(){
         return gender;
     }
