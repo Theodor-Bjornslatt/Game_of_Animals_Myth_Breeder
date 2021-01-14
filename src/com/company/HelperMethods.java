@@ -3,16 +3,31 @@ package com.company;
 import java.util.Scanner;
 
 public class HelperMethods {
-    Scanner scan = new Scanner(System.in);
-    private int input = -1;
+    static Scanner scan = new Scanner(System.in);
+    private static int input = -1;
+
+    public static void tryParseInt(){
+        input = -1;
+        try{
+            input = Integer.parseInt(scan.nextLine());
+        }
+        catch(NumberFormatException e){
+            System.out.println("You have to enter a number to continue");
+        }
+    }
+
+    public static void invalidInput(){
+        System.out.println("You pressed " + input + ". This is not a valid number. " +
+                "Please try again and enter a number within the specified range.");
+    }
 
     //TODO add tryParseInt() method
 
-    public void setInput(int input){
-        this.input = input;
+    public static void setInput(int newInput){
+        input = newInput;
     }
 
-    public int getInput(){
+    public static int getInput(){
         return input;
     }
 }

@@ -4,13 +4,11 @@ import java.util.Scanner;
 
 public class Game {
 
+    Animal chosenAnimal = null;
+    ArrayList<Animal>playerAnimals = new ArrayList<>();
     private ArrayList<Player>players = new ArrayList<>();
     Scanner scan = new Scanner(System.in);
 
-    public int input; //TODO create helper class and let int input be inside that.
-                      // Create static methods inside to tryParse etc.
-                      // Create getter and setter for int input inside helper class.
-                      // Replace input in Game with getters and setters.
     public int numOfRounds = -1;
     public int numOfPlayers = -1;
 
@@ -30,13 +28,13 @@ public class Game {
                  |1| Add player(s)
                  |2| Set number of rounds
                  |3| Start new game
-                 |4| Exit game              
-                 """);
+                 |4| Exit game""");
             do{
-                tryParseInt();
-            }while(input==-1);
+                HelperMethods.tryParseInt();
+            }while(HelperMethods.getInput()==-1);
 
-            switch (input){
+
+            switch (HelperMethods.getInput()){
                 case 1:
                     setPlayers();
                     break;
@@ -53,6 +51,9 @@ public class Game {
                     System.exit(0);
                     break;
 
+                default:
+                    HelperMethods.invalidInput();
+
             }
 
         }
@@ -64,16 +65,15 @@ public class Game {
         int maxPlayers = 4;
         while(true){
             do{
-                input = -1;
                 System.out.println("\nPlease enter the number of players: | 1 | 2 | 3 | 4 |");
                 // call to method within class
-                tryParseInt();
-            } while(input==-1);
+                HelperMethods.tryParseInt();
+            } while(HelperMethods.getInput()==-1);
 
             // If the input number of players is within range, start adding players
-            if(minPlayers <= input && input <= maxPlayers) {
-                numOfPlayers = input;
-                for(int i = 0; i < input; i++){
+            if(minPlayers <= HelperMethods.getInput() && HelperMethods.getInput() <= maxPlayers) {
+                numOfPlayers = HelperMethods.getInput();
+                for(int i = 0; i < HelperMethods.getInput(); i++){
                     System.out.println("\nEnter the name of player " + (i+1) + ":");
                     String name = scan.nextLine();
                     players.add(new Player(name));
@@ -81,7 +81,7 @@ public class Game {
                 }
                 //Check methods for adding moneyAmount and getting moneyAmount are working
                 players.get(0).addMoneyAmount(10);
-                for(int i = 0; i < input; i++){
+                for(int i = 0; i < numOfPlayers; i++){
                     System.out.println("Money of " + players.get(i).getName() + ": " +
                             players.get(i).getMoneyAmount());
                 }
@@ -89,7 +89,7 @@ public class Game {
             }
             // If input number of players is not within range, tell the user to input a valid number.
             else{
-                invalidInput();
+                HelperMethods.invalidInput();
             }
 
 
@@ -102,37 +102,21 @@ public class Game {
 
         while(true){
             do{
-                input = -1;
                 // Ask the user to enter the number of rounds and wait for their input.
                 System.out.println("Please enter how many rounds you want to play: | 5 | 6 | ... | 29 | 30 |");
-                tryParseInt();
-            } while(input==-1);
+                HelperMethods.tryParseInt();
+            } while(HelperMethods.getInput()==-1);
             // If the input number of players is within range, set numberOfRounds
-            if(minRounds <= input && input <= maxRounds) {
-                numOfRounds = input;
+            if(minRounds <= HelperMethods.getInput() && HelperMethods.getInput() <= maxRounds) {
+                numOfRounds = HelperMethods.getInput();
                 break;
             }
             else{
-                invalidInput();
+                HelperMethods.invalidInput();
             }
 
         }
 
-    }
-
-    public void tryParseInt(){
-        input = -1;
-        try{
-            input = Integer.parseInt(scan.nextLine());
-        }
-        catch(NumberFormatException e){
-            System.out.println("You must enter a number.");
-        }
-    }
-
-    public void invalidInput(){
-        System.out.println("You pressed " + input + ". This is not a valid number. " +
-                "Please try again and enter a number within the specified range.");
     }
 
     public void startGame(){
@@ -155,15 +139,16 @@ public class Game {
 
     public void runGame(){
 
-        int counter = 1;
         Store mythStore = new Store();
         Animal tempAnimal = null;
+        int counter = 1;
 
         while(counter <= numOfRounds){
             System.out.println("Round " + counter);
 
             for (Player player : players){
-                ArrayList<Animal>playerAnimals = new ArrayList<>(player.getAnimals());
+                playerAnimals.clear();
+                playerAnimals.addAll(player.getAnimals());
                 // Print the name of the player and inform them that it's their turn
                 System.out.println("\nYOUR TURN, " + player.getName().toUpperCase() + "! ");
                    System.out.println("\nYou have the following animals: ");
@@ -177,17 +162,28 @@ public class Game {
 
                 do{
                     System.out.println("""
+                           
                            Make your move:
-                           |1| Buy mythological animals\s
-                           |2| Buy food
+                           |1| Buy animals from Myth Store\s
+                           |2| Buy food from Myth Store
                            |3| Feed your mythological animals
                            |4| Try your luck - try for offspring
                            |5| Sell one or more of your mythological animals""");
-                    tryParseInt();
-                }while(input==-1);
+                    //TODO randomize the number of offspring for each animal to be within specific ranges
+                    HelperMethods.tryParseInt();
+
+                    if(playerAnimals.isEmpty() && HelperMethods.getInput()==3 ||
+                            playerAnimals.isEmpty() && HelperMethods.getInput()==4||
+                            playerAnimals.isEmpty() && HelperMethods.getInput()==5){
+                        System.out.println("You can't perform that action as you don't have any animals :(" +
+                                "\nMaybe you can buy some from Myth Store?");
+                        HelperMethods.setInput(-1);
+                    }
+                }while(HelperMethods.getInput()==-1);
                 //TODO check if player has animals in list when making choice 3, 4 or 5
                 // otherwise return to "make your move"
-                switch (input){
+
+                switch (HelperMethods.getInput()){
                     case 1:
                         mythStore.buyAnimal();
                         continue;
@@ -200,20 +196,17 @@ public class Game {
 
                     case 4:
                         // if player has two animals of same species and opposite genders, breed
-                        int minNum =
+                        int minNum;
                         chooseAnimal();
-                        if(1 >= input && input <= playerAnimals.size()+1){
+                        if(1 >= HelperMethods.getInput() && HelperMethods.getInput() <= playerAnimals.size()+1){
                             //TODO If there is an animal with input number in the list, proceed.
-                        }
-                        else{
-                            System.out.println("You must enter a valid number to proceed.");
                         }
 
 
                             break;
                     case 5:
                         System.out.println("");
-                        if(1 >= input && input <= playerAnimals.size()+1){
+                        if(1 >= HelperMethods.getInput() && HelperMethods.getInput() <= playerAnimals.size()+1){
                             //TODO If there is an animal with input number in the list, proceed.
                             mythStore.sellAnimal();
                         }
@@ -229,13 +222,18 @@ public class Game {
         }
     }
 
-    public int chooseAnimal(){
+    public void chooseAnimal(){
         do{
             System.out.println("Enter the number of your animal to choose that animal.");
-            tryParseInt();
-        }while(input==-1);
+            HelperMethods.tryParseInt();
+        }while(HelperMethods.getInput()==-1);
 
-        return input;
+        try{
+            chosenAnimal = playerAnimals.get(HelperMethods.getInput()-1);
+        }
+        catch(Exception e){
+            System.out.println("You must enter a number corresponding to an animal in your list.");
+        }
     }
 
     public void endGame(){
