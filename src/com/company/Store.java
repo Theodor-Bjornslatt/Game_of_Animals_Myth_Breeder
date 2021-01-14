@@ -16,12 +16,10 @@ public class Store {
                 |4| Linnr\s
                 |5| Tilberi""");
 
-        try{
-            int input = Integer.parseInt(scan.nextLine());
-        }
-        catch(NumberFormatException e){
-            System.out.println("You have to enter a number belonging to an animal in the above list");
-        }
+        do{
+            HelperMethods.tryParseInt();
+        }while(HelperMethods.getInput() == -1);
+
 
 
     }
