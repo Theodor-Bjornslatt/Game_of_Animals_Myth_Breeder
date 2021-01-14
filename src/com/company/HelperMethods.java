@@ -5,6 +5,7 @@ import java.util.Scanner;
 public class HelperMethods {
     static Scanner scan = new Scanner(System.in);
     private static int input = -1;
+    private static boolean validChoice = true;
 
     public static void tryParseInt(){
         input = -1;
@@ -30,4 +31,13 @@ public class HelperMethods {
     public static int getInput(){
         return input;
     }
+
+    public static void setValidChoice(boolean bool){
+        validChoice = bool;
+    }
+
+    public static boolean getValidChoice(){
+        return validChoice;
+    }
+
 }
