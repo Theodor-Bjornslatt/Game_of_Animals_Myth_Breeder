@@ -1,13 +1,11 @@
 package com.company;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Game {
 
     Animal chosenAnimal = null;
-    ArrayList<Animal>playerAnimals = new ArrayList<>();
     private ArrayList<Player>players = new ArrayList<>();
-    Scanner scan = new Scanner(System.in);
+    private static Player currentPlayer = null;
 
     public int numOfRounds = -1;
     public int numOfPlayers = -1;
@@ -58,25 +56,32 @@ public class Game {
     }
 
     public void tryAddPlayers(){
+        // If user want to add players and none have been added, proceed
         if(players.isEmpty()){
             setPlayers();
         }
+        // Else if user wants to add players but players have already been added
         else{
             System.out.println("\nWARNING!!! " +
                     "\nYou have already added players to the game. " +
                     "If you proceed, the current list of players will be deleted " +
                     "and you will have to add any and all players again. " +
                     "\nDo you want to proceed? (y/n)");
+
+
             do{
-                String choice = scan.nextLine().toLowerCase();
+                String choice = HelperMethods.scan.nextLine().toLowerCase();
+                // Make user choose between clearing the list of players and adding new ones
                 if(choice.equals("y")){
                     players.clear();
                     setPlayers();
                     HelperMethods.setInput(1);
                 }
+                // or doing nothing and returning to mainMenu
                 else if(choice.equals("n")){
-                    break;
+                    return;
                 }
+                // If user doesn't make an explicit choice, prompt them to make a choice
                 else{
                     System.out.println("You must make a choice to continue. " +
                             "Press y to delete all players and create a new list of players. " +
@@ -102,15 +107,20 @@ public class Game {
                 numOfPlayers = HelperMethods.getInput();
                 for(int i = 0; i < HelperMethods.getInput(); i++){
                     System.out.println("\nEnter the name of player " + (i+1) + ":");
-                    String name = scan.nextLine();
+                    String name = HelperMethods.scan.nextLine();
                     players.add(new Player(name));
                     System.out.println(name + " is now player " + (i+1));
                 }
+                // Assign all players a starting amount of gold
+                for(Player player : players){
+                    player.setGoldAmount(20);
+                }
                 //Check methods for adding moneyAmount and getting moneyAmount are working
-                players.get(0).addMoneyAmount(10);
+                players.get(0).addGold(10);
+                players.get(1).removeGold(10);
                 for(int i = 0; i < numOfPlayers; i++){
                     System.out.println("Money of " + players.get(i).getName() + ": " +
-                            players.get(i).getMoneyAmount());
+                            players.get(i).getGoldAmount());
                 }
                 break;
             }
@@ -177,86 +187,98 @@ public class Game {
         int counter = 1;
 
         while(counter <= numOfRounds){
-            System.out.println("Round " + counter);
-            //Iterate through each player and let them play their round
-            for (Player player : players){
-                //Clear the list of player animals and
-                // add the animals belonging only to the current player
-                playerAnimals.clear();
-                playerAnimals.addAll(player.getAnimals());
-                // Print the name of the player and inform them that it's their turn
-                System.out.println("\nYOUR TURN, " + player.getName().toUpperCase() + "! ");
-                   System.out.println("\nYour animals: ");
-                // If the player has no animals, let them know
-                if(playerAnimals.isEmpty()){
-                    System.out.println("\nOh no, you have no animals :'( " +
-                            "\nMaybe you can get some from Myth Store?");
-                }
-                // Else, print a list of their animals
-                else{
-                    printAnimals();
-                }
+            // As long as user doesn't make a valid choice, do the following
+            do{
+                //As a default, assume the player makes choices
+                // that are possible with their given means
+                HelperMethods.setValidChoice(true);
 
+                System.out.println("\nRound " + counter);
+                //Iterate through each player and let them play their round
+                for (Player player : players){
+                    currentPlayer = player;
+                    // Print the name of the player and inform them that it's their turn
+                    System.out.println("\nYOUR TURN, " + player.getName().toUpperCase() + "! ");
+                    System.out.println("\nYour animals: ");
+                    // If the player has no animals, let them know
+                    if(currentPlayer.getAnimalList().isEmpty()){
+                        System.out.println("\nOh no, you have no animals :'( " +
+                                "\nMaybe you can get some from Myth Store?");
+                    }
+                    // Else, print a list of their animals
+                    else{
+                        printAnimals();
+                    }
 
-                do{
-                    System.out.println("\nMake your move " + player.getName() + ":");
-                    System.out.println("""
+                    do{
+                        System.out.println("\nMake your move " + player.getName() + ":");
+                        System.out.println("""
                            |1| Buy animals from Myth Store\s
                            |2| Buy food from Myth Store
                            |3| Feed your mythological animals
                            |4| Try your luck - try for offspring
                            |5| Sell one or more of your mythological animals""");
-                    //TODO randomize the number of offspring for each animal to be within specific ranges
-                    HelperMethods.tryParseInt();
-                    // If player tries to make a choice that's not defined in menu
-                    // Tell player their choice is not valid
-                    //Then present player with menu again and ask them to make a new choice
-                    if(HelperMethods.getInput() < 1 || 5 < HelperMethods.getInput()){
-                        HelperMethods.invalidInput();
-                        HelperMethods.setInput(-1);
-                    }
-                    // If player tries to perform an action on an animal when they don't have any
-                    // Tell them they can't do said action and then ask them to make a new choice
-                    else if(playerAnimals.isEmpty() && HelperMethods.getInput()>2){
-                        System.out.println("You can't perform that action as you don't have any animals");
-                        HelperMethods.setInput(-1);
-                    }
-                }while(HelperMethods.getInput()==-1);
-
-                switch (HelperMethods.getInput()){
-                    case 1:
-                        mythStore.buyAnimal();
-                        continue;
-
-                    case 2:
-                        break;
-
-                    case 3:
-                        break;
-
-                    case 4:
-                        // if player has two animals of same species and opposite genders, breed
-                        int minNum;
-                        chooseAnimal();
-                        if(1 <= HelperMethods.getInput() && HelperMethods.getInput() <= playerAnimals.size()+1){
-                            //If there is an animal with input number in the list, proceed.
+                        //TODO randomize the number of offspring for each animal to be within specific ranges
+                        HelperMethods.tryParseInt();
+                        // If player tries to make a choice that's not defined in menu
+                        // Tell player their choice is not valid
+                        //Then present player with menu again and ask them to make a new choice
+                        if(HelperMethods.getInput() < 1 || 5 < HelperMethods.getInput()){
+                            HelperMethods.invalidInput();
+                            HelperMethods.setInput(-1);
                         }
+                        // If player tries to perform an action on an animal when they don't have any
+                        // Tell them they can't do said action and then ask them to make a new choice
+                        else if(currentPlayer.getAnimalList().isEmpty() && HelperMethods.getInput()>2){
+                            System.out.println("You can't perform that action as you don't have any animals");
+                            HelperMethods.setInput(-1);
+                        }
+                    }while(HelperMethods.getInput()==-1);
+
+                    switch (HelperMethods.getInput()){
+                        case 1:
+                            mythStore.goToAnimalStore();
+                            if(mythStore.getBoughtAnimals().isEmpty()){
+                                HelperMethods.setValidChoice(false);
+                            }
+                            else{
+                                currentPlayer.getAnimalList().addAll(mythStore.getBoughtAnimals());
+                            }
+                            break;
+
+                        case 2:
+                            break;
+
+                        case 3:
+                            break;
+
+                        case 4:
+                            // if player has two animals of same species and opposite genders, breed
+                            int minNum;
+                            chooseAnimal();
+                            if(1 <= HelperMethods.getInput() &&
+                               HelperMethods.getInput() <= currentPlayer.getAnimalList().size()+1){
+                                //If there is an animal with input number in the list, proceed.
+                            }
 
 
                             break;
-                    case 5:
-                        System.out.println("");
-                        if(1 <= HelperMethods.getInput() && HelperMethods.getInput() <= playerAnimals.size()+1){
-                            //If there is an animal with input number in the list, proceed.
-                            mythStore.sellAnimal();
-                        }
-                        else{
-                            System.out.println("You must enter a valid number to proceed.");
-                        }
-                        break;
-                }
+                        case 5:
+                            System.out.println("");
+                            if(1 <= HelperMethods.getInput() &&
+                               HelperMethods.getInput() <= currentPlayer.getAnimalList().size()+1){
+                                //If there is an animal with input number in the list, proceed.
+                                mythStore.sellAnimal();
+                            }
+                            else{
+                                System.out.println("You must enter a valid number to proceed.");
+                            }
+                            break;
+                    }
 
-            }
+                }
+            }while(!HelperMethods.getValidChoice());
+
             counter++;
 
         }
@@ -265,11 +287,12 @@ public class Game {
     }
 
     public void printAnimals(){
-        for(Animal animal : playerAnimals){
-            System.out.println("|" + (playerAnimals.indexOf(animal)+1) + "| " +
-                    animal.getName() + animal.getGender() + animal.getClass().getSimpleName());
+        for(Animal animal : currentPlayer.getAnimalList()){
+            System.out.println("|" + (currentPlayer.getAnimalList().indexOf(animal) + 1) + "| " +
+                               animal.getName() + " the " + animal.getGender() + " " + animal.getClass().getSimpleName());
         }
     }
+
     public void chooseAnimal(){
         do{
             System.out.println("Enter the number of your animal to choose that animal.");
@@ -277,12 +300,13 @@ public class Game {
         }while(HelperMethods.getInput()==-1);
 
         try{
-            chosenAnimal = playerAnimals.get(HelperMethods.getInput()-1);
+            chosenAnimal = currentPlayer.getAnimalList().get(HelperMethods.getInput()-1);
         }
         catch(Exception e){
             System.out.println("You must enter a number corresponding to an animal in your list.");
         }
     }
+
 
     public void endGame(){
         //TODO Sell all animals the player owns
@@ -292,6 +316,7 @@ public class Game {
     }
 
     public void playerStats(){
+        currentPlayer.getGoldAmount();
         // TODO print the animals the player has - name and getClass
         //  as well as health and healthChange (.loseHealth()) since last round
         //  print the food the player owns
@@ -299,4 +324,7 @@ public class Game {
 
     }
 
+    public static Player getCurrentPlayer() {
+        return currentPlayer;
+    }
 }
