@@ -151,19 +151,22 @@ public class Game {
                 playerAnimals.addAll(player.getAnimals());
                 // Print the name of the player and inform them that it's their turn
                 System.out.println("\nYOUR TURN, " + player.getName().toUpperCase() + "! ");
-                   System.out.println("\nYou have the following animals: ");
+                   System.out.println("\nYour animals: ");
                    // TODO for each player present a list of their animals
                    //  if a round has passed by (or if their list of animals
                    //  contains any)
-                for(Animal animal : playerAnimals){
-                        System.out.println("|" + (playerAnimals.indexOf(animal)+1) + "| " +
-                                animal.getName() + animal.getGender() + animal.getClass().getSimpleName());
+                if(playerAnimals.isEmpty()){
+                    System.out.println("Oh no, you have no animals :'( " +
+                            "\nMaybe you can get some from Myth Store?");
+                }
+                else{
+                    printAnimals();
                 }
 
+
                 do{
+                    System.out.println("Make your move " + player.getName() + ": ");
                     System.out.println("""
-                           
-                           Make your move:
                            |1| Buy animals from Myth Store\s
                            |2| Buy food from Myth Store
                            |3| Feed your mythological animals
@@ -171,12 +174,12 @@ public class Game {
                            |5| Sell one or more of your mythological animals""");
                     //TODO randomize the number of offspring for each animal to be within specific ranges
                     HelperMethods.tryParseInt();
-
-                    if(playerAnimals.isEmpty() && HelperMethods.getInput()==3 ||
-                            playerAnimals.isEmpty() && HelperMethods.getInput()==4||
-                            playerAnimals.isEmpty() && HelperMethods.getInput()==5){
-                        System.out.println("You can't perform that action as you don't have any animals :(" +
-                                "\nMaybe you can buy some from Myth Store?");
+                    if(HelperMethods.getInput()>5){
+                        HelperMethods.invalidInput();
+                        HelperMethods.setInput(-1);
+                    }
+                    else if(playerAnimals.isEmpty() && HelperMethods.getInput()>2){
+                        System.out.println("You can't perform that action as you don't have any animals");
                         HelperMethods.setInput(-1);
                     }
                 }while(HelperMethods.getInput()==-1);
@@ -222,6 +225,12 @@ public class Game {
         }
     }
 
+    public void printAnimals(){
+        for(Animal animal : playerAnimals){
+            System.out.println("|" + (playerAnimals.indexOf(animal)+1) + "| " +
+                    animal.getName() + animal.getGender() + animal.getClass().getSimpleName());
+        }
+    }
     public void chooseAnimal(){
         do{
             System.out.println("Enter the number of your animal to choose that animal.");
