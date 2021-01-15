@@ -49,7 +49,7 @@ public class Player {
         this.animals.add(animal);
     }
 
-    public void removeAnimal(Animal animal){
-        this.animals.remove(animal);
+    public void removeAnimal(int index){
+        this.animals.remove(index);
     }
 }
