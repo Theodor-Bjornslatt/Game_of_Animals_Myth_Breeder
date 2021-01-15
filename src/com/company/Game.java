@@ -207,7 +207,7 @@ public class Game {
                     }
                     // Else, print a list of their animals
                     else{
-                        printAnimals();
+                        HelperMethods.printPlayerAnimals();
                     }
 
                     do{
@@ -238,18 +238,15 @@ public class Game {
                     switch (HelperMethods.getInput()){
                         case 1:
                             mythStore.goToAnimalStore();
-                            if(mythStore.getBoughtAnimals().isEmpty()){
-                                HelperMethods.setValidChoice(false);
-                            }
-                            else{
-                                continue;
-                            }
+                            //TODO write method to check if action has been made
                             break;
 
                         case 2:
+                            HelperMethods.setValidChoice(true);
                             break;
 
                         case 3:
+                            HelperMethods.setValidChoice(true);
                             break;
 
                         case 4:
@@ -260,19 +257,13 @@ public class Game {
                                     HelperMethods.getInput() <= currentPlayer.getAnimalList().size()+1){
                                 //If there is an animal with input number in the list, proceed.
                             }
-
+                            HelperMethods.setValidChoice(true);
                             break;
 
                         case 5:
                             System.out.println("");
-                            if(1 <= HelperMethods.getInput() &&
-                                    HelperMethods.getInput() <= currentPlayer.getAnimalList().size()+1){
                                 //If there is an animal with input number in the list, proceed.
                                 mythStore.sellAnimal();
-                            }
-                            else{
-                                System.out.println("You must enter a valid number to proceed.");
-                            }
                             break;
                     }
 
@@ -282,13 +273,6 @@ public class Game {
         }
         //TODO once all rounds have been played, sell all animals and add the money to players.
         // Then see who has most money and let players know who won
-    }
-
-    public void printAnimals(){
-        for(Animal animal : currentPlayer.getAnimalList()){
-            System.out.println("|" + (currentPlayer.getAnimalList().indexOf(animal) + 1) + "| " +
-                               animal.getName() + " the " + animal.getGender() + " " + animal.getClass().getSimpleName());
-        }
     }
 
     public void chooseAnimal(){
