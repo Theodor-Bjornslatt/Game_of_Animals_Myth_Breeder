@@ -188,7 +188,6 @@ public class Game {
 
         while(counter <= numOfRounds){
             // As long as user doesn't make a valid choice, do the following
-            do{
                 //As a default, assume the player makes choices
                 // that are possible with their given means
                 HelperMethods.setValidChoice(true);
@@ -197,90 +196,90 @@ public class Game {
                 //Iterate through each player and let them play their round
                 for (Player player : players){
                     currentPlayer = player;
-                    // Print the name of the player and inform them that it's their turn
-                    System.out.println("\nYOUR TURN, " + player.getName().toUpperCase() + "! ");
-                    System.out.println("\nYour animals: ");
-                    // If the player has no animals, let them know
-                    if(currentPlayer.getAnimalList().isEmpty()){
-                        System.out.println("\nOh no, you have no animals :'( " +
-                                "\nMaybe you can get some from Myth Store?");
-                    }
-                    // Else, print a list of their animals
-                    else{
-                        printAnimals();
-                    }
-
+                  //TODO add do here instead
                     do{
-                        System.out.println("\nMake your move " + player.getName() + ":");
-                        System.out.println("""
+                        // Print the name of the player and inform them that it's their turn
+                        System.out.println("\nYOUR TURN, " + player.getName().toUpperCase() + "! ");
+                        System.out.println("\nYour animals: ");
+                        // If the player has no animals, let them know
+                        if(currentPlayer.getAnimalList().isEmpty()){
+                            System.out.println("\nOh no, you have no animals :'( " +
+                                    "\nMaybe you can get some from Myth Store?");
+                        }
+                        // Else, print a list of their animals
+                        else{
+                            printAnimals();
+                        }
+
+                        do{
+                            System.out.println("\nMake your move " + player.getName() + ":");
+                            System.out.println("""
                            |1| Buy animals from Myth Store\s
                            |2| Buy food from Myth Store
                            |3| Feed your mythological animals
                            |4| Try your luck - try for offspring
                            |5| Sell one or more of your mythological animals""");
-                        //TODO randomize the number of offspring for each animal to be within specific ranges
-                        HelperMethods.tryParseInt();
-                        // If player tries to make a choice that's not defined in menu
-                        // Tell player their choice is not valid
-                        //Then present player with menu again and ask them to make a new choice
-                        if(HelperMethods.getInput() < 1 || 5 < HelperMethods.getInput()){
-                            HelperMethods.invalidInput();
-                            HelperMethods.setInput(-1);
+                            //TODO randomize the number of offspring for each animal to be within specific ranges
+                            HelperMethods.tryParseInt();
+                            // If player tries to make a choice that's not defined in menu
+                            // Tell player their choice is not valid
+                            //Then present player with menu again and ask them to make a new choice
+                            if(HelperMethods.getInput() < 1 || 5 < HelperMethods.getInput()){
+                                HelperMethods.invalidInput();
+                                HelperMethods.setInput(-1);
+                            }
+                            // If player tries to perform an action on an animal when they don't have any
+                            // Tell them they can't do said action and then ask them to make a new choice
+                            else if(currentPlayer.getAnimalList().isEmpty() && HelperMethods.getInput()>2){
+                                System.out.println("You can't perform that action as you don't have any animals");
+                                HelperMethods.setInput(-1);
+                            }
+                        }while(HelperMethods.getInput()==-1);
+
+                        switch (HelperMethods.getInput()){
+                            case 1:
+                                mythStore.goToAnimalStore();
+                                if(mythStore.getBoughtAnimals().isEmpty()){
+                                    HelperMethods.setValidChoice(false);
+                                }
+                                else{
+                                    continue;
+                                }
+                                break;
+
+                            case 2:
+                                break;
+
+                            case 3:
+                                break;
+
+                            case 4:
+                                // if player has two animals of same species and opposite genders, breed
+                                int minNum;
+                                chooseAnimal();
+                                if(1 <= HelperMethods.getInput() &&
+                                        HelperMethods.getInput() <= currentPlayer.getAnimalList().size()+1){
+                                    //If there is an animal with input number in the list, proceed.
+                                }
+
+
+                                break;
+                            case 5:
+                                System.out.println("");
+                                if(1 <= HelperMethods.getInput() &&
+                                        HelperMethods.getInput() <= currentPlayer.getAnimalList().size()+1){
+                                    //If there is an animal with input number in the list, proceed.
+                                    mythStore.sellAnimal();
+                                }
+                                else{
+                                    System.out.println("You must enter a valid number to proceed.");
+                                }
+                                break;
                         }
-                        // If player tries to perform an action on an animal when they don't have any
-                        // Tell them they can't do said action and then ask them to make a new choice
-                        else if(currentPlayer.getAnimalList().isEmpty() && HelperMethods.getInput()>2){
-                            System.out.println("You can't perform that action as you don't have any animals");
-                            HelperMethods.setInput(-1);
-                        }
-                    }while(HelperMethods.getInput()==-1);
 
-                    switch (HelperMethods.getInput()){
-                        case 1:
-                            mythStore.goToAnimalStore();
-                            if(mythStore.getBoughtAnimals().isEmpty()){
-                                HelperMethods.setValidChoice(false);
-                            }
-                            else{
-                                continue;
-                            }
-                            break;
-
-                        case 2:
-                            break;
-
-                        case 3:
-                            break;
-
-                        case 4:
-                            // if player has two animals of same species and opposite genders, breed
-                            int minNum;
-                            chooseAnimal();
-                            if(1 <= HelperMethods.getInput() &&
-                               HelperMethods.getInput() <= currentPlayer.getAnimalList().size()+1){
-                                //If there is an animal with input number in the list, proceed.
-                            }
-
-
-                            break;
-                        case 5:
-                            System.out.println("");
-                            if(1 <= HelperMethods.getInput() &&
-                               HelperMethods.getInput() <= currentPlayer.getAnimalList().size()+1){
-                                //If there is an animal with input number in the list, proceed.
-                                mythStore.sellAnimal();
-                            }
-                            else{
-                                System.out.println("You must enter a valid number to proceed.");
-                            }
-                            break;
-                    }
-
+                    }while(!HelperMethods.getValidChoice());
                 }
-            }while(!HelperMethods.getValidChoice());
-
             counter++;
-
         }
         //TODO once all rounds have been played, sell all animals and add the money to players.
         // Then see who has most money and let players know who won
