@@ -242,7 +242,7 @@ public class Game {
                                 HelperMethods.setValidChoice(false);
                             }
                             else{
-                                currentPlayer.getAnimalList().addAll(mythStore.getBoughtAnimals());
+                                continue;
                             }
                             break;
 
