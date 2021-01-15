@@ -17,6 +17,13 @@ public class HelperMethods {
         }
     }
 
+    public static void printPlayerAnimals(){
+        for(Animal animal : Game.getCurrentPlayer().getAnimalList()){
+            System.out.println("|" + (Game.getCurrentPlayer().getAnimalList().indexOf(animal) + 1) + "| " +
+                    animal.getName() + " the " + animal.getGender() + " " + animal.getClass().getSimpleName());
+        }
+    }
+
     public static void invalidInput(){
         System.out.println("You pressed " + input + ". This is not a valid number. " +
                 "Please try again and enter a number within the specified range.");
