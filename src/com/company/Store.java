@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 public class Store {
 
-    private ArrayList<Animal>boughtAnimals = new ArrayList<>();
+    private ArrayList<Animal> changedAnimals = new ArrayList<>();
 
-    private Animal newAnimal;
+    private Animal tempAnimal;
 
     private String chosenSpecies;
     private String chosenGender;
@@ -18,20 +18,28 @@ public class Store {
     private final int linnrPrice = 20;
     private final int tilberiPrice = 50;
 
+    private String shopKeeper1 = "Shopkeeper Lucifer";
+    private int unsuccessfulAttempts;
     private boolean leaveStore;
 
     public void goToAnimalStore(){
-        boughtAnimals.clear();
-        System.out.println("WELCOME TO MYTH STORE, " + Game.getCurrentPlayer().getName() + "!");
+        changedAnimals.clear();
+        System.out.println("\nWELCOME TO MYTH STORE, " +
+                Game.getCurrentPlayer().getName().toUpperCase() + "!");
         do{
             leaveStore=false;
-            System.out.println("Which animal do you want to buy? \n" +
+            if(!Game.getCurrentPlayer().getAnimalList().isEmpty()){
+                System.out.println("\nYou have the following animals at the moment:");
+                HelperMethods.printPlayerAnimals();
+            }
+
+            System.out.println("\nWhich animal do you want to buy? \n" +
                                "|1| Nykur....." + nykurPrice + " Gold \n" +
                                "|2| Gloson...." + glosonPrice + " Gold \n" +
                                "|3| Kraken...." + krakenPrice + " Gold \n" +
                                "|4| Linnr....." + linnrPrice + " Gold \n" +
                                "|5| Tilberi..." + tilberiPrice + " Gold\n" +
-                               "|6| Leave store\n");
+                               "|6| None, leave store\n");
 
             do{
                 HelperMethods.tryParseInt();
@@ -42,8 +50,9 @@ public class Store {
                 case 1:
                     if(Game.getCurrentPlayer().getGoldAmount() >= nykurPrice){
                         chosenSpecies = "Nykur";
-                        System.out.println("Shopkeeper: Good choice my fine friend. " +
-                                           "Just don't go swimming with it. I like my customers alive.");
+                        System.out.println(shopKeeper1 +": Good choice my fine friend. " +
+                                           "Just don't go swimming with it. I like my customers alive, " +
+                                Game.getCurrentPlayer().getName());
                         buyAnimal();
                     }
                     else{
@@ -54,8 +63,9 @@ public class Store {
                 case 2:
                     if(Game.getCurrentPlayer().getGoldAmount() >= glosonPrice){
                         chosenSpecies = "Gloson";
-                        System.out.println("Shopkeeper: Lovely choice. Try not to pet it though, " +
-                                           "I don't want you to get hurt. ");
+                        System.out.println(shopKeeper1 + ": Lovely choice. Try not to pet it though, " +
+                                Game.getCurrentPlayer().getName() +
+                                           ", I don't want to see you get hurt. ");
                         buyAnimal();
                     }
                     else{
@@ -66,7 +76,8 @@ public class Store {
                 case 3:
                     if(Game.getCurrentPlayer().getGoldAmount() >= krakenPrice){
                         chosenSpecies = "Kraken";
-                        System.out.println("Shopkeeper: Ah, I see you have great taste. " +
+                        System.out.println(shopKeeper1 + ": Ah, I see you have great taste, " +
+                                Game.getCurrentPlayer().getName() + "! " +
                                            "Watch out for it's ravenous appetite though. ");
                         buyAnimal();
                     }
@@ -78,7 +89,8 @@ public class Store {
                 case 4:
                     if(Game.getCurrentPlayer().getGoldAmount() >= linnrPrice){
                         chosenSpecies = "Linnr";
-                        System.out.println("Shopkeeper: Excellent choice. I will not be held " +
+                        System.out.println(shopKeeper1 + ": Excellent choice " +
+                                Game.getCurrentPlayer().getName() + ". I will not be held " +
                                            "responsible for what happens if you try to kiss it though. ");
                         buyAnimal();
                     }
@@ -90,8 +102,9 @@ public class Store {
                 case 5:
                     if(Game.getCurrentPlayer().getGoldAmount() >= tilberiPrice){
                         chosenSpecies = "Tilberi";
-                        System.out.println("Shopkeeper: Truly inspired choice my friend. " +
-                                           "Remember not to bring it home to a friend... " +
+                        System.out.println(shopKeeper1 + ": Truly inspired choice, " +
+                                Game.getCurrentPlayer().getName() + ", my friend. " +
+                                           "\nRemember not to bring it home to a friend... " +
                                            "if you want to keep your friends that is.");
                         buyAnimal();
                     }
@@ -108,30 +121,40 @@ public class Store {
     }
 
     public void leaveStore(){
-        if(boughtAnimals.isEmpty()){
-            System.out.println("Shopkeeper: Don't let the door hit you on the way out!");
+        if(changedAnimals.isEmpty()){
+            System.out.println(shopKeeper1 + ": Don't let the door hit you on the way out!");
+            HelperMethods.setValidChoice(false);
         }
         else{
-            System.out.println("Shopkeeper: Thank you for your patronage. " +
+            System.out.println(shopKeeper1 + ": Thank you for your patronage. " +
                                "Do come back again soon!");
+            HelperMethods.setValidChoice(true);
         }
         leaveStore = true;
     }
 
     public void notEnoughGold(){
-        System.out.println("Shopkeeper: Don't try to cheat me! You don't have that much gold!");
+        unsuccessfulAttempts += 1;
+        if(unsuccessfulAttempts<=3){
+            System.out.println(shopKeeper1 + ": Don't try to cheat me! You don't have that much gold!");
+        }
+        else{
+            System.out.println(shopKeeper1 + ": Really now. Nobody likes a liar or thief. " +
+                    "\nIf you don't have any gold, it might be time for you to leave.");
+        }
+
     }
 
     public void buyAnimal(){
-        chooseAnimal();
+        setAnimalStats();
         payForAnimal();
-        boughtAnimals.add(newAnimal);
-        Game.getCurrentPlayer().addAnimal(newAnimal);
-        System.out.println("\nShopkeeper: I'll just go ahead and give you the amulet that's" +
-                           "tied to " + chosenName + " then. Anything else of interest to you?");
+        changedAnimals.add(tempAnimal);
+        Game.getCurrentPlayer().addAnimal(tempAnimal);
+        System.out.println("\n" + shopKeeper1 + ": I'll just go ahead and give you " +
+                chosenName + "'s amulet then. Anything else of interest to you?");
     }
 
-    public void chooseAnimal(){
+    public void setAnimalStats(){
         // Let player choose gender for the animal
         do{
             HelperMethods.setValidChoice(true);
@@ -161,24 +184,24 @@ public class Store {
     public void payForAnimal(){
         if(chosenSpecies.equals("Nykur")){
             // Create the animal according to the player's choices
-            newAnimal = new Nykur(chosenName, chosenGender);
+            tempAnimal = new Nykur(chosenName, chosenGender);
             // Make player pay for the animal
             Game.getCurrentPlayer().removeGold(nykurPrice);
         }
         else if(chosenSpecies.equals("Gloson")){
-            newAnimal = new Gloson(chosenName, chosenGender);
+            tempAnimal = new Gloson(chosenName, chosenGender);
             Game.getCurrentPlayer().removeGold(glosonPrice);
         }
         else if(chosenSpecies.equals("Kraken")){
-            newAnimal = new Kraken(chosenName, chosenGender);
+            tempAnimal = new Kraken(chosenName, chosenGender);
             Game.getCurrentPlayer().removeGold(krakenPrice);
         }
         else if(chosenSpecies.equals("Linnr")){
-            newAnimal = new Linnr(chosenName, chosenGender);
+            tempAnimal = new Linnr(chosenName, chosenGender);
             Game.getCurrentPlayer().removeGold(linnrPrice);
         }
         else if(chosenSpecies.equals("Tilberi")){
-            newAnimal = new Tilberi(chosenName, chosenGender);
+            tempAnimal = new Tilberi(chosenName, chosenGender);
             Game.getCurrentPlayer().removeGold(tilberiPrice);
         }
     }
@@ -188,36 +211,99 @@ public class Store {
 
     }
 
-    public int sellAnimal(){
-        int health = 0; //TODO make health be health of animal sent to method
+    public void sellAnimal(){
+        double health; //TODO make health be health of animal sent to method
         int price = 0;
-        if(getClass().getSimpleName().equals("Nykur")){
-            price = 30;
-        }
-        else if(getClass().getSimpleName().equals("Gloson")){
-            price = 40;
-        }
-        else if(getClass().getSimpleName().equals("Kraken")){
-            price = 10;
-        }
-        else if(getClass().getSimpleName().equals("Linnr")){
-            price = 20;
-        }
-        else if(getClass().getSimpleName().equals("Tilberi")){
-            price = 50;
-        }
-        price *= health;
-        return price;
+        double decimal = 0.01;
 
-        // TODO If the class of the animal is given value
-        //  Return price
+        do{
+            leaveStore = false;
+            System.out.println("\nYour animals:");
+            HelperMethods.printPlayerAnimals();
+            System.out.println("\nDo you still want to sell one of your animals? (y/n)");
+            String answer = HelperMethods.scan.nextLine();
+
+            switch(answer){
+                case "y":
+                    System.out.println("\nEnter the number of the animal you want to sell:");
+                    HelperMethods.tryParseInt();
+                    int input = HelperMethods.getInput();
+
+                    if(1 <= input &&
+                            input <= Game.getCurrentPlayer().getAnimalList().size()+1){
+
+                        tempAnimal = Game.getCurrentPlayer().getAnimalList().get(input-1);
+                        String animalClass = tempAnimal.getClass().getSimpleName();
+                        health = tempAnimal.getHealth();
+
+                        if(animalClass.equals("Nykur")){
+                            price = (int) Math.round(nykurPrice * health * decimal);
+                        }
+                        else if(animalClass.equals("Gloson")){
+                            price = (int) Math.round(glosonPrice * health * decimal);
+                        }
+                        else if(animalClass.equals("Kraken")){
+                            price = (int) Math.round(krakenPrice * health * decimal);
+                        }
+                        else if(animalClass.equals("Linnr")){
+                            price = (int) Math.round(linnrPrice * health * decimal);
+                        }
+                        else if(animalClass.equals("Tilberi")){
+                            price = (int) Math.round(tilberiPrice * health * decimal);
+                        }
+
+                        System.out.println("\n" + shopKeeper1 + ": I'll pay you " + price +
+                                " gold for " + tempAnimal.getName() + ". ");
+                        System.out.println( "\nEnter y to accept the offer.");
+
+                        answer = HelperMethods.scan.nextLine();
+                        if(answer.equals("y")){
+                            changedAnimals.add(tempAnimal);
+                            Game.getCurrentPlayer().removeGold(price);
+                            Game.getCurrentPlayer().removeAnimal(input-1);
+                        }
+                        else{
+                            System.out.println(shopKeeper1 + ": Shame, " +
+                                    "but if you're happy, I'm happy.");
+                        }
+
+                    }
+                    else{
+                        HelperMethods.invalidInput();
+                    }
+
+                    break;
+
+                case "n":
+                    //TODO leave store or go to goToStore
+                    leaveStore();
+                    break;
+
+                default:
+                    if(changedAnimals.isEmpty()){ //TODO leave store or go to goToStore
+                        System.out.println("Gamemaker: Well, if you're not going to choose, " +
+                                "I'm gonna choose for you. \nMay the odds be ever in your favour.");
+                        //TODO add 1% chance of selling first animal in list?
+                        HelperMethods.setValidChoice(false);
+                    }
+                    else{
+                        //TODO If player has sold at least one animal, leave store
+                        HelperMethods.setValidChoice(true);
+                        leaveStore();
+                    }
+
+                    break;
+            }
+
+        }while(!Game.getCurrentPlayer().getAnimalList().isEmpty() && !leaveStore);
+
     }
 
     public void sellAllAnimals(){
 
     }
 
-    public ArrayList<Animal> getBoughtAnimals() {
-        return boughtAnimals;
+    public ArrayList<Animal> getChangedAnimals() {
+        return changedAnimals;
     }
 }
