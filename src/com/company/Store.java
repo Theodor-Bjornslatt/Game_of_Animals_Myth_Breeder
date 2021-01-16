@@ -22,9 +22,10 @@ public class Store {
     private int unsuccessfulAttempts;
     private boolean leaveStore;
 
+
     public void goToAnimalStore(){
         changedAnimals.clear();
-        System.out.println("\nWELCOME TO MYTH STORE, " +
+        System.out.println("\nWELCOME TO MYTH STORE ANIMAL DEPARTMENT, " +
                 Game.getCurrentPlayer().getName().toUpperCase() + "!");
         do{
             leaveStore=false;
@@ -146,16 +147,6 @@ public class Store {
     }
 
     public void buyAnimal(){
-        setAnimalStats();
-        payForAnimal();
-        changedAnimals.add(tempAnimal);
-        Game.getCurrentPlayer().addAnimal(tempAnimal);
-        System.out.println("\n" + shopKeeper1 + ": I'll just go ahead and give you " +
-                chosenName + "'s amulet then. Anything else of interest to you?");
-    }
-
-    public void setAnimalStats(){
-        // Let player choose gender for the animal
         do{
             HelperMethods.setValidChoice(true);
             System.out.println("\nWhat gender would you prefer? Male or female? (m/f)");
@@ -179,9 +170,6 @@ public class Store {
                 "Think carefully now and decide on a name for your new animal friend. What should it be?");
         chosenName = HelperMethods.scan.nextLine();
 
-    }
-
-    public void payForAnimal(){
         if(chosenSpecies.equals("Nykur")){
             // Create the animal according to the player's choices
             tempAnimal = new Nykur(chosenName, chosenGender);
@@ -204,6 +192,12 @@ public class Store {
             tempAnimal = new Tilberi(chosenName, chosenGender);
             Game.getCurrentPlayer().removeGold(tilberiPrice);
         }
+
+        changedAnimals.add(tempAnimal);
+        Game.getCurrentPlayer().addAnimal(tempAnimal);
+
+        System.out.println("\n" + shopKeeper1 + ": I'll just go ahead and give you " +
+                chosenName + "'s amulet then. Anything else of interest to you?");
     }
 
 
@@ -212,8 +206,8 @@ public class Store {
     }
 
     public void sellAnimal(){
-        double health; //TODO make health be health of animal sent to method
         int price = 0;
+        double health; //TODO make health be health of animal sent to method
         double decimal = 0.01;
 
         do{
@@ -261,6 +255,7 @@ public class Store {
                             changedAnimals.add(tempAnimal);
                             Game.getCurrentPlayer().removeGold(price);
                             Game.getCurrentPlayer().removeAnimal(input-1);
+                            System.out.println("You have now sold " + tempAnimal.getName() + " to Myth Store.");
                         }
                         else{
                             System.out.println(shopKeeper1 + ": Shame, " +
@@ -280,18 +275,18 @@ public class Store {
                     break;
 
                 default:
+                    // If player has not sold an animal, they have not made a move yet
                     if(changedAnimals.isEmpty()){ //TODO leave store or go to goToStore
                         System.out.println("Gamemaker: Well, if you're not going to choose, " +
                                 "I'm gonna choose for you. \nMay the odds be ever in your favour.");
                         //TODO add 1% chance of selling first animal in list?
                         HelperMethods.setValidChoice(false);
                     }
+                    // If player has sold an animal, they have made a move.
+                    // Leave the store and end their move.
                     else{
-                        //TODO If player has sold at least one animal, leave store
-                        HelperMethods.setValidChoice(true);
                         leaveStore();
                     }
-
                     break;
             }
 
