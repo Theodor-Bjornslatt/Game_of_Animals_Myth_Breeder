@@ -225,15 +225,14 @@ public class Store {
                             input <= Game.getCurrentPlayer().getAnimalList().size()+1){
 
                         tempAnimal = Game.getCurrentPlayer().getAnimalList().get(input-1);
-                        sellAnimal();
-                        System.out.println("\n" + shopKeeper1 + ": I'll pay you " + price +
+                        System.out.println("\n" + shopKeeper1 + ": I'll pay you " + getAnimalPrice() +
                                 " gold for " + tempAnimal.getName() + ". ");
                         System.out.println( "\nEnter y to accept the offer.");
 
                         answer = HelperMethods.scan.nextLine();
                         if(answer.equals("y")){
                             changedAnimals.add(tempAnimal);
-                            Game.getCurrentPlayer().removeGold(price);
+                            Game.getCurrentPlayer().addGold(getAnimalPrice());
                             Game.getCurrentPlayer().removeAnimal(input-1);
                             System.out.println("You have now sold " + tempAnimal.getName() + " to Myth Store.");
                         }

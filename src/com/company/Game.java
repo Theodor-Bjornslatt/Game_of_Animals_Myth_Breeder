@@ -269,8 +269,7 @@ public class Game {
             }
             counter++;
         }
-        //TODO once all rounds have been played, sell all animals and add the money to players.
-        // Then see who has most money and let players know who won
+        endGame();
     }
 
     public void chooseAnimal(){
