@@ -6,6 +6,7 @@ public class Game {
     Animal chosenAnimal = null;
     private ArrayList<Player>players = new ArrayList<>();
     private static Player currentPlayer = null;
+    Store mythStore = new Store();
 
     public int numOfRounds = -1;
     public int numOfPlayers = -1;
@@ -181,8 +182,6 @@ public class Game {
     }
 
     public void runGame(){
-
-        Store mythStore = new Store();
         Animal tempAnimal = null;
         int counter = 1;
 
@@ -195,7 +194,6 @@ public class Game {
                 //Iterate through each player and let them play their round
             for (Player player : players){
                 currentPlayer = player;
-                    //TODO add do here instead
                 do{
                     // Print the name of the player and inform them that it's their turn
                     System.out.println("\nYOUR TURN, " + player.getName().toUpperCase() + "! ");
@@ -291,10 +289,20 @@ public class Game {
 
 
     public void endGame(){
-        //TODO Sell all animals the player owns
-        // for each player, check how much money they have
-        // let the player with the most money win
-        // Then enter to return to main menu (break;)
+        //  TODO press enter to return to main menu (break;)
+        int winnerGold = 0;
+        String winnerName = "";
+
+        for(Player player : players){
+            currentPlayer = player;
+            mythStore.sellAllAnimals();
+            if(player.getGoldAmount() > winnerGold){
+                winnerGold = player.getGoldAmount();
+                winnerName = player.getName();
+            }
+        }
+        System.out.println("......AND THE WINNER IS......" +
+                "\n" + winnerName.toUpperCase());
     }
 
     public void playerStats(){

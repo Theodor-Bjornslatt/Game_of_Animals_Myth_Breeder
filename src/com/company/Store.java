@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public class Store {
 
     private ArrayList<Animal> changedAnimals = new ArrayList<>();
-
     private Animal tempAnimal;
 
     private String chosenSpecies;
@@ -207,8 +206,7 @@ public class Store {
 
     public void sellAnimal(){
         int price = 0;
-        double health; //TODO make health be health of animal sent to method
-        double decimal = 0.01;
+        changedAnimals.clear();
 
         do{
             leaveStore = false;
@@ -227,25 +225,7 @@ public class Store {
                             input <= Game.getCurrentPlayer().getAnimalList().size()+1){
 
                         tempAnimal = Game.getCurrentPlayer().getAnimalList().get(input-1);
-                        String animalClass = tempAnimal.getClass().getSimpleName();
-                        health = tempAnimal.getHealth();
-
-                        if(animalClass.equals("Nykur")){
-                            price = (int) Math.round(nykurPrice * health * decimal);
-                        }
-                        else if(animalClass.equals("Gloson")){
-                            price = (int) Math.round(glosonPrice * health * decimal);
-                        }
-                        else if(animalClass.equals("Kraken")){
-                            price = (int) Math.round(krakenPrice * health * decimal);
-                        }
-                        else if(animalClass.equals("Linnr")){
-                            price = (int) Math.round(linnrPrice * health * decimal);
-                        }
-                        else if(animalClass.equals("Tilberi")){
-                            price = (int) Math.round(tilberiPrice * health * decimal);
-                        }
-
+                        sellAnimal();
                         System.out.println("\n" + shopKeeper1 + ": I'll pay you " + price +
                                 " gold for " + tempAnimal.getName() + ". ");
                         System.out.println( "\nEnter y to accept the offer.");
@@ -259,7 +239,7 @@ public class Store {
                         }
                         else{
                             System.out.println(shopKeeper1 + ": Shame, " +
-                                    "but if you're happy, I'm happy.");
+                                    "but if you're happy, I'm happy, I suppose.");
                         }
 
                     }
@@ -294,8 +274,39 @@ public class Store {
 
     }
 
-    public void sellAllAnimals(){
+    public int getAnimalPrice(){
+        int price = 0;
+        double health;
+        double decimal = 0.01;
 
+        health = tempAnimal.getHealth();
+
+        if(tempAnimal.getSpecies().equals("Nykur")){
+            price = (int) Math.ceil(nykurPrice * health * decimal);
+        }
+        else if(tempAnimal.getSpecies().equals("Gloson")){
+            price = (int) Math.ceil(glosonPrice * health * decimal);
+        }
+        else if(tempAnimal.getSpecies().equals("Kraken")){
+            price = (int) Math.ceil(krakenPrice * health * decimal);
+        }
+        else if(tempAnimal.getSpecies().equals("Linnr")){
+            price = (int) Math.ceil(linnrPrice * health * decimal);
+        }
+        else if(tempAnimal.getSpecies().equals("Tilberi")){
+            price = (int) Math.ceil(tilberiPrice * health * decimal);
+        }
+        return price;
+    }
+
+    public void sellAllAnimals(){
+        for(Animal animal : Game.getCurrentPlayer().getAnimalList()){
+            tempAnimal = animal;
+            Game.getCurrentPlayer().addGold(getAnimalPrice());
+        }
+
+        System.out.println("\n" + Game.getCurrentPlayer().getName() + " has " +
+                Game.getCurrentPlayer().getGoldAmount() + " Gold. ");
     }
 
     public ArrayList<Animal> getChangedAnimals() {
