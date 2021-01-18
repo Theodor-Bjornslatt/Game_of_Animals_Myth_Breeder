@@ -1,5 +1,6 @@
 package com.company;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Game {
 
@@ -216,8 +217,8 @@ public class Game {
                           |3| Feed your mythological animals
                           |4| Try your luck - try for offspring
                           |5| Sell one or more of your mythological animals""");
-                        //TODO randomize the number of offspring for each animal to be within specific ranges
                         HelperMethods.tryParseInt();
+
                         // If player tries to make a choice that's not defined in menu
                         // Tell player their choice is not valid
                         //Then present player with menu again and ask them to make a new choice
@@ -231,6 +232,10 @@ public class Game {
                             System.out.println("You can't perform that action as you don't have any animals");
                             HelperMethods.setInput(-1);
                         }
+                        else if(HelperMethods.getInput() == 4 && currentPlayer.getAnimalList().size()<2){
+                            System.out.println("You need to have two animals in order to try for offspring.");
+                        }
+
                     }while(HelperMethods.getInput()==-1);
 
                     switch (HelperMethods.getInput()){
@@ -249,13 +254,36 @@ public class Game {
 
                         case 4:
                             // if player has two animals of same species and opposite genders, breed
-                            int minNum;
+                            Animal animalToMate;
+
+                            System.out.println("Choose the mythological animal you want to mate.");
                             chooseAnimal();
-                            if(1 <= HelperMethods.getInput() &&
-                                    HelperMethods.getInput() <= currentPlayer.getAnimalList().size()+1){
-                                //If there is an animal with input number in the list, proceed.
+                            animalToMate = chosenAnimal;
+                            System.out.println("Choose the mythological animal you want to mate with.");
+                            chooseAnimal();
+
+                            // If player tries to nate an animal with itself,
+                            // let them make a new choice
+                            if(animalToMate == chosenAnimal){
+                                System.out.println("Your animal can't mate with itself.");
+                                HelperMethods.setValidChoice(false);
                             }
-                            HelperMethods.setValidChoice(true);
+                            // If player tries to mate an animal with another of the same gender,
+                            // let them make a new choice
+                            else if(chosenAnimal.getGender().equals(animalToMate.getGender())){
+                                System.out.println("Animals of the same gender can't procreate.");
+                                HelperMethods.setValidChoice(false);
+                            }
+                            // If player tries to mate an animal with one of the same species
+                            // and opposite gender, proceed.
+                            else if(chosenAnimal.getSpecies().equals(animalToMate.getSpecies())){
+                                tryOffspring();
+                                HelperMethods.setValidChoice(true);
+                            }
+                            else{
+                                System.out.println("Animals of different species can't mate.");
+                                HelperMethods.setValidChoice(false);
+                            }
                             break;
 
                         case 5:
@@ -278,10 +306,12 @@ public class Game {
             HelperMethods.tryParseInt();
         }while(HelperMethods.getInput()==-1);
 
-        try{
+        int animalNum = HelperMethods.getInput();
+        if(1 <= animalNum &&
+                animalNum <= currentPlayer.getAnimalList().size()){
             chosenAnimal = currentPlayer.getAnimalList().get(HelperMethods.getInput()-1);
         }
-        catch(Exception e){
+       else{
             System.out.println("You must enter a number corresponding to an animal in your list.");
         }
     }
@@ -307,32 +337,57 @@ public class Game {
     public void tryOffspring(){
         boolean success = HelperMethods.fiftyPerChance();
         if(success = true){
-            String species = chosenAnimal.getSpecies();
-            if(species.equals("Nykur")){
-                // Create the animal according to the player's choices
-                System.out.println("You got");
-                 offspring = new Nykur(chosenName, chosenGender);
-            }
-            else if(species.equals("Gloson")){
-                offspring = new Gloson(chosenName, chosenGender);
-            }
-            else if(species.equals("Kraken")){
-                offspring = new Kraken(chosenName, chosenGender);
-            }
-            else if(species.equals("Linnr")){
-                offspring = new Linnr(chosenName, chosenGender);
-            }
-            else if(species.equals("Tilberi")){
-                offspring = new Tilberi(chosenName, chosenGender);
-            }
+            createOffspring();
         }
         else{
             System.out.println("You didn't get any babies! :( ");
         }
     }
 
+    public void createOffspring(){
+        String gender;
+        String name;
+        String species = chosenAnimal.getSpecies();
+
+        Random random = new Random();
+        int numberOfOffspring = 1 + random.nextInt(chosenAnimal.getMaxOffspring()+1);
+
+        System.out.println("Wow! Your " + chosenAnimal.getSpecies() + "s have created " +
+                numberOfOffspring + " offspring! \nNow it's time to name them!");
+        for(int i = 1; i<=numberOfOffspring; i++){
+
+            int randomGender = random.nextInt(2);
+            if(randomGender == 0){
+                gender = "Male";
+            }
+            else{
+                gender = "Female";
+            }
+
+            System.out.println("Name baby number" + i + ", it's a " + gender.toLowerCase() + "!" );
+             name = HelperMethods.scan.nextLine();
+
+            if(species.equals("Nykur")){
+                offspring = new Nykur(name, gender);
+            }
+            else if(species.equals("Gloson")){
+                offspring = new Gloson(name, gender);
+            }
+            else if(species.equals("Kraken")){
+                offspring = new Kraken(name, gender);
+            }
+            else if(species.equals("Linnr")){
+                offspring = new Linnr(name, gender);
+            }
+            else if(species.equals("Tilberi")){
+                offspring = new Tilberi(name, gender);
+            }
+            currentPlayer.addAnimal(offspring);
+        }
+    }
+
     public void playerStats(){
-        currentPlayer.getGoldAmount();
+        System.out.println("Gold: " + currentPlayer.getGoldAmount());
         // TODO print the animals the player has - name and getClass
         //  as well as health and healthChange (.loseHealth()) since last round
         //  print the food the player owns

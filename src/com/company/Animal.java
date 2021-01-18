@@ -71,18 +71,6 @@ public abstract class Animal {
         return onlyEats;
     }
 
-    public Animal mateAnimals(){
-        //Create an instance of an object to return, with null as placeholder
-        Animal tempAnimal = null;
-
-        //TODO if player has two animals of same instance and opposite genders,
-        // give 50% chance to have offspring
-        // if they have offspring, give 50% chance of either gender being generated
-
-
-        return tempAnimal;
-    }
-
     public void feedAnimal(){
         //TODO If player has food item in foodList in correct amount
         // and animalsubclass has item in list of foods it eats
@@ -107,14 +95,6 @@ public abstract class Animal {
         return lostHealth;
     }
 
-    public void createOffspring(){
-        Random random = new Random();
-        int numberOfOffspring = 1 + random.nextInt(getMaxOffspring()+1);
-
-        for(int i = 0; i<=numberOfOffspring; i++){
-            //assign gender to offspring then prompt player for name
-        }
-    }
 
     public int getHealth(){
         return health;
