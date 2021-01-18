@@ -1,4 +1,5 @@
 package com.company;
+import java.util.Random;
 
 import java.util.ArrayList;
 
@@ -27,6 +28,10 @@ public abstract class Animal {
 
     public void setMaxOffspring(int offspring){
         this.maxOffspring = offspring;
+    }
+
+    public int getMaxOffspring(){
+        return maxOffspring;
     }
     public String getName(){
         return name;
@@ -103,8 +108,12 @@ public abstract class Animal {
     }
 
     public void createOffspring(){
+        Random random = new Random();
+        int numberOfOffspring = 1 + random.nextInt(getMaxOffspring()+1);
 
-
+        for(int i = 0; i<=numberOfOffspring; i++){
+            //assign gender to offspring then prompt player for name
+        }
     }
 
     public int getHealth(){

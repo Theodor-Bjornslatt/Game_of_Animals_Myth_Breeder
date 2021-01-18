@@ -4,6 +4,7 @@ import java.util.ArrayList;
 public class Game {
 
     Animal chosenAnimal = null;
+    Animal offspring = null;
     private ArrayList<Player>players = new ArrayList<>();
     private static Player currentPlayer = null;
     Store mythStore = new Store();
@@ -306,7 +307,24 @@ public class Game {
     public void tryOffspring(){
         boolean success = HelperMethods.fiftyPerChance();
         if(success = true){
-            chosenAnimal.getClass();
+            String species = chosenAnimal.getSpecies();
+            if(species.equals("Nykur")){
+                // Create the animal according to the player's choices
+                System.out.println("You got");
+                 offspring = new Nykur(chosenName, chosenGender);
+            }
+            else if(species.equals("Gloson")){
+                offspring = new Gloson(chosenName, chosenGender);
+            }
+            else if(species.equals("Kraken")){
+                offspring = new Kraken(chosenName, chosenGender);
+            }
+            else if(species.equals("Linnr")){
+                offspring = new Linnr(chosenName, chosenGender);
+            }
+            else if(species.equals("Tilberi")){
+                offspring = new Tilberi(chosenName, chosenGender);
+            }
         }
         else{
             System.out.println("You didn't get any babies! :( ");
