@@ -4,8 +4,9 @@ import java.util.Random;
 
 public class Game {
 
-    Animal chosenAnimal = null;
-    Animal offspring = null;
+    Animal animalToMate;
+    Animal chosenAnimal;
+    Animal offspring;
     private ArrayList<Player>players = new ArrayList<>();
     private static Player currentPlayer = null;
     Store mythStore = new Store();
@@ -254,25 +255,26 @@ public class Game {
 
                         case 4:
                             // if player has two animals of same species and opposite genders, breed
-                            Animal animalToMate;
+                            HelperMethods.setValidChoice(false);
 
                             System.out.println("Choose the mythological animal you want to mate.");
+                            // Let the player choose an animal and let the animal be chosenAnimal
                             chooseAnimal();
+                            // Let animalToMate be chosenAnimal
                             animalToMate = chosenAnimal;
                             System.out.println("Choose the mythological animal you want to mate with.");
+                            // Let player choose a second animal and let that animal be chosenAnimal
                             chooseAnimal();
 
                             // If player tries to nate an animal with itself,
                             // let them make a new choice
                             if(animalToMate == chosenAnimal){
                                 System.out.println("Your animal can't mate with itself.");
-                                HelperMethods.setValidChoice(false);
                             }
                             // If player tries to mate an animal with another of the same gender,
                             // let them make a new choice
                             else if(chosenAnimal.getGender().equals(animalToMate.getGender())){
                                 System.out.println("Animals of the same gender can't procreate.");
-                                HelperMethods.setValidChoice(false);
                             }
                             // If player tries to mate an animal with one of the same species
                             // and opposite gender, proceed.
@@ -282,7 +284,6 @@ public class Game {
                             }
                             else{
                                 System.out.println("Animals of different species can't mate.");
-                                HelperMethods.setValidChoice(false);
                             }
                             break;
 
@@ -309,6 +310,8 @@ public class Game {
         int animalNum = HelperMethods.getInput();
         if(1 <= animalNum &&
                 animalNum <= currentPlayer.getAnimalList().size()){
+            // Get the animal the player chooses from their list
+            // and send it to chosenAnimal
             chosenAnimal = currentPlayer.getAnimalList().get(HelperMethods.getInput()-1);
         }
        else{
@@ -352,8 +355,8 @@ public class Game {
         Random random = new Random();
         int numberOfOffspring = 1 + random.nextInt(chosenAnimal.getMaxOffspring()+1);
 
-        System.out.println("Wow! Your " + chosenAnimal.getSpecies() + "s have created " +
-                numberOfOffspring + " offspring! \nNow it's time to name them!");
+        System.out.println("Wow! " + chosenAnimal.getName() + " and " + animalToMate.getName() + " had " +
+                numberOfOffspring + " children! \nNow it's time to name them!");
         for(int i = 1; i<=numberOfOffspring; i++){
 
             int randomGender = random.nextInt(2);
