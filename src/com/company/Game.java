@@ -182,15 +182,14 @@ public class Game {
     }
 
     public void runGame(){
-        Animal tempAnimal = null;
-        int counter = 1;
 
-        while(counter <= numOfRounds){
+        int round = 1;
+        while(round <= numOfRounds){
             // As long as user doesn't make a valid choice, do the following
                 //As a default, assume the player makes choices
                 // that are possible with their given means
                 HelperMethods.setValidChoice(true);
-                System.out.println("\nRound " + counter);
+                System.out.println("\nRound " + round);
                 //Iterate through each player and let them play their round
             for (Player player : players){
                 currentPlayer = player;
@@ -267,7 +266,7 @@ public class Game {
 
                 }while(!HelperMethods.getValidChoice());
             }
-            counter++;
+            round++;
         }
         endGame();
     }
@@ -302,6 +301,16 @@ public class Game {
         }
         System.out.println("......AND THE WINNER IS......" +
                 "\n" + winnerName.toUpperCase());
+    }
+
+    public void tryOffspring(){
+        boolean success = HelperMethods.fiftyPerChance();
+        if(success = true){
+            chosenAnimal.getClass();
+        }
+        else{
+            System.out.println("You didn't get any babies! :( ");
+        }
     }
 
     public void playerStats(){

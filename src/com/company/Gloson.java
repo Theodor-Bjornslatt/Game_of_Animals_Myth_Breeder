@@ -4,6 +4,7 @@ public class Gloson extends Animal{
 
     public Gloson(String name, String gender){
         super(name, gender);
+        this.setMaxOffspring(3);
     }
 
 }

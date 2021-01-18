@@ -18,12 +18,16 @@ public abstract class Animal {
     private String name;
     private String gender;
     private int health = 100;
+    private int maxOffspring;
 
     public Animal(String name, String gender){
         this.name = name;
         this.gender = gender;
     }
 
+    public void setMaxOffspring(int offspring){
+        this.maxOffspring = offspring;
+    }
     public String getName(){
         return name;
     }
@@ -96,6 +100,11 @@ public abstract class Animal {
             this.health -= lostHealth;
         }
         return lostHealth;
+    }
+
+    public void createOffspring(){
+
+
     }
 
     public int getHealth(){

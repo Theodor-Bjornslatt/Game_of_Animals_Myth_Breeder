@@ -1,8 +1,10 @@
 package com.company;
 
 import java.util.Scanner;
+import java.util.Random;
 
 public class HelperMethods {
+    static Random randomNum = new Random();
     static Scanner scan = new Scanner(System.in);
     private static int input = -1;
     private static boolean validChoice = true;
@@ -29,7 +31,15 @@ public class HelperMethods {
                 "Please try again and enter a number within the specified range.");
     }
 
-    //TODO add tryParseInt() method
+    public static boolean fiftyPerChance(){
+        boolean successful = false;
+        int result = randomNum.nextInt(100);
+
+        if(result >=50){
+            successful = true;
+        }
+        return successful;
+    }
 
     public static void setInput(int newInput){
         input = newInput;

@@ -166,7 +166,7 @@ public class Store {
 
         // Let player name the animal
         System.out.println("Shopkeeper: You have only made excellent choices so far dear customer. " +
-                "Think carefully now and decide on a name for your new animal friend. What should it be?");
+                "\nThink carefully now and decide on a name for your new animal friend. What should it be?");
         chosenName = HelperMethods.scan.nextLine();
 
         if(chosenSpecies.equals("Nykur")){
