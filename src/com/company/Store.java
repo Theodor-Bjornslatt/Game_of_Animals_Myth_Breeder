@@ -268,7 +268,7 @@ public class Store {
         // If player tries to buy an amount they can afford
         // and amount is made of increments of 0.5 kg
         // let the player buy the food
-        if(wantedAmount % 2 == 0 || wantedAmount % 2 == 5){
+        if(wantedAmount % 0.5 == 0){
             if(tempFood.getFoodType().equals("Seaweed") &&
                wantedAmount < maxSeaweed){
                 price = (int)(wantedAmount * seaweedPrice);
