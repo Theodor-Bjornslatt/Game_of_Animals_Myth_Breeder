@@ -33,17 +33,11 @@ public abstract class Animal {
     public int getMaxOffspring(){
         return maxOffspring;
     }
+
     public String getName(){
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
 
     public void setHealth(int health) {
         this.health = health;

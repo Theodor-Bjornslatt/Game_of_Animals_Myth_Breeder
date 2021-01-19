@@ -6,6 +6,9 @@ public class Player {
 
     ArrayList<Animal>animals = new ArrayList<>();
     ArrayList<Food>food = new ArrayList<>();
+    Seaweed seaweed = new Seaweed();
+    Milk milk = new Milk();
+    HelplessHuman helplessHuman = new HelplessHuman();
 
     private String name;
     private int goldAmount = 0;
@@ -13,6 +16,11 @@ public class Player {
 
     public Player(String name){
         this.name = name;
+        // Add all possible food types to the players list
+        // of foods (default amount is 0 kg)
+        food.add(seaweed);
+        food.add(milk);
+        food.add(helplessHuman);
     }
 
     public String getName(){
@@ -41,15 +49,23 @@ public class Player {
         return this.animals;
     }
 
-    public void setAnimals(ArrayList<Animal> animals) {
-        this.animals = animals;
-    }
-
     public void addAnimal(Animal animal){
         this.animals.add(animal);
     }
 
     public void removeAnimal(int index){
         this.animals.remove(index);
+    }
+
+    public ArrayList<Food> getFoodList(){
+        return this.food;
+    }
+
+    public void addFood(Food food){
+        this.food.add(food);
+    }
+
+    public void removeFood(int index){
+        this.food.remove(index);
     }
 }

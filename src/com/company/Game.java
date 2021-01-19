@@ -3,11 +3,11 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Game {
-
+    // TODO print healthChange (.loseHealth()) since last round
     Animal animalToMate;
     Animal chosenAnimal;
     Animal offspring;
-    private ArrayList<Player>players = new ArrayList<>();
+    private ArrayList<Player>players = new ArrayList<Player>();
     private static Player currentPlayer = null;
     Store mythStore = new Store();
 
@@ -30,10 +30,10 @@ public class Game {
                  |4| Exit game""");
             do{
                 HelperMethods.tryParseInt();
-            }while(HelperMethods.getInput()==-1);
+            }while(HelperMethods.getInputInt()==-1);
 
 
-            switch (HelperMethods.getInput()){
+            switch (HelperMethods.getInputInt()){
                 case 1:
                     tryAddPlayers();
                     break;
@@ -79,7 +79,7 @@ public class Game {
                 if(choice.equals("y")){
                     players.clear();
                     setPlayers();
-                    HelperMethods.setInput(1);
+                    HelperMethods.setInputInt(1);
                 }
                 // or doing nothing and returning to mainMenu
                 else if(choice.equals("n")){
@@ -90,13 +90,14 @@ public class Game {
                     System.out.println("You must make a choice to continue. " +
                             "Press y to delete all players and create a new list of players. " +
                             "Press n to return to Main Menu without making any changes.");
-                    HelperMethods.setInput(-1);
+                    HelperMethods.setInputInt(-1);
                 }
-            }while(HelperMethods.getInput()==-1);
+            }while(HelperMethods.getInputInt()==-1);
         }
     }
 
     public void setPlayers(){
+        int startingGold = 20;
         int minPlayers = 1;
         int maxPlayers = 4;
         while(true){
@@ -104,12 +105,12 @@ public class Game {
                 System.out.println("\nPlease enter the number of players: | 1 | 2 | 3 | 4 |");
                 // call to method within class
                 HelperMethods.tryParseInt();
-            } while(HelperMethods.getInput()==-1);
+            } while(HelperMethods.getInputInt()==-1);
 
             // If the input number of players is within range, start adding players
-            if(minPlayers <= HelperMethods.getInput() && HelperMethods.getInput() <= maxPlayers) {
-                numOfPlayers = HelperMethods.getInput();
-                for(int i = 0; i < HelperMethods.getInput(); i++){
+            if(minPlayers <= HelperMethods.getInputInt() && HelperMethods.getInputInt() <= maxPlayers) {
+                numOfPlayers = HelperMethods.getInputInt();
+                for(int i = 0; i < HelperMethods.getInputInt(); i++){
                     System.out.println("\nEnter the name of player " + (i+1) + ":");
                     String name = HelperMethods.scan.nextLine();
                     players.add(new Player(name));
@@ -117,7 +118,7 @@ public class Game {
                 }
                 // Assign all players a starting amount of gold
                 for(Player player : players){
-                    player.setGoldAmount(20);
+                    player.setGoldAmount(startingGold);
                 }
                 //Check methods for adding moneyAmount and getting moneyAmount are working
                 players.get(0).addGold(10);
@@ -146,10 +147,10 @@ public class Game {
                 // Ask the user to enter the number of rounds and wait for their input.
                 System.out.println("Please enter how many rounds you want to play: | 5 | 6 | ... | 29 | 30 |");
                 HelperMethods.tryParseInt();
-            } while(HelperMethods.getInput()==-1);
+            } while(HelperMethods.getInputInt()==-1);
             // If the input number of players is within range, set numberOfRounds
-            if(minRounds <= HelperMethods.getInput() && HelperMethods.getInput() <= maxRounds) {
-                numOfRounds = HelperMethods.getInput();
+            if(minRounds <= HelperMethods.getInputInt() && HelperMethods.getInputInt() <= maxRounds) {
+                numOfRounds = HelperMethods.getInputInt();
                 break;
             }
             else{
@@ -196,19 +197,11 @@ public class Game {
                 //Iterate through each player and let them play their round
             for (Player player : players){
                 currentPlayer = player;
+                // TODO animals lose health each round.
                 do{
                     // Print the name of the player and inform them that it's their turn
                     System.out.println("\nYOUR TURN, " + player.getName().toUpperCase() + "! ");
-                    System.out.println("\nYour animals: ");
-                    // If the player has no animals, let them know
-                    if(currentPlayer.getAnimalList().isEmpty()){
-                        System.out.println("\nOh no, you have no animals :'( " +
-                                "\nMaybe you can get some from Myth Store?");
-                    }
-                    // Else, print a list of their animals
-                    else{
-                        HelperMethods.printPlayerAnimals();
-                    }
+                    printPlayerStats();
 
                     do{
                         System.out.println("\nMake your move " + player.getName() + ":");
@@ -223,30 +216,30 @@ public class Game {
                         // If player tries to make a choice that's not defined in menu
                         // Tell player their choice is not valid
                         //Then present player with menu again and ask them to make a new choice
-                        if(HelperMethods.getInput() < 1 || 5 < HelperMethods.getInput()){
+                        if(HelperMethods.getInputInt() < 1 || 5 < HelperMethods.getInputInt()){
                             HelperMethods.invalidInput();
-                            HelperMethods.setInput(-1);
+                            HelperMethods.setInputInt(-1);
                         }
                         // If player tries to perform an action on an animal when they don't have any
                         // Tell them they can't do said action and then ask them to make a new choice
-                        else if(currentPlayer.getAnimalList().isEmpty() && HelperMethods.getInput()>2){
+                        else if(currentPlayer.getAnimalList().isEmpty() && HelperMethods.getInputInt()>2){
                             System.out.println("You can't perform that action as you don't have any animals");
-                            HelperMethods.setInput(-1);
+                            HelperMethods.setInputInt(-1);
                         }
-                        else if(HelperMethods.getInput() == 4 && currentPlayer.getAnimalList().size()<2){
+                        else if(HelperMethods.getInputInt() == 4 && currentPlayer.getAnimalList().size()<2){
                             System.out.println("You need to have two animals in order to try for offspring.");
                         }
 
-                    }while(HelperMethods.getInput()==-1);
+                    }while(HelperMethods.getInputInt()==-1);
 
-                    switch (HelperMethods.getInput()){
+                    switch (HelperMethods.getInputInt()){
                         case 1:
                             mythStore.goToAnimalStore();
                             //TODO write method to check if action has been made
                             break;
 
                         case 2:
-                            HelperMethods.setValidChoice(true);
+                            mythStore.goToFoodStore();
                             break;
 
                         case 3:
@@ -305,14 +298,14 @@ public class Game {
         do{
             System.out.println("Enter the number of your animal to choose that animal.");
             HelperMethods.tryParseInt();
-        }while(HelperMethods.getInput()==-1);
+        }while(HelperMethods.getInputInt()==-1);
 
-        int animalNum = HelperMethods.getInput();
+        int animalNum = HelperMethods.getInputInt();
         if(1 <= animalNum &&
                 animalNum <= currentPlayer.getAnimalList().size()){
             // Get the animal the player chooses from their list
             // and send it to chosenAnimal
-            chosenAnimal = currentPlayer.getAnimalList().get(HelperMethods.getInput()-1);
+            chosenAnimal = currentPlayer.getAnimalList().get(HelperMethods.getInputInt()-1);
         }
        else{
             System.out.println("You must enter a number corresponding to an animal in your list.");
@@ -389,12 +382,24 @@ public class Game {
         }
     }
 
-    public void playerStats(){
+    public static void printPlayerStats(){
         System.out.println("Gold: " + currentPlayer.getGoldAmount());
-        // TODO print the animals the player has - name and getClass
-        //  as well as health and healthChange (.loseHealth()) since last round
-        //  print the food the player owns
-        //  print the amount of money the player owns
+
+        System.out.println("\nMythological Animals: ");
+        // If the player has no animals, let them know
+        if(currentPlayer.getAnimalList().isEmpty()){
+            System.out.println("\nOh no, you have no animals :'( " +
+                    "\nMaybe you can get some from Myth Store?");
+        }
+        // Else, print a list of their animals
+        else{
+            HelperMethods.printPlayerAnimals();
+        }
+
+        // If the player has no food, tell them
+        System.out.println("\nFood: ");
+        HelperMethods.printPlayerFoodList();
+        //TODO print health change of animals
 
     }
 
