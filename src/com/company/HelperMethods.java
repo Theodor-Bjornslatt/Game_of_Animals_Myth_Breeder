@@ -38,11 +38,24 @@ public class HelperMethods {
     }
 
     public static void printPlayerAnimals(){
-        for(Animal animal : Game.getCurrentPlayer().getAnimalList()){
-            System.out.println("|" + (Game.getCurrentPlayer().getAnimalList().indexOf(animal) + 1) + "| " +
-                    animal.getName() + " the " + animal.getGender() + " " + animal.getClass().getSimpleName() +
-                    " ... Health: " + animal.getHealth());
+        System.out.println("\nGold: " + Game.getCurrentPlayer().getGoldAmount());
+
+        System.out.println("\nMythological Animals: ");
+        // If the player has no animals, let them know
+        if(Game.getCurrentPlayer().getAnimalList().isEmpty()){
+            System.out.println("\nOh no, you have no animals :'( " +
+                    "\nMaybe you can get some from Myth Store?");
         }
+        // Else, print a list of their animals
+        else{
+            for(Animal animal : Game.getCurrentPlayer().getAnimalList()){
+                System.out.println("|" + (Game.getCurrentPlayer().getAnimalList().indexOf(animal) + 1) +
+                        "| " + animal.getName() + " the " + animal.getGender() + " " +
+                        animal.getClass().getSimpleName() + "\nHealth: " + animal.getHealth() +
+                        " (-" + animal.getLostHealth() + " since last round.)");
+            }
+        }
+
     }
 
     public static void printPlayerFoodList(){
@@ -82,6 +95,7 @@ public class HelperMethods {
         }
         return successful;
     }
+
 
     public static void setInputInt(int newInput){
         inputInt = newInput;
