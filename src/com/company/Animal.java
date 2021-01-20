@@ -16,8 +16,9 @@ enum Gender{
 public abstract class Animal {
     private ArrayList<Food>onlyEat = new ArrayList<>();
 
-    private String name;
-    private String gender;
+    private String name = "";
+    private String gender = "";
+    private int hunger = 0;
     private int health = 100;
     private int healthChange = 0;
     private int maxOffspring;
@@ -25,6 +26,14 @@ public abstract class Animal {
     public Animal(String name, String gender){
         this.name = name;
         this.gender = gender;
+    }
+
+    public void setHunger(int hunger){
+        this.hunger = hunger;
+    }
+
+    public int getHunger(){
+        return hunger;
     }
 
     public void setMaxOffspring(int offspring){

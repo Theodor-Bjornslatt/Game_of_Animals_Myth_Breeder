@@ -1,14 +1,15 @@
 package com.company;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Player {
 
     ArrayList<Animal>animals = new ArrayList<>();
-    ArrayList<Food>food = new ArrayList<>();
-    Seaweed seaweed = new Seaweed();
-    Milk milk = new Milk();
-    HelplessHuman helplessHuman = new HelplessHuman();
+    private static Seaweed seaweed = new Seaweed();
+    private static Milk milk = new Milk();
+    private static HelplessHuman helplessHuman = new HelplessHuman();
+    private final static ArrayList<Food> foods = new ArrayList<>(List.of(seaweed, milk, helplessHuman));
 
     private String name;
     private int goldAmount = 0;
@@ -18,9 +19,6 @@ public class Player {
         this.name = name;
         // Add all possible food types to the players list
         // of foods (default amount is 0 kg)
-        food.add(seaweed);
-        food.add(milk);
-        food.add(helplessHuman);
     }
 
     public String getName(){
@@ -33,8 +31,6 @@ public class Player {
 
     public void setGoldAmount(int goldAmount){
         this.goldAmount = goldAmount;
-        // TODO Must be changed to add the amount of money the animal costs when sold
-
     }
 
     public void addGold(int goldAdded){
@@ -58,14 +54,14 @@ public class Player {
     }
 
     public ArrayList<Food> getFoodList(){
-        return this.food;
+        return this.foods;
     }
 
     public void addFood(Food food){
-        this.food.add(food);
+        this.foods.add(food);
     }
 
     public void removeFood(int index){
-        this.food.remove(index);
+        this.foods.remove(index);
     }
 }

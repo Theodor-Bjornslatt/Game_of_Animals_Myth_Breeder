@@ -1,11 +1,11 @@
 package com.company;
-import java.util.ArrayList;
 
 public class Kraken extends Animal{
 
     public Kraken(String name, String gender){
         super(name, gender);
-        this.setMaxOffspring(4);
+        this.setMaxOffspring(7);
+        this.setHunger(5);
     }
 
 }

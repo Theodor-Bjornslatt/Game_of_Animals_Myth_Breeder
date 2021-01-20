@@ -1,6 +1,7 @@
 package com.company;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.Random;
 
@@ -38,8 +39,6 @@ public class HelperMethods {
     }
 
     public static void printPlayerAnimals(){
-        System.out.println("\nGold: " + Game.getCurrentPlayer().getGoldAmount());
-
         System.out.println("\nMythological Animals: ");
         // If the player has no animals, let them know
         if(Game.getCurrentPlayer().getAnimalList().isEmpty()){

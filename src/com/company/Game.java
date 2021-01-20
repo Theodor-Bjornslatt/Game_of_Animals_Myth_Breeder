@@ -295,20 +295,25 @@ public class Game {
 
     public void chooseAnimal(){
         do{
-            System.out.println("Enter the number of your animal to choose that animal.");
-            HelperMethods.tryParseInt();
-        }while(HelperMethods.getInputInt()==-1);
+            HelperMethods.setValidChoice(false);
+            do{
+                System.out.println("Enter the number of your animal to choose that animal.");
+                HelperMethods.tryParseInt();
+            }while(HelperMethods.getInputInt()==-1);
 
-        int animalNum = HelperMethods.getInputInt();
-        if(1 <= animalNum &&
-                animalNum <= currentPlayer.getAnimalList().size()){
-            // Get the animal the player chooses from their list
-            // and send it to chosenAnimal
-            chosenAnimal = currentPlayer.getAnimalList().get(HelperMethods.getInputInt()-1);
-        }
-       else{
-            System.out.println("You must enter a number corresponding to an animal in your list.");
-        }
+            int animalNum = HelperMethods.getInputInt();
+            if(1 <= animalNum &&
+                    animalNum <= currentPlayer.getAnimalList().size()){
+                // Get the animal the player chooses from their list
+                // and send it to chosenAnimal
+                chosenAnimal = currentPlayer.getAnimalList().get(HelperMethods.getInputInt()-1);
+                HelperMethods.setValidChoice(true);
+            }
+            else{
+                System.out.println("You must enter a number corresponding to an animal in your list.");
+            }
+        }while(!HelperMethods.getValidChoice());
+
     }
 
 
@@ -384,6 +389,60 @@ public class Game {
             // Add the new animal to the players list of animals
             currentPlayer.addAnimal(offspring);
         }
+    }
+
+    public void feedAnimals(){
+        double foodAmount = 0;
+        do{
+            HelperMethods.setValidChoice(false);
+            printPlayerStats();
+            System.out.println("\nWhich animal do you want to feed?");
+            //TODO if player has food animal eats, let them feed
+            // else send them back with message
+            chooseAnimal();
+            HelperMethods.printPlayerFoodList();
+            System.out.println("\n" + chosenAnimal.getSpecies() + "'s eat the following types of food:");
+            //TODO print list of foods animal eats
+            System.out.println("\nWhich food do you want to feed your animal with?");
+            HelperMethods.tryParseInt();
+
+            switch(HelperMethods.getInputInt()){
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+            }
+                    double restoredHealth = (double) chosenAnimal.getHunger() * foodAmount;
+
+
+
+
+        }while(!HelperMethods.getValidChoice());
+    }
+
+    public void chooseFood(){
+        do{
+            HelperMethods.setValidChoice(false);
+            do{
+                System.out.println("Enter the number of your animal to choose that animal.");
+                HelperMethods.tryParseInt();
+            }while(HelperMethods.getInputInt()==-1);
+
+            int animalNum = HelperMethods.getInputInt();
+            if(1 <= animalNum &&
+                    animalNum <= currentPlayer.getAnimalList().size()){
+                // Get the animal the player chooses from their list
+                // and send it to chosenAnimal
+                chosenAnimal = currentPlayer.getAnimalList().get(HelperMethods.getInputInt()-1);
+                HelperMethods.setValidChoice(true);
+            }
+            else{
+                System.out.println("You must enter a number corresponding to an animal in your list.");
+            }
+        }while(!HelperMethods.getValidChoice());
+
     }
 
     public static void printPlayerStats(){
