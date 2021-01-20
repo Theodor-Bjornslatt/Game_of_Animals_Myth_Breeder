@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Game {
-    // TODO print healthChange (.loseHealth()) since last round
+
     Animal animalToMate;
     Animal chosenAnimal;
     Animal offspring;
@@ -13,6 +13,7 @@ public class Game {
 
     public int numOfRounds = -1;
     public int numOfPlayers = -1;
+    private final int startingGold = 50;
 
     public Game(){
         mainMenu();
@@ -116,17 +117,6 @@ public class Game {
                     players.add(new Player(name));
                     System.out.println(name + " is now player " + (i+1));
                 }
-                // Assign all players a starting amount of gold
-                for(Player player : players){
-                    player.setGoldAmount(startingGold);
-                }
-                //Check methods for adding moneyAmount and getting moneyAmount are working
-                players.get(0).addGold(10);
-                players.get(1).removeGold(10);
-                for(int i = 0; i < numOfPlayers; i++){
-                    System.out.println("Money of " + players.get(i).getName() + ": " +
-                            players.get(i).getGoldAmount());
-                }
                 break;
             }
             // If input number of players is not within range, tell the user to input a valid number.
@@ -165,6 +155,10 @@ public class Game {
         //If players have been added and the number of rounds has been chosen
         //run the game
         if (numOfRounds!=-1 && numOfPlayers != -1){
+            // Assign all players a starting amount of gold
+            for(Player player : players){
+                player.setGoldAmount(startingGold);
+            }
             runGame();
         }
         // If players have not been added and the number of rounds has not been chosen
@@ -197,12 +191,18 @@ public class Game {
                 //Iterate through each player and let them play their round
             for (Player player : players){
                 currentPlayer = player;
-                // TODO animals lose health each round.
+                // Let each of the player's animals lose a random amount of
+                // health at the start of the round
+                for(Animal animal : player.getAnimalList()){
+                    animal.loseHealth();
+                }
+                // Let the player have their round until they make a valid choice
                 do{
                     // Print the name of the player and inform them that it's their turn
                     System.out.println("\nYOUR TURN, " + player.getName().toUpperCase() + "! ");
                     printPlayerStats();
 
+                    // Make the player choose a valid number from the list before proceeding
                     do{
                         System.out.println("\nMake your move " + player.getName() + ":");
                         System.out.println("""
@@ -228,14 +228,14 @@ public class Game {
                         }
                         else if(HelperMethods.getInputInt() == 4 && currentPlayer.getAnimalList().size()<2){
                             System.out.println("You need to have two animals in order to try for offspring.");
+                            HelperMethods.setInputInt(-1);
                         }
-
+                        // Default value is -1
                     }while(HelperMethods.getInputInt()==-1);
 
                     switch (HelperMethods.getInputInt()){
                         case 1:
                             mythStore.goToAnimalStore();
-                            //TODO write method to check if action has been made
                             break;
 
                         case 2:
@@ -247,7 +247,6 @@ public class Game {
                             break;
 
                         case 4:
-                            // if player has two animals of same species and opposite genders, breed
                             HelperMethods.setValidChoice(false);
 
                             System.out.println("Choose the mythological animal you want to mate.");
@@ -259,7 +258,7 @@ public class Game {
                             // Let player choose a second animal and let that animal be chosenAnimal
                             chooseAnimal();
 
-                            // If player tries to nate an animal with itself,
+                            // If player tries to mate an animal with itself,
                             // let them make a new choice
                             if(animalToMate == chosenAnimal){
                                 System.out.println("Your animal can't mate with itself.");
@@ -278,11 +277,11 @@ public class Game {
                             else{
                                 System.out.println("Animals of different species can't mate.");
                             }
+                            animalToMate = null;
+                            chosenAnimal = null;
                             break;
 
                         case 5:
-                            System.out.println("");
-                                //If there is an animal with input number in the list, proceed.
                                 mythStore.sellAnimal();
                             break;
                     }
@@ -326,13 +325,13 @@ public class Game {
                 winnerName = player.getName();
             }
         }
-        System.out.println("......AND THE WINNER IS......" +
+        System.out.println("\n......AND THE WINNER IS......" +
                 "\n" + winnerName.toUpperCase());
     }
 
     public void tryOffspring(){
         boolean success = HelperMethods.fiftyPerChance();
-        if(success = true){
+        if(success){
             createOffspring();
         }
         else{
@@ -349,20 +348,24 @@ public class Game {
         int numberOfOffspring = 1 + random.nextInt(chosenAnimal.getMaxOffspring()+1);
 
         System.out.println("Wow! " + chosenAnimal.getName() + " and " + animalToMate.getName() + " had " +
-                numberOfOffspring + " children! \nNow it's time to name them!");
+                numberOfOffspring + " offspring! \nNow it's time to name them!");
+
+        // Iterate through each offspring to be created
         for(int i = 1; i<=numberOfOffspring; i++){
 
-            int randomGender = random.nextInt(2);
-            if(randomGender == 0){
-                gender = "Male";
-            }
-            else{
+            boolean female = HelperMethods.fiftyPerChance();
+            if(female){
                 gender = "Female";
             }
+            else{
+                gender = "Male";
+            }
 
-            System.out.println("Name baby number" + i + ", it's a " + gender.toLowerCase() + "!" );
+            // Prompt user to name the given baby
+            System.out.println("Name baby number " + i + ", it's a " + gender.toLowerCase() + "!" );
              name = HelperMethods.scan.nextLine();
 
+            // Create an object of the same type as chosenAnimal
             if(species.equals("Nykur")){
                 offspring = new Nykur(name, gender);
             }
@@ -378,28 +381,21 @@ public class Game {
             else if(species.equals("Tilberi")){
                 offspring = new Tilberi(name, gender);
             }
+            // Add the new animal to the players list of animals
             currentPlayer.addAnimal(offspring);
         }
     }
 
     public static void printPlayerStats(){
-        System.out.println("Gold: " + currentPlayer.getGoldAmount());
+        // Print player gold
+        System.out.println("\nGold: " + currentPlayer.getGoldAmount());
 
-        System.out.println("\nMythological Animals: ");
-        // If the player has no animals, let them know
-        if(currentPlayer.getAnimalList().isEmpty()){
-            System.out.println("\nOh no, you have no animals :'( " +
-                    "\nMaybe you can get some from Myth Store?");
-        }
-        // Else, print a list of their animals
-        else{
-            HelperMethods.printPlayerAnimals();
-        }
+        //Print players animals
+        HelperMethods.printPlayerAnimals();
 
-        // If the player has no food, tell them
+        // Print the players food items
         System.out.println("\nFood: ");
         HelperMethods.printPlayerFoodList();
-        //TODO print health change of animals
 
     }
 
