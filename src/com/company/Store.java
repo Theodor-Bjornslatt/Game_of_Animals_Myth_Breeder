@@ -251,9 +251,12 @@ public class Store {
 
     }
 
-    //TODO only let player buy food in ratios of 500g
-
     public void buyFood(){
+        // TODO
+        //  If double reaches 0, remove foodItem from list completely
+        // TODO Make method to add one item to food by adding one to the integer
+        //  If the list does not already contain the food
+        //  add the item and set integer to 1
         double playerGold = Game.getCurrentPlayer().getGoldAmount();
         double maxSeaweed = (double) Math.round(playerGold/(double)seaweedPrice);
         double maxMilk = (double) Math.round(playerGold/(double)milkPrice);
@@ -336,7 +339,6 @@ public class Store {
 
                     if(1 <= input &&
                             input <= Game.getCurrentPlayer().getAnimalList().size()+1){
-                        //TODO make animalprice depend on health
                         tempAnimal = Game.getCurrentPlayer().getAnimalList().get(input-1);
                         System.out.println("\n" + shopKeeper + ": I'll pay you " + getAnimalPrice() +
                                 " gold for " + tempAnimal.getName() + ". ");
@@ -362,13 +364,12 @@ public class Store {
                     break;
 
                 case "n":
-                    //TODO leave store or go to goToStore
                     leaveStore();
                     break;
 
                 default:
                     // If player has not sold an animal, they have not made a move yet
-                    if(changedAnimals.isEmpty()){ //TODO leave store or go to goToStore
+                    if(changedAnimals.isEmpty()){
                         System.out.println("Gamemaker: Well, if you're not going to choose, " +
                                 "I'm gonna choose for you. \nMay the odds be ever in your favour.");
                         //TODO add 1% chance of selling first animal in list?
@@ -416,7 +417,9 @@ public class Store {
             tempAnimal = animal;
             Game.getCurrentPlayer().addGold(getAnimalPrice());
         }
+        Game.getCurrentPlayer().getAnimalList().clear();
 
+        System.out.println("\nSelling " + Game.getCurrentPlayer().getName() + "'s animals...");
         System.out.println("\n" + Game.getCurrentPlayer().getName() + " has " +
                 Game.getCurrentPlayer().getGoldAmount() + " Gold. ");
     }
