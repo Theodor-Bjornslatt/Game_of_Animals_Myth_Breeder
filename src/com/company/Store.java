@@ -18,9 +18,9 @@ public class Store {
     private final int linnrPrice = 20;
     private final int tilberiPrice = 50;
 
-    private final int seaweedPrice = 4;
-    private final int milkPrice = 6;
-    private final int helplessHumanPrice = 2;
+    private final int seaweedPrice = 6;
+    private final int milkPrice = 4;
+    private final int helplessHumanPrice = 8;
 
     private final String shopKeeper = "Shopkeeper Lucifer";
     private int unsuccessfulAttempts;
@@ -28,6 +28,7 @@ public class Store {
 
 
     public void goToAnimalStore(){
+        tempFood = null;
         changedAnimals.clear();
         System.out.println("\nWELCOME TO MYTH STORE ANIMAL DEPARTMENT, " +
                 Game.getCurrentPlayer().getName().toUpperCase() + "!");

@@ -6,6 +6,7 @@ public class Tilberi extends Animal{
         super(name, gender, Species.TILBERI);
         this.setMaxOffspring(3);
         this.setHunger(15);
+        addOnlyEat(FoodType.MILK);
     }
 
 }

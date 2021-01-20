@@ -39,7 +39,7 @@ public abstract class Animal {
     private String name;
     private Gender gender;
     private Species species;
-    private int hunger = 0;
+    private int hunger;
     private int health = 100;
     private int healthChange = 0;
     private int maxOffspring;
@@ -74,27 +74,16 @@ public abstract class Animal {
         return species.string();
     }
 
-
-    public void setHealth(int health) {
-        this.health = health;
-    }
-
     public String getGender(){
         return gender.string();
     }
 
-    public void setOnlyEat(String foodtype){
-        onlyEat.add(FoodType.valueOf(foodtype.toUpperCase()));
+    public void addOnlyEat(FoodType foodtype){
+        onlyEat.add(foodtype);
     }
 
-    public String getOnlyEat(){
-        String onlyEats =this.getClass().getSimpleName() + "s only eat: ";
-        // For each food in list onlyEat, get string value of class;
-        for(FoodType foodType : onlyEat){
-            String next = "\n" + foodType.toString() + " ";
-            onlyEats += next;
-        }
-        return onlyEats;
+    public ArrayList<FoodType> getOnlyEat(){
+        return onlyEat;
     }
 
     public void feedAnimal(){
@@ -103,6 +92,15 @@ public abstract class Animal {
         // Let the animal eat x amount of food
         // and add 10 to health
 
+    }
+
+    public void gainHealth(int healthChange){
+        if(health + healthChange > 100){
+            health = 100;
+        }
+        else{
+            health += healthChange;
+        }
     }
 
     public void loseHealth(){

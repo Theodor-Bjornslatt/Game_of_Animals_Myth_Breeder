@@ -42,8 +42,7 @@ public class HelperMethods {
         System.out.println("\nMythological Animals: ");
         // If the player has no animals, let them know
         if(Game.getCurrentPlayer().getAnimalList().isEmpty()){
-            System.out.println("\nOh no, you have no animals :'( " +
-                    "\nMaybe you can get some from Myth Store?");
+            System.out.println("\nOh no, you have no animals :'( ");
         }
         // Else, print a list of their animals
         else{
@@ -52,13 +51,27 @@ public class HelperMethods {
                         "| " + animal.getName() + " the " + animal.getGender() + " " +
                         animal.getClass().getSimpleName() + "\nHealth: " + animal.getHealth() +
                         " (-" + animal.getLostHealth() + " since last round.)");
+                if(animal.getHealth()==0){
+                    System.out.println("Oh no! It looks like " + animal.getName() + " has died :'(" );
+                }
+            }
+            for(int i = Game.getCurrentPlayer().getAnimalList().size()-1; i>=0; i--){
+                if(Game.getCurrentPlayer().getAnimalList().get(i).getHealth()==0){
+                    Game.getCurrentPlayer().getAnimalList().remove(i);
+                }
             }
         }
 
     }
 
-    public static void printPlayerFoodList(){
+    public static void printOnlyEat(){
+        System.out.println(Game.getChosenAnimal().getSpecies() + "s only eat:");
+        for(int i = 0; i<=Game.getChosenAnimal().getOnlyEat().size()-1; i++){
+            System.out.println("|" + (i+1) + "|" + Game.getChosenAnimal().getOnlyEat().get(i).foodType);
+        }
+    }
 
+    public static void printPlayerFoodList(){
         int skipped = 0;
         ArrayList<Food>playerFoods = Game.getCurrentPlayer().getFoodList();
         for(int i = 0; i<=playerFoods.size()-1; i++){

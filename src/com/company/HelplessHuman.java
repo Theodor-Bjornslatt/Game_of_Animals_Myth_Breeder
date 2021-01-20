@@ -2,7 +2,7 @@ package com.company;
 
 public class HelplessHuman extends Food{
     public HelplessHuman(){
-        super("Helpless_human");
+        super(FoodType.HELPLESS_HUMAN);
     }
 
 }

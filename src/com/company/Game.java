@@ -3,21 +3,28 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Game {
-
-    Animal animalToMate;
-    Animal chosenAnimal;
-    Animal offspring;
     private ArrayList<Player>players = new ArrayList<Player>();
+
     private static Player currentPlayer = null;
+
+    private static Animal animalToMate;
+    private static Animal chosenAnimal;
+    private static Animal offspring;
+
+    private static FoodType chosenFood;
+    private boolean animalsFed = false;
+
     Store mythStore = new Store();
 
     public int numOfRounds = -1;
     public int numOfPlayers = -1;
     private final int startingGold = 50;
 
+
     public Game(){
         mainMenu();
     }
+
 
     public void mainMenu(){
         while(true){
@@ -29,6 +36,7 @@ public class Game {
                  |2| Set number of rounds
                  |3| Start new game
                  |4| Exit game""");
+
             do{
                 HelperMethods.tryParseInt();
             }while(HelperMethods.getInputInt()==-1);
@@ -59,6 +67,7 @@ public class Game {
         }
 
     }
+
 
     public void tryAddPlayers(){
         // If user want to add players and none have been added, proceed
@@ -97,6 +106,7 @@ public class Game {
         }
     }
 
+
     public void setPlayers(){
         int minPlayers = 1;
         int maxPlayers = 4;
@@ -128,6 +138,7 @@ public class Game {
         }
     }
 
+
     public void setNumberOfRounds(){
         int minRounds = 5;
         int maxRounds = 30;
@@ -150,6 +161,7 @@ public class Game {
         }
 
     }
+
 
     public void startGame(){
         //If players have been added and the number of rounds has been chosen
@@ -178,6 +190,7 @@ public class Game {
             System.out.println("Sorry, you can't start a game without adding players.");
         }
     }
+
 
     public void runGame(){
 
@@ -243,46 +256,18 @@ public class Game {
                             break;
 
                         case 3:
-                            HelperMethods.setValidChoice(true);
+                            feedAnimals();
+                            if(!animalsFed){
+                                HelperMethods.setValidChoice(false);
+                            }
                             break;
 
                         case 4:
-                            HelperMethods.setValidChoice(false);
-
-                            System.out.println("Choose the mythological animal you want to mate.");
-                            // Let the player choose an animal and let the animal be chosenAnimal
-                            chooseAnimal();
-                            // Let animalToMate be chosenAnimal
-                            animalToMate = chosenAnimal;
-                            System.out.println("Choose the mythological animal you want to mate with.");
-                            // Let player choose a second animal and let that animal be chosenAnimal
-                            chooseAnimal();
-
-                            // If player tries to mate an animal with itself,
-                            // let them make a new choice
-                            if(animalToMate == chosenAnimal){
-                                System.out.println("Your animal can't mate with itself.");
-                            }
-                            // If player tries to mate an animal with another of the same gender,
-                            // let them make a new choice
-                            else if(chosenAnimal.getGender().equals(animalToMate.getGender())){
-                                System.out.println("Animals of the same gender can't procreate.");
-                            }
-                            // If player tries to mate an animal with one of the same species
-                            // and opposite gender, proceed.
-                            else if(chosenAnimal.getSpecies().equals(animalToMate.getSpecies())){
-                                tryOffspring();
-                                HelperMethods.setValidChoice(true);
-                            }
-                            else{
-                                System.out.println("Animals of different species can't mate.");
-                            }
-                            animalToMate = null;
-                            chosenAnimal = null;
+                            mateAnimals();
                             break;
 
                         case 5:
-                                mythStore.sellAnimal();
+                            mythStore.sellAnimal();
                             break;
                     }
 
@@ -292,6 +277,7 @@ public class Game {
         }
         endGame();
     }
+
 
     public void chooseAnimal(){
         do{
@@ -334,6 +320,42 @@ public class Game {
                 "\n" + winnerName.toUpperCase());
     }
 
+
+    public void mateAnimals(){
+        HelperMethods.setValidChoice(false);
+
+        System.out.println("Choose the mythological animal you want to mate.");
+        // Let the player choose an animal and let the animal be chosenAnimal
+        chooseAnimal();
+        // Let animalToMate be chosenAnimal
+        animalToMate = chosenAnimal;
+        System.out.println("Choose the mythological animal you want to mate with.");
+        // Let player choose a second animal and let that animal be chosenAnimal
+        chooseAnimal();
+
+        // If player tries to mate an animal with itself,
+        // let them make a new choice
+        if(animalToMate == chosenAnimal){
+            System.out.println("Your animal can't mate with itself.");
+        }
+        // If player tries to mate an animal with another of the same gender,
+        // let them make a new choice
+        else if(chosenAnimal.getGender().equals(animalToMate.getGender())){
+            System.out.println("Animals of the same gender can't procreate.");
+        }
+        // If player tries to mate an animal with one of the same species
+        // and opposite gender, proceed.
+        else if(chosenAnimal.getSpecies().equals(animalToMate.getSpecies())){
+            tryOffspring();
+            HelperMethods.setValidChoice(true);
+        }
+        else{
+            System.out.println("Animals of different species can't mate.");
+        }
+        animalToMate = null;
+        chosenAnimal = null;
+    }
+
     public void tryOffspring(){
         boolean success = HelperMethods.fiftyPerChance();
         if(success){
@@ -371,19 +393,19 @@ public class Game {
              name = HelperMethods.scan.nextLine();
 
             // Create an object of the same type as chosenAnimal
-            if(species == Species.NYKUR.species){
+            if(species.equals(Species.NYKUR.species)){
                 offspring = new Nykur(name, gender);
             }
-            else if(species == Species.GLOSON.species){
+            else if(species.equals(Species.GLOSON.species)){
                 offspring = new Gloson(name, gender);
             }
-            else if(species == Species.KRAKEN.species){
+            else if(species.equals(Species.KRAKEN.species)){
                 offspring = new Kraken(name, gender);
             }
-            else if(species == Species.LINNR.species){
+            else if(species.equals(Species.LINNR.species)){
                 offspring = new Linnr(name, gender);
             }
-            else if(species == Species.TILBERI.species){
+            else if(species.equals(Species.TILBERI.species)){
                 offspring = new Tilberi(name, gender);
             }
             // Add the new animal to the players list of animals
@@ -392,54 +414,113 @@ public class Game {
     }
 
     public void feedAnimals(){
-        double foodAmount = 0;
+        //TODO make loop breakable
+        double foodAmount = 0.5;
+        int animalIndex = 0;
+
+        /*int healthyAnimals = 0;
+        for(Animal animal : currentPlayer.getAnimalList()){
+            if(animal.getHealth()==100){
+                healthyAnimals +=1;
+            }
+        }
+        if(healthyAnimals == currentPlayer.getAnimalList().size()){
+            System.out.println("Yay! All your animals are healthy and you can't feed them!");
+            animalsFed=false;
+            return;
+        }*/
         do{
+
             HelperMethods.setValidChoice(false);
             printPlayerStats();
-            System.out.println("\nWhich animal do you want to feed?");
-            //TODO if player has food animal eats, let them feed
-            // else send them back with message
-            chooseAnimal();
-            HelperMethods.printPlayerFoodList();
-            System.out.println("\n" + chosenAnimal.getSpecies() + "s eat the following types of food:");
-            //TODO print list of foods animal eats
-            System.out.println("\nWhich food do you want to feed your animal with?");
-            HelperMethods.tryParseInt();
+            System.out.println("""
 
-            switch(HelperMethods.getInputInt()){
-                case 1:
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    break;
+                    Welcome to the kitchen!\s
+                    Here you can feed your animals with 0.5 kg food at a time until they and you are satisfied.
+                    
+                    """);
+            do{
+                chooseAnimal();
+                if(chosenAnimal.getHealth()<100){
+                    HelperMethods.setValidChoice(true);
+                    animalIndex = HelperMethods.getInputInt()-1;
+                }
+                else{
+                    System.out.println("\nYou can't feed " + chosenAnimal.getName() +
+                            " as they are already at full health.");
+                    HelperMethods.setValidChoice(false);
+                }
+            }while(!HelperMethods.getValidChoice());
+
+            chooseFood();
+
+            for(Food food : currentPlayer.getFoodList()){
+                if(chosenFood==FoodType.SEAWEED && food instanceof Seaweed){
+                    food.removeFoodAmount(foodAmount);
+                }
+                if(chosenFood==FoodType.MILK && food instanceof Milk){
+                    food.removeFoodAmount(foodAmount);
+                }
+                if(chosenFood==FoodType.HELPLESS_HUMAN && food instanceof HelplessHuman){
+                    food.removeFoodAmount(foodAmount);
+                }
             }
-                    double restoredHealth = (double) chosenAnimal.getHunger() * foodAmount;
+            animalsFed = true;
+            double restoredHealth = (double) chosenAnimal.getHunger() * foodAmount * chosenFood.foodValue;
 
+            // Change the health of the animal the player chose
+            // at index animalIndex
+            currentPlayer.getAnimalList().get(animalIndex).gainHealth((int) restoredHealth);
 
+            System.out.println("\n" + chosenAnimal.getName() + " has restored " + restoredHealth +
+                    " healthpoints!");
 
+            String answer;
+            do{
+                System.out.println("\nDo you want to feed more animals? (y/n)");
+                answer = HelperMethods.scan.nextLine();
+                if(answer.equals("y")){
+                    HelperMethods.setValidChoice(false);
+                }
+                else if(answer.equals("n")){
+                    HelperMethods.setValidChoice(true);
+                }
+            }while(!answer.equals("y") && !answer.equals("n"));
 
         }while(!HelperMethods.getValidChoice());
     }
 
     public void chooseFood(){
         do{
-            HelperMethods.setValidChoice(false);
-            do{
-                System.out.println("Enter the number of your animal to choose that animal.");
-                HelperMethods.tryParseInt();
-            }while(HelperMethods.getInputInt()==-1);
+            HelperMethods.setValidChoice(true);
+            HelperMethods.printOnlyEat();
+            System.out.println("\nWhich food do you want to feed your animal with?");
+            HelperMethods.tryParseInt();
 
-            int animalNum = HelperMethods.getInputInt();
-            if(1 <= animalNum &&
-                    animalNum <= currentPlayer.getAnimalList().size()){
-                // Get the animal the player chooses from their list
-                // and send it to chosenAnimal
-                chosenAnimal = currentPlayer.getAnimalList().get(HelperMethods.getInputInt()-1);
-                HelperMethods.setValidChoice(true);
-            }
-            else{
-                System.out.println("You must enter a number corresponding to an animal in your list.");
+            switch(HelperMethods.getInputInt()){
+                case 1:
+                    chosenFood = chosenAnimal.getOnlyEat().get(0);
+                    break;
+
+                case 2:
+                    if(chosenAnimal.getOnlyEat().size()>=2) {
+                        chosenFood = chosenAnimal.getOnlyEat().get(1);
+                    }
+                    else{
+                        HelperMethods.invalidInput();
+                        HelperMethods.setValidChoice(false);
+                    }
+                    break;
+
+                case 3:
+                    if(chosenAnimal.getOnlyEat().size()>=3){
+                        chosenFood = chosenAnimal.getOnlyEat().get(2);
+                    }
+                    else{
+                        HelperMethods.invalidInput();
+                        HelperMethods.setValidChoice(false);
+                    }
+                    break;
             }
         }while(!HelperMethods.getValidChoice());
 
@@ -461,4 +542,9 @@ public class Game {
     public static Player getCurrentPlayer() {
         return currentPlayer;
     }
+
+    public static Animal getChosenAnimal(){
+        return chosenAnimal;
+    }
+
 }

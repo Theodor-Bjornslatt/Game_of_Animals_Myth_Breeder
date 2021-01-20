@@ -7,26 +7,32 @@ package com.company;
 //   If the list does not already contain the food
 //   add the item and set integer to 1
 enum FoodType {
-    SEAWEED("Seaweed"),
-    MILK("Milk"),
-    HELPLESS_HUMAN("Helpless human");
+    SEAWEED("Seaweed", 2.0),
+    MILK("Milk",1.0),
+    HELPLESS_HUMAN("Helpless human",3.0);
 
     String foodType;
-    FoodType(String foodType){
+    FoodType(String foodType, double foodValue){
         this.foodType = foodType;
+        this.foodValue = foodValue;
     }
 
     public String string(){
         return foodType;
     }
+
+    double foodValue;
+    public double getFoodValue(){
+        return foodValue;
+    }
 }
 public abstract class Food {
 
-    private FoodType foodType;
-    private double foodAmount = 0;
+    private final FoodType foodType;
+    private double foodAmount;
 
-    public Food(String foodType){
-        this.foodType = FoodType.valueOf(foodType.toUpperCase());
+    public Food(FoodType foodType){
+        this.foodType = foodType;
     }
 
     public String getFoodType(){

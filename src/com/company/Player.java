@@ -6,10 +6,10 @@ import java.util.List;
 public class Player {
 
     ArrayList<Animal>animals = new ArrayList<>();
-    private static Seaweed seaweed = new Seaweed();
-    private static Milk milk = new Milk();
-    private static HelplessHuman helplessHuman = new HelplessHuman();
-    private final static ArrayList<Food> foods = new ArrayList<>(List.of(seaweed, milk, helplessHuman));
+    private Seaweed seaweed = new Seaweed();
+    private Milk milk = new Milk();
+    private HelplessHuman helplessHuman = new HelplessHuman();
+    private ArrayList<Food> foods = new ArrayList<>(List.of(seaweed, milk, helplessHuman));
 
     private String name;
     private int goldAmount = 0;
@@ -55,13 +55,5 @@ public class Player {
 
     public ArrayList<Food> getFoodList(){
         return this.foods;
-    }
-
-    public void addFood(Food food){
-        this.foods.add(food);
-    }
-
-    public void removeFood(int index){
-        this.foods.remove(index);
     }
 }
