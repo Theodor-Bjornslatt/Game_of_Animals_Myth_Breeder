@@ -8,8 +8,8 @@ public class Store {
     private Animal tempAnimal;
     private Food tempFood;
 
-    private String chosenSpecies;
-    private String chosenGender;
+    private Species chosenSpecies;
+    private Gender chosenGender;
     private String chosenName;
 
     private final int nykurPrice = 30;
@@ -51,7 +51,7 @@ public class Store {
 
                 case 1:
                     if(Game.getCurrentPlayer().getGoldAmount() >= nykurPrice){
-                        chosenSpecies = "Nykur";
+                        chosenSpecies = Species.NYKUR;
                         System.out.println(shopKeeper +": Good choice my fine friend. " +
                                            "Just don't go swimming with it. I like my customers alive, " +
                                 Game.getCurrentPlayer().getName());
@@ -64,7 +64,7 @@ public class Store {
 
                 case 2:
                     if(Game.getCurrentPlayer().getGoldAmount() >= glosonPrice){
-                        chosenSpecies = "Gloson";
+                        chosenSpecies = Species.GLOSON;
                         System.out.println(shopKeeper + ": Lovely choice. Try not to pet it though, " +
                                 Game.getCurrentPlayer().getName() +
                                            ", I don't want to see you get hurt. ");
@@ -77,7 +77,7 @@ public class Store {
 
                 case 3:
                     if(Game.getCurrentPlayer().getGoldAmount() >= krakenPrice){
-                        chosenSpecies = "Kraken";
+                        chosenSpecies = Species.KRAKEN;
                         System.out.println(shopKeeper + ": Ah, I see you have great taste, " +
                                 Game.getCurrentPlayer().getName() + "! " +
                                            "Watch out for it's ravenous appetite though. ");
@@ -90,7 +90,7 @@ public class Store {
 
                 case 4:
                     if(Game.getCurrentPlayer().getGoldAmount() >= linnrPrice){
-                        chosenSpecies = "Linnr";
+                        chosenSpecies = Species.LINNR;
                         System.out.println(shopKeeper + ": Excellent choice " +
                                 Game.getCurrentPlayer().getName() + ". I will not be held " +
                                            "responsible for what happens if you try to kiss it though. ");
@@ -103,7 +103,7 @@ public class Store {
 
                 case 5:
                     if(Game.getCurrentPlayer().getGoldAmount() >= tilberiPrice){
-                        chosenSpecies = "Tilberi";
+                        chosenSpecies = Species.TILBERI;
                         System.out.println(shopKeeper + ": Truly inspired choice, " +
                                 Game.getCurrentPlayer().getName() + ", my friend. " +
                                            "\nRemember not to bring it home to a friend... " +
@@ -153,10 +153,10 @@ public class Store {
             System.out.println("\nWhat gender would you prefer? Male or female? (m/f)");
             String gender = HelperMethods.scan.nextLine().toLowerCase();
             if(gender.equals("m")){
-                chosenGender = "Male";
+                chosenGender = Gender.MALE;
             }
             else if(gender.equals("f")){
-                chosenGender = "Female";
+                chosenGender = Gender.FEMALE;
             }
             else{
                 System.out.println("\nGamemaker: Come on now, i know the shopkeeper is a devil, " +
@@ -171,25 +171,25 @@ public class Store {
                 "\nThink carefully now and decide on a name for your new animal friend. What should it be?");
         chosenName = HelperMethods.scan.nextLine();
 
-        if(chosenSpecies.equals("Nykur")){
+        if(chosenSpecies == Species.NYKUR){
             // Create the animal according to the player's choices
             tempAnimal = new Nykur(chosenName, chosenGender);
             // Make player pay for the animal
             Game.getCurrentPlayer().removeGold(nykurPrice);
         }
-        else if(chosenSpecies.equals("Gloson")){
+        else if(chosenSpecies == Species.GLOSON){
             tempAnimal = new Gloson(chosenName, chosenGender);
             Game.getCurrentPlayer().removeGold(glosonPrice);
         }
-        else if(chosenSpecies.equals("Kraken")){
+        else if(chosenSpecies == Species.KRAKEN){
             tempAnimal = new Kraken(chosenName, chosenGender);
             Game.getCurrentPlayer().removeGold(krakenPrice);
         }
-        else if(chosenSpecies.equals("Linnr")){
+        else if(chosenSpecies == Species.LINNR){
             tempAnimal = new Linnr(chosenName, chosenGender);
             Game.getCurrentPlayer().removeGold(linnrPrice);
         }
-        else if(chosenSpecies.equals("Tilberi")){
+        else if(chosenSpecies == Species.TILBERI){
             tempAnimal = new Tilberi(chosenName, chosenGender);
             Game.getCurrentPlayer().removeGold(tilberiPrice);
         }
@@ -258,9 +258,9 @@ public class Store {
         //  If the list does not already contain the food
         //  add the item and set integer to 1
         double playerGold = Game.getCurrentPlayer().getGoldAmount();
-        double maxSeaweed = (double) Math.round(playerGold/(double)seaweedPrice);
-        double maxMilk = (double) Math.round(playerGold/(double)milkPrice);
-        double maxHelplessHuman = Math.round(playerGold/(double)helplessHumanPrice);
+        double maxSeaweed = (double) Math.round(playerGold*2/(double)seaweedPrice)/2;
+        double maxMilk = (double) Math.round(playerGold*2/(double)milkPrice)/2;
+        double maxHelplessHuman = Math.round(playerGold*2/(double)helplessHumanPrice/2);
         int price;
 
         System.out.println("\n" + shopKeeper + ": We only sell food in increments of 0.5 kg. " +
@@ -272,20 +272,20 @@ public class Store {
         // and amount is made of increments of 0.5 kg
         // let the player buy the food
         if(wantedAmount % 0.5 == 0){
-            if(tempFood.getFoodType().equals("Seaweed") &&
-               wantedAmount < maxSeaweed){
+            if(tempFood.getFoodType().equals(FoodType.SEAWEED.string()) &&
+               wantedAmount <= maxSeaweed){
                 price = (int)(wantedAmount * seaweedPrice);
                 Game.getCurrentPlayer().removeGold(price);
                 addFood(wantedAmount);
             }
-            else if(tempFood.getFoodType().equals("Milk") &&
-                    wantedAmount < maxMilk){
+            else if(tempFood.getFoodType().equals(FoodType.MILK.string()) &&
+                    wantedAmount <= maxMilk){
                 price = (int)(wantedAmount * milkPrice);
                 Game.getCurrentPlayer().removeGold(price);
                 addFood(wantedAmount);
             }
-            else if(tempFood.getFoodType().equals("Helpless Human") &&
-                    wantedAmount < maxHelplessHuman){
+            else if(tempFood.getFoodType().equals(FoodType.HELPLESS_HUMAN.string()) &&
+                    wantedAmount <= maxHelplessHuman){
                 price = (int)(wantedAmount * helplessHumanPrice);
                 Game.getCurrentPlayer().removeGold(price);
                 addFood(wantedAmount);

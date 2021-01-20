@@ -6,27 +6,31 @@ package com.company;
 //  TODO Make method to add one item to food by adding one to the integer
 //   If the list does not already contain the food
 //   add the item and set integer to 1
-enum FOOD{
+enum FoodType {
     SEAWEED("Seaweed"),
     MILK("Milk"),
     HELPLESS_HUMAN("Helpless human");
 
     String foodType;
-    private FOOD(String foodType){
+    FoodType(String foodType){
         this.foodType = foodType;
+    }
+
+    public String string(){
+        return foodType;
     }
 }
 public abstract class Food {
 
-    private String foodType;
+    private FoodType foodType;
     private double foodAmount = 0;
 
     public Food(String foodType){
-        this.foodType = foodType;
+        this.foodType = FoodType.valueOf(foodType.toUpperCase());
     }
 
     public String getFoodType(){
-        return foodType;
+        return foodType.string();
     }
 
     public double getFoodAmount(){

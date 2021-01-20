@@ -1,6 +1,5 @@
 package com.company;
 import java.util.Random;
-
 import java.util.ArrayList;
 
 enum Gender{
@@ -8,24 +7,47 @@ enum Gender{
     FEMALE("Female");
 
     String gender;
-    private Gender(String gender){
+    Gender(String gender){
         this.gender = gender;
+    }
+
+    public String string() {
+        return gender;
+    }
+}
+
+enum Species{
+    NYKUR("Nykur"),
+    GLOSON("Gloson"),
+    KRAKEN("Kraken"),
+    LINNR("Linnr"),
+    TILBERI("Tilberi");
+
+    String species;
+    Species (String species){
+        this.species=species;
+    }
+
+    public String string(){
+        return species;
     }
 }
 
 public abstract class Animal {
-    private ArrayList<Food>onlyEat = new ArrayList<>();
+    private ArrayList<FoodType>onlyEat = new ArrayList<>();
 
-    private String name = "";
-    private String gender = "";
+    private String name;
+    private Gender gender;
+    private Species species;
     private int hunger = 0;
     private int health = 100;
     private int healthChange = 0;
     private int maxOffspring;
 
-    public Animal(String name, String gender){
+    public Animal(String name, Gender gender, Species species){
         this.name = name;
         this.gender = gender;
+        this.species = species;
     }
 
     public void setHunger(int hunger){
@@ -48,28 +70,28 @@ public abstract class Animal {
         return name;
     }
 
+    public String getSpecies(){
+        return species.string();
+    }
+
 
     public void setHealth(int health) {
         this.health = health;
     }
 
     public String getGender(){
-        return gender;
+        return gender.string();
     }
 
-    public String getSpecies(){
-        return this.getClass().getSimpleName();
-    }
-
-    public void setOnlyEat(Food food){
-        onlyEat.add(food);
+    public void setOnlyEat(String foodtype){
+        onlyEat.add(FoodType.valueOf(foodtype.toUpperCase()));
     }
 
     public String getOnlyEat(){
         String onlyEats =this.getClass().getSimpleName() + "s only eat: ";
         // For each food in list onlyEat, get string value of class;
-        for(Food food : onlyEat){
-            String next = "\n" + food.getClass().toString();
+        for(FoodType foodType : onlyEat){
+            String next = "\n" + foodType.toString() + " ";
             onlyEats += next;
         }
         return onlyEats;

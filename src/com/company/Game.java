@@ -98,9 +98,9 @@ public class Game {
     }
 
     public void setPlayers(){
-        int startingGold = 20;
         int minPlayers = 1;
         int maxPlayers = 4;
+
         while(true){
             do{
                 System.out.println("\nPlease enter the number of players: | 1 | 2 | 3 | 4 |");
@@ -345,7 +345,7 @@ public class Game {
     }
 
     public void createOffspring(){
-        String gender;
+        Gender gender;
         String name;
         String species = chosenAnimal.getSpecies();
 
@@ -360,30 +360,30 @@ public class Game {
 
             boolean female = HelperMethods.fiftyPerChance();
             if(female){
-                gender = "Female";
+                gender = Gender.FEMALE;
             }
             else{
-                gender = "Male";
+                gender = Gender.MALE;
             }
 
             // Prompt user to name the given baby
-            System.out.println("Name baby number " + i + ", it's a " + gender.toLowerCase() + "!" );
+            System.out.println("Name baby number " + i + ", it's a " + gender.string() + "!" );
              name = HelperMethods.scan.nextLine();
 
             // Create an object of the same type as chosenAnimal
-            if(species.equals("Nykur")){
+            if(species == Species.NYKUR.species){
                 offspring = new Nykur(name, gender);
             }
-            else if(species.equals("Gloson")){
+            else if(species == Species.GLOSON.species){
                 offspring = new Gloson(name, gender);
             }
-            else if(species.equals("Kraken")){
+            else if(species == Species.KRAKEN.species){
                 offspring = new Kraken(name, gender);
             }
-            else if(species.equals("Linnr")){
+            else if(species == Species.LINNR.species){
                 offspring = new Linnr(name, gender);
             }
-            else if(species.equals("Tilberi")){
+            else if(species == Species.TILBERI.species){
                 offspring = new Tilberi(name, gender);
             }
             // Add the new animal to the players list of animals
@@ -401,7 +401,7 @@ public class Game {
             // else send them back with message
             chooseAnimal();
             HelperMethods.printPlayerFoodList();
-            System.out.println("\n" + chosenAnimal.getSpecies() + "'s eat the following types of food:");
+            System.out.println("\n" + chosenAnimal.getSpecies() + "s eat the following types of food:");
             //TODO print list of foods animal eats
             System.out.println("\nWhich food do you want to feed your animal with?");
             HelperMethods.tryParseInt();
