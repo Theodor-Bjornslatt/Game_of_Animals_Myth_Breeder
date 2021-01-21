@@ -25,6 +25,7 @@ public class Store {
     private final String shopKeeper = "Shopkeeper Lucifer";
     private int unsuccessfulAttempts;
     private boolean leaveStore;
+    private boolean buy;
 
 
     public void goToAnimalStore(){
@@ -33,6 +34,7 @@ public class Store {
         System.out.println("\nWELCOME TO MYTH STORE ANIMAL DEPARTMENT, " +
                 Game.getCurrentPlayer().getName().toUpperCase() + "!");
         do{
+            buy=true;
             leaveStore=false;
             Game.printPlayerStats();
 
@@ -56,7 +58,6 @@ public class Store {
                         System.out.println(shopKeeper +": Good choice my fine friend. " +
                                            "Just don't go swimming with it. I like my customers alive, " +
                                 Game.getCurrentPlayer().getName());
-                        buyAnimal();
                     }
                     else{
                         notEnoughGold();
@@ -69,7 +70,6 @@ public class Store {
                         System.out.println(shopKeeper + ": Lovely choice. Try not to pet it though, " +
                                 Game.getCurrentPlayer().getName() +
                                            ", I don't want to see you get hurt. ");
-                        buyAnimal();
                     }
                     else{
                         notEnoughGold();
@@ -82,7 +82,6 @@ public class Store {
                         System.out.println(shopKeeper + ": Ah, I see you have great taste, " +
                                 Game.getCurrentPlayer().getName() + "! " +
                                            "Watch out for it's ravenous appetite though. ");
-                        buyAnimal();
                     }
                     else{
                         notEnoughGold();
@@ -95,7 +94,6 @@ public class Store {
                         System.out.println(shopKeeper + ": Excellent choice " +
                                 Game.getCurrentPlayer().getName() + ". I will not be held " +
                                            "responsible for what happens if you try to kiss it though. ");
-                        buyAnimal();
                     }
                     else{
                         notEnoughGold();
@@ -109,7 +107,6 @@ public class Store {
                                 Game.getCurrentPlayer().getName() + ", my friend. " +
                                            "\nRemember not to bring it home to a friend... " +
                                            "if you want to keep your friends that is.");
-                        buyAnimal();
                     }
                     else{
                         notEnoughGold();
@@ -118,6 +115,10 @@ public class Store {
 
                 case 6:
                     leaveStore();
+                    buy = false;
+            }
+            if(buy){
+                buyAnimal();
             }
         }while(!leaveStore);
 
@@ -145,28 +146,12 @@ public class Store {
             System.out.println(shopKeeper + ": Really now. Nobody likes a liar or thief. " +
                     "\nIf you don't have any gold, it might be time for you to leave.");
         }
-
+        buy =false;
     }
 
     public void buyAnimal(){
-        do{
-            HelperMethods.setValidChoice(true);
-            System.out.println("\nWhat gender would you prefer? Male or female? (m/f)");
-            String gender = HelperMethods.scan.nextLine().toLowerCase();
-            if(gender.equals("m")){
-                chosenGender = Gender.MALE;
-            }
-            else if(gender.equals("f")){
-                chosenGender = Gender.FEMALE;
-            }
-            else{
-                System.out.println("\nGamemaker: Come on now, i know the shopkeeper is a devil, " +
-                        "but you still need to be nice to the shopkeeper and enter m or f" +
-                        " to let them know which gender your new animal should be.");
-                HelperMethods.setValidChoice(false);
-            }
-        } while(!HelperMethods.getValidChoice());
-
+        // Let player choose the gender of the animal
+        chooseGender();
         // Let player name the animal
         System.out.println("Shopkeeper: You have only made excellent choices so far dear customer. " +
                 "\nThink carefully now and decide on a name for your new animal friend. What should it be?");
@@ -201,6 +186,26 @@ public class Store {
 
         System.out.println("\n" + shopKeeper + ": I'll just go ahead and give you " +
                 chosenName + "'s amulet then. Anything else of interest to you?");
+    }
+
+    public void chooseGender(){
+        do{
+            HelperMethods.setValidChoice(true);
+            System.out.println("\nWhat gender would you prefer? Male or female? (m/f)");
+            String gender = HelperMethods.scan.nextLine().toLowerCase();
+            if(gender.equals("m")){
+                chosenGender = Gender.MALE;
+            }
+            else if(gender.equals("f")){
+                chosenGender = Gender.FEMALE;
+            }
+            else{
+                System.out.println("\nGamemaker: Come on now, i know the shopkeeper is a devil, " +
+                        "but you still need to be nice to the shopkeeper and enter m or f" +
+                        " to let them know which gender your new animal should be.");
+                HelperMethods.setValidChoice(false);
+            }
+        } while(!HelperMethods.getValidChoice());
     }
 
 
@@ -253,11 +258,7 @@ public class Store {
     }
 
     public void buyFood(){
-        // TODO
-        //  If double reaches 0, remove foodItem from list completely
-        // TODO Make method to add one item to food by adding one to the integer
-        //  If the list does not already contain the food
-        //  add the item and set integer to 1
+
         double playerGold = Game.getCurrentPlayer().getGoldAmount();
         double maxSeaweed = (double) Math.round(playerGold*2/(double)seaweedPrice)/2;
         double maxMilk = (double) Math.round(playerGold*2/(double)milkPrice)/2;
@@ -265,7 +266,7 @@ public class Store {
         int price;
 
         System.out.println("\n" + shopKeeper + ": We only sell food in increments of 0.5 kg. " +
-                           "\nHow many kg of " + tempFood.getFoodType() + " would you like to buy?");
+                           "\nHow many kg of " + tempFood.getFoodType().string() + " would you like to buy?");
         HelperMethods.tryParseDouble();
         double wantedAmount = HelperMethods.getInputDouble();
 
@@ -273,19 +274,19 @@ public class Store {
         // and amount is made of increments of 0.5 kg
         // let the player buy the food
         if(wantedAmount % 0.5 == 0){
-            if(tempFood.getFoodType().equals(FoodType.SEAWEED.string()) &&
+            if(tempFood.getFoodType().string().equals(FoodType.SEAWEED.string()) &&
                wantedAmount <= maxSeaweed){
                 price = (int)(wantedAmount * seaweedPrice);
                 Game.getCurrentPlayer().removeGold(price);
                 addFood(wantedAmount);
             }
-            else if(tempFood.getFoodType().equals(FoodType.MILK.string()) &&
+            else if(tempFood.getFoodType().string().equals(FoodType.MILK.string()) &&
                     wantedAmount <= maxMilk){
                 price = (int)(wantedAmount * milkPrice);
                 Game.getCurrentPlayer().removeGold(price);
                 addFood(wantedAmount);
             }
-            else if(tempFood.getFoodType().equals(FoodType.HELPLESS_HUMAN.string()) &&
+            else if(tempFood.getFoodType().string().equals(FoodType.HELPLESS_HUMAN.string()) &&
                     wantedAmount <= maxHelplessHuman){
                 price = (int)(wantedAmount * helplessHumanPrice);
                 Game.getCurrentPlayer().removeGold(price);
@@ -312,7 +313,7 @@ public class Store {
                 // For the item in the players list of foods,
                 // that is of the same type as the food they bought,
                 // add the amount of the food the player wanted
-                if(food.getFoodType().equals(tempFood.getFoodType())){
+                if(food.getFoodType().string().equals(tempFood.getFoodType().string())){
                     food.addFoodAmount(kilogram);
                     System.out.println(shopKeeper + ": Thank you for your purchase, " +
                                        "I'm sure your animals will appreciate it!");
@@ -383,9 +384,7 @@ public class Store {
                     }
                     break;
             }
-
         }while(!Game.getCurrentPlayer().getAnimalList().isEmpty() && !leaveStore);
-
     }
 
     public int getAnimalPrice(){
@@ -395,19 +394,19 @@ public class Store {
 
         health = tempAnimal.getHealth();
 
-        if(tempAnimal.getSpecies().equals("Nykur")){
+        if(tempAnimal.getSpecies().equals(Species.NYKUR.species)){
             price = (int) Math.ceil(nykurPrice * health * decimal);
         }
-        else if(tempAnimal.getSpecies().equals("Gloson")){
+        else if(tempAnimal.getSpecies().equals(Species.GLOSON.species)){
             price = (int) Math.ceil(glosonPrice * health * decimal);
         }
-        else if(tempAnimal.getSpecies().equals("Kraken")){
+        else if(tempAnimal.getSpecies().equals(Species.KRAKEN.species)){
             price = (int) Math.ceil(krakenPrice * health * decimal);
         }
-        else if(tempAnimal.getSpecies().equals("Linnr")){
+        else if(tempAnimal.getSpecies().equals(Species.LINNR.species)){
             price = (int) Math.ceil(linnrPrice * health * decimal);
         }
-        else if(tempAnimal.getSpecies().equals("Tilberi")){
+        else if(tempAnimal.getSpecies().equals(Species.TILBERI.species)){
             price = (int) Math.ceil(tilberiPrice * health * decimal);
         }
         return price;
