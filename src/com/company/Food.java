@@ -1,11 +1,5 @@
 package com.company;
 
-// TODO
-//  If double reaches 0, remove foodItem from list completely
-
-//  TODO Make method to add one item to food by adding one to the integer
-//   If the list does not already contain the food
-//   add the item and set integer to 1
 enum FoodType {
     SEAWEED("Seaweed", 2.0),
     MILK("Milk",1.0),
@@ -35,7 +29,11 @@ public abstract class Food {
         this.foodType = foodType;
     }
 
-    public String getFoodType(){
+    public FoodType getFoodType(){
+        return foodType;
+    }
+
+    public String getFoodTypeString(){
         return foodType.string();
     }
 
