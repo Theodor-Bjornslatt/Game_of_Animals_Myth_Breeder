@@ -70,8 +70,8 @@ public abstract class Animal {
         return name;
     }
 
-    public String getSpecies(){
-        return species.string();
+    public Species getSpecies(){
+        return species;
     }
 
     public String getGender(){
