@@ -16,9 +16,6 @@ enum FoodType {
     }
 
     double foodValue;
-    public double getFoodValue(){
-        return foodValue;
-    }
 }
 public abstract class Food {
 
