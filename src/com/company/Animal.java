@@ -86,14 +86,6 @@ public abstract class Animal {
         return onlyEat;
     }
 
-    public void feedAnimal(){
-        //TODO If player has food item in foodList in correct amount
-        // and animalsubclass has item in list of foods it eats
-        // Let the animal eat x amount of food
-        // and add 10 to health
-
-    }
-
     public void gainHealth(int healthChange){
         if(health + healthChange > 100){
             health = 100;
