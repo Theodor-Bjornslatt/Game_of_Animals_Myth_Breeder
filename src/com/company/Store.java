@@ -227,26 +227,13 @@ public class Store {
                 HelperMethods.tryParseInt();
             }while(HelperMethods.getInputInt()==-1);
 
-            switch(HelperMethods.getInputInt()){
-
-                case 1:
-                    tempFood = new Seaweed();
-                    break;
-
-                case 2:
-                    tempFood = new Milk();
-                    break;
-
-                case 3:
-                    tempFood = new HelplessHuman();
-                    break;
-
-                case 4:
-                    leaveStore();
-                    break;
-
-                default:
-                    System.out.println("You must make a choice by entering a number from the list.");
+            switch (HelperMethods.getInputInt()) {
+                case 1 -> tempFood = new Seaweed();
+                case 2 -> tempFood = new Milk();
+                case 3 -> tempFood = new HelplessHuman();
+                case 4 -> leaveStore();
+                default -> System.out.println("You must make a choice by entering a " +
+                        "number from the list.");
             }
             if(0 < HelperMethods.getInputInt() &&
                HelperMethods.getInputInt() < 4) {
@@ -269,6 +256,7 @@ public class Store {
                            "\nHow many kg of " + tempFood.getFoodType().string() + " would you like to buy?");
         HelperMethods.tryParseDouble();
         double wantedAmount = HelperMethods.getInputDouble();
+        //TODO round to lowest 0.5
 
         // If player tries to buy an amount they can afford
         // and amount is made of increments of 0.5 kg
@@ -300,8 +288,6 @@ public class Store {
             HelperMethods.setValidChoice(false);
             System.out.println("You can only buy food in increments of 0.5 kg.");
         }
-
-
     }
 
     public void addFood(double kilogram){
@@ -323,7 +309,6 @@ public class Store {
     }
 
     public void sellAnimal(){
-        int price = 0;
         changedAnimals.clear();
 
         do{
@@ -394,19 +379,19 @@ public class Store {
 
         health = tempAnimal.getHealth();
 
-        if(tempAnimal.getSpecies().equals(Species.NYKUR.species)){
+        if(tempAnimal.getSpecies()==Species.NYKUR){
             price = (int) Math.ceil(nykurPrice * health * decimal);
         }
-        else if(tempAnimal.getSpecies().equals(Species.GLOSON.species)){
+        else if(tempAnimal.getSpecies()==Species.GLOSON){
             price = (int) Math.ceil(glosonPrice * health * decimal);
         }
-        else if(tempAnimal.getSpecies().equals(Species.KRAKEN.species)){
+        else if(tempAnimal.getSpecies()==Species.KRAKEN){
             price = (int) Math.ceil(krakenPrice * health * decimal);
         }
-        else if(tempAnimal.getSpecies().equals(Species.LINNR.species)){
+        else if(tempAnimal.getSpecies()==Species.LINNR){
             price = (int) Math.ceil(linnrPrice * health * decimal);
         }
-        else if(tempAnimal.getSpecies().equals(Species.TILBERI.species)){
+        else if(tempAnimal.getSpecies()==Species.TILBERI){
             price = (int) Math.ceil(tilberiPrice * health * decimal);
         }
         return price;
