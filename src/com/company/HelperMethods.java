@@ -92,6 +92,8 @@ public class HelperMethods {
     public static void invalidInput(){
         System.out.println("You pressed " + inputInt + ". This is not a valid number. " +
                 "Please try again and enter a number within the specified range.");
+        inputInt=-1;
+        validChoice = false;
     }
 
     public static boolean fiftyPerChance(){

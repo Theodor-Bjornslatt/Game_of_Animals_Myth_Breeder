@@ -15,7 +15,7 @@ public class Game {
     private static Species chosenSpecies;
     private static Gender chosenGender;
     private static FoodType chosenFood;
-    private boolean animalsFed = false;
+    private boolean animalsChanged = false;
     private final double foodRemove = 0.5;
 
     Store mythStore = new Store();
@@ -151,6 +151,7 @@ public class Game {
             for(Player player : players){
                 int startingGold = 50;
                 player.setGoldAmount(startingGold);
+                player.getAnimalList().clear();
             }
             mainGame();
         }
@@ -177,7 +178,6 @@ public class Game {
         while(round <= numOfRounds){
             //Assume valid choice will be made
             HelperMethods.setValidChoice(true);
-            System.out.println("\nRound " + round);
             //Iterate through each player and let them play their round
             for (Player player : players){
                 currentPlayer = player;
@@ -188,19 +188,17 @@ public class Game {
                 }
                 // Let the player have their round until they make a valid choice
                 do{
-                    // Print the name of the player and inform them that it's their turn
-                    System.out.println("\nYOUR TURN, " + player.getName().toUpperCase() + "! ");
-                    printPlayerStats();
-
-                    // Make the player choose a valid number from the list
-                    // before moving on to next player
                     do{
+                        System.out.println("\nRound " + round);
+                        // Print the name of the player and inform them that it's their turn
+                        System.out.println("\nYOUR TURN, " + player.getName().toUpperCase() + "! ");
+                        printPlayerStats();
                         printMenu();
+                        checkMenuChoice();
                         // Default value is -1
                     }while(HelperMethods.getInputInt()==-1);
-
-                    checkMenuChoice();
                     makeMenuChoice();
+
                 }while(!HelperMethods.getValidChoice());
             }
             round++;
@@ -222,13 +220,18 @@ public class Game {
     public void checkMenuChoice(){
         // If player tries to perform an action on an animal when they don't have any
         // Tell them they can't do said action and then ask them to make a new choice
-       if(currentPlayer.getAnimalList().isEmpty() && HelperMethods.getInputInt()>2){
+       if(currentPlayer.getAnimalList().isEmpty() && HelperMethods.getInputInt()>2 &&
+               HelperMethods.getInputInt()<5){
             System.out.println("You can't perform that action as you don't have any animals");
             HelperMethods.setInputInt(-1);
        }
        else if(HelperMethods.getInputInt() == 4 && currentPlayer.getAnimalList().size()<2){
             System.out.println("You need to have two animals in order to try for offspring.");
             HelperMethods.setInputInt(-1);
+       }
+       else if(HelperMethods.getInputInt()==5 && currentPlayer.getAnimalList().isEmpty()){
+           System.out.println("You can't sell any animals because you don't have any! :(");
+           HelperMethods.setInputInt(-1);
        }
     }
 
@@ -238,19 +241,26 @@ public class Game {
             case 2 -> mythStore.goToFoodStore();
             case 3 -> {
                 feedAnimals();
-                if (animalsFed) {
-                    HelperMethods.setValidChoice(true);
-                }
-                if (!animalsFed) {
-                    HelperMethods.setValidChoice(false);
-                }
+                checkAction();
             }
-            case 4 -> mateAnimals();
+            case 4 -> {
+                mateAnimals();
+                checkAction();
+            }
             case 5 -> mythStore.sellAnimal();
             default -> {
                 HelperMethods.invalidInput();
                 HelperMethods.setInputInt(-1);
             }
+        }
+    }
+
+    public void checkAction(){
+        if(animalsChanged) {
+            HelperMethods.setValidChoice(true);
+        }
+        if(!animalsChanged) {
+            HelperMethods.setValidChoice(false);
         }
     }
 
@@ -295,6 +305,7 @@ public class Game {
     }
 
     public void mateAnimals(){
+        animalsChanged = false;
         HelperMethods.setValidChoice(false);
 
         System.out.println("Choose the mythological animal you want to mate.");
@@ -321,6 +332,7 @@ public class Game {
         else if(chosenAnimal.getSpecies().equals(animalToMate.getSpecies())){
             tryOffspring();
             HelperMethods.setValidChoice(true);
+            animalsChanged = true;
         }
         else{
             System.out.println("Animals of different species can't mate.");
@@ -391,12 +403,9 @@ public class Game {
     }
 
     public void feedAnimals(){
-        //TODO only proceed to feed if players list of foods contains a type
-        // that the animal eats and only feed the animal if a valid food
-        // has been chosen
         double restoredHealth;
         int animalIndex = 0;
-        animalsFed = false;
+        animalsChanged = false;
 
         while(true){
             // Give the player the choice to keep going or to break out of the method
@@ -440,7 +449,7 @@ public class Game {
             if(HelperMethods.getValidChoice()){
                 removeFood();
             }
-            if(!HelperMethods.getValidChoice() || !animalsFed){
+            if(!HelperMethods.getValidChoice() || !animalsChanged){
                 continue;
             }
 
@@ -514,14 +523,17 @@ public class Game {
             }
             else if(chosenFood==FoodType.SEAWEED && food instanceof Seaweed){
                 food.removeFoodAmount(foodRemove);
+                animalsChanged = true;
             }
             else if(chosenFood==FoodType.MILK && food instanceof Milk){
                 food.removeFoodAmount(foodRemove);
+                animalsChanged = true;
             }
             else if(chosenFood==FoodType.HELPLESS_HUMAN && food instanceof HelplessHuman){
                 food.removeFoodAmount(foodRemove);
+                animalsChanged = true;
             }
-            animalsFed = true;
+
         }
     }
 

@@ -14,7 +14,6 @@ public class Store {
     private final int krakenPrice = 10;
     private final int linnrPrice = 20;
     private final int tilberiPrice = 50;
-
     private final int seaweedPrice = 6;
     private final int milkPrice = 4;
     private final int helplessHumanPrice = 8;
@@ -24,13 +23,13 @@ public class Store {
     private final String shopKeeper = "Shopkeeper Lucifer";
     private int unsuccessfulAttempts;
     private boolean leaveStore;
-    private boolean madeChange = true;
-
+    private boolean madeChange;
 
     public void goToAnimalStore(){
         leaveStore=false;
         tempFood = null;
         madeChange = false;
+        unsuccessfulAttempts = 0;
         System.out.println("\nWELCOME TO MYTH STORE ANIMAL DEPARTMENT, " +
                 Game.getCurrentPlayer().getName().toUpperCase() + "!");
         do{
@@ -48,76 +47,60 @@ public class Store {
                 HelperMethods.tryParseInt();
             }while(HelperMethods.getInputInt() == -1);
 
-            switch(HelperMethods.getInputInt()){
+            animalStoreSwitch();
 
-                case 1:
-                    if(Game.getCurrentPlayer().getGoldAmount() >= nykurPrice){
-                        chosenSpecies = Species.NYKUR;
-                        System.out.println("\n" + shopKeeper +":\n Good choice my fine friend. " +
-                                           "Just don't go swimming with it. I like my customers alive, " +
-                                Game.getCurrentPlayer().getName());
-                    }
-                    else{
-                        notEnoughGold();
-                    }
-                    break;
-
-                case 2:
-                    if(Game.getCurrentPlayer().getGoldAmount() >= glosonPrice){
-                        chosenSpecies = Species.GLOSON;
-                        System.out.println("\n" + shopKeeper + ":\n Lovely choice. Try not to pet it though, " +
-                                Game.getCurrentPlayer().getName() +
-                                           ", I don't want to see you get hurt. ");
-                    }
-                    else{
-                        notEnoughGold();
-                    }
-                    break;
-
-                case 3:
-                    if(Game.getCurrentPlayer().getGoldAmount() >= krakenPrice){
-                        chosenSpecies = Species.KRAKEN;
-                        System.out.println("\n" + shopKeeper + ":\n Ah, I see you have great taste, " +
-                                Game.getCurrentPlayer().getName() + "! " +
-                                           "Watch out for it's ravenous appetite though. ");
-                    }
-                    else{
-                        notEnoughGold();
-                    }
-                    break;
-
-                case 4:
-                    if(Game.getCurrentPlayer().getGoldAmount() >= linnrPrice){
-                        chosenSpecies = Species.LINNR;
-                        System.out.println("\n" + shopKeeper + ":\n Excellent choice " +
-                                Game.getCurrentPlayer().getName() + ". I will not be held " +
-                                           "responsible for what happens if you try to kiss it though. ");
-                    }
-                    else{
-                        notEnoughGold();
-                    }
-                    break;
-
-                case 5:
-                    if(Game.getCurrentPlayer().getGoldAmount() >= tilberiPrice){
-                        chosenSpecies = Species.TILBERI;
-                        System.out.println("\n" + shopKeeper + ":\n Truly inspired choice, " +
-                                Game.getCurrentPlayer().getName() + ", my friend. " +
-                                           "\nRemember not to bring it home to a friend... " +
-                                           "if you want to keep your friends that is.");
-                    }
-                    else{
-                        notEnoughGold();
-                    }
-                    break;
-
-                case 6:
-                    leaveStore();
-            }
             if(!leaveStore){
-                buyAnimal();
+                if(Game.getCurrentPlayer().getGoldAmount() >= goldToPay){
+                    buyAnimal();
+                }
+                else{
+                    notEnoughGold();
+                }
+
             }
         }while(!leaveStore);
+    }
+
+    public void animalStoreSwitch(){
+        switch (HelperMethods.getInputInt()) {
+            case 1 -> {
+                goldToPay = nykurPrice;
+                chosenSpecies = Species.NYKUR;
+                System.out.println("\n" + shopKeeper + ":\n Good choice my fine friend. " +
+                        "Just don't go swimming with it. I like my customers alive, " +
+                        Game.getCurrentPlayer().getName());
+            }
+            case 2 -> {
+                goldToPay = glosonPrice;
+                chosenSpecies = Species.GLOSON;
+                System.out.println("\n" + shopKeeper + ":\n Lovely choice. Try not to pet it though, " +
+                        Game.getCurrentPlayer().getName() +
+                        ", I don't want to see you get hurt. ");
+            }
+            case 3 -> {
+                goldToPay = krakenPrice;
+                chosenSpecies = Species.KRAKEN;
+                System.out.println("\n" + shopKeeper + ":\n Ah, I see you have great taste, " +
+                        Game.getCurrentPlayer().getName() + "! " +
+                        "Watch out for it's ravenous appetite though. ");
+            }
+            case 4 -> {
+                goldToPay = linnrPrice;
+                chosenSpecies = Species.LINNR;
+                System.out.println("\n" + shopKeeper + ":\n Excellent choice " +
+                        Game.getCurrentPlayer().getName() + ". But be advised " +
+                        "that this is not an enchanted prince. ");
+            }
+            case 5 -> {
+                goldToPay = tilberiPrice;
+                chosenSpecies = Species.TILBERI;
+                System.out.println("\n" + shopKeeper + ":\n Truly inspired choice, " +
+                        Game.getCurrentPlayer().getName() + ", my friend. " +
+                        "\nRemember not to bring it home to a friend... " +
+                        "if you want to keep your friends that is.");
+            }
+            case 6 -> leaveStore();
+        }
     }
 
     public void leaveStore(){
@@ -136,13 +119,14 @@ public class Store {
     public void notEnoughGold(){
         unsuccessfulAttempts += 1;
         if(unsuccessfulAttempts<=3){
-            System.out.println("\n" + shopKeeper + ":\nDon't try to cheat me! You don't have that much gold!");
+            System.out.println("\n" + shopKeeper + ":\nHang on! Don't try to cheat me! " +
+                    "You don't have that much gold!");
         }
         else{
-            System.out.println("\n" + shopKeeper + ":\nReally now. Nobody likes a liar or thief. " +
-                    "\nIf you don't have any gold, it might be time for you to leave.");
+            System.out.println("\n" + shopKeeper + ":\nWait a second... Really now. " +
+                    "Nobody likes a liar or a thief. \nIf you don't have any gold, " +
+                    "it might be time for you to leave.");
         }
-        madeChange = false;
     }
 
     public void buyAnimal(){
@@ -323,7 +307,7 @@ public class Store {
                     if(1 <= input &&
                             input <= Game.getCurrentPlayer().getAnimalList().size()+1){
                         tempAnimal = Game.getCurrentPlayer().getAnimalList().get(input-1);
-                        System.out.println("\n" + shopKeeper + ": I'll pay you " + getAnimalPrice() +
+                        System.out.println("\n" + shopKeeper + ":\nI'll pay you " + getAnimalPrice() +
                                 " gold for " + tempAnimal.getName() + ". ");
                         System.out.println( "\nEnter y to accept the offer.");
 
@@ -353,7 +337,7 @@ public class Store {
                 default:
                     // If player has not sold an animal, they have not made a move yet
                     if(madeChange){
-                        System.out.println("Gamemaker: Well, if you're not going to choose, " +
+                        System.out.println("\nGamemaker: \nWell, if you're not going to choose, " +
                                 "I'm gonna choose for you. \nMay the odds be ever in your favour.");
                         //TODO add 1% chance of selling first animal in list?
                         HelperMethods.setValidChoice(false);
@@ -361,8 +345,9 @@ public class Store {
                     // If player has sold an animal, they have made a move.
                     // Leave the store and end their move.
                     else{
-                        leaveStore();
+                        System.out.println("\n" + shopKeeper + ":\nYou're not going to answer? Come back later then!");
                     }
+                    leaveStore();
                     break;
             }
         }while(!Game.getCurrentPlayer().getAnimalList().isEmpty() && !leaveStore);
