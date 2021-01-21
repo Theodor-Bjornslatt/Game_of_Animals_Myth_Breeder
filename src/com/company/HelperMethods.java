@@ -1,7 +1,6 @@
 package com.company;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 import java.util.Random;
 
@@ -65,7 +64,7 @@ public class HelperMethods {
     }
 
     public static void printOnlyEat(){
-        System.out.println(Game.getChosenAnimal().getSpecies() + "s only eat:");
+        System.out.println(Game.getChosenAnimal().getSpecies().string() + "s only eat:");
         for(int i = 0; i<=Game.getChosenAnimal().getOnlyEat().size()-1; i++){
             System.out.println("|" + (i+1) + "|" + Game.getChosenAnimal().getOnlyEat().get(i).foodType);
         }
@@ -80,7 +79,7 @@ public class HelperMethods {
             }
             else{
                 System.out.println("|" + (i + 1 - skipped) + "| " +
-                                   playerFoods.get(i).getFoodType() +
+                                   playerFoods.get(i).getFoodType().string() +
                                    " (" + playerFoods.get(i).getFoodAmount() + " kg)");
             }
             // If the player had 0 kg of all 3 food types, tell them
