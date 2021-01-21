@@ -33,10 +33,6 @@ public abstract class Food {
         return foodType;
     }
 
-    public String getFoodTypeString(){
-        return foodType.string();
-    }
-
     public double getFoodAmount(){
         return foodAmount;
     }
