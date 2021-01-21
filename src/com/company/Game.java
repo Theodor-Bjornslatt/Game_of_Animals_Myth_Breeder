@@ -414,24 +414,25 @@ public class Game {
     }
 
     public void feedAnimals(){
-        //TODO make loop breakable
         double foodAmount = 0.5;
         int animalIndex = 0;
+        animalsFed = false;
 
-        /*int healthyAnimals = 0;
-        for(Animal animal : currentPlayer.getAnimalList()){
-            if(animal.getHealth()==100){
-                healthyAnimals +=1;
-            }
-        }
-        if(healthyAnimals == currentPlayer.getAnimalList().size()){
-            System.out.println("Yay! All your animals are healthy and you can't feed them!");
-            animalsFed=false;
-            return;
-        }*/
-        do{
+        while(true){
+            // Give the player the choice to keep going or to break out of the method
+            String answer;
+            do{
+                System.out.println("\nDo you want to feed your animals? (y/n)");
+                answer = HelperMethods.scan.nextLine();
+                if(answer.equals("n")){
+                    return;
+                }
+                else if(!answer.equals("y")){
+                    System.out.println("You must enter y or n to proceed.");
+                }
+            }while(!answer.equals("y") && !answer.equals("n"));
+            // TODO yes or no method
 
-            HelperMethods.setValidChoice(false);
             printPlayerStats();
             System.out.println("""
 
@@ -439,6 +440,8 @@ public class Game {
                     Here you can feed your animals with 0.5 kg food at a time until they and you are satisfied.
                     
                     """);
+
+            // Wait for the player to choose an animal that does not have full health
             do{
                 chooseAnimal();
                 if(chosenAnimal.getHealth()<100){
@@ -475,19 +478,21 @@ public class Game {
             System.out.println("\n" + chosenAnimal.getName() + " has restored " + restoredHealth +
                     " healthpoints!");
 
-            String answer;
-            do{
-                System.out.println("\nDo you want to feed more animals? (y/n)");
-                answer = HelperMethods.scan.nextLine();
-                if(answer.equals("y")){
-                    HelperMethods.setValidChoice(false);
+            // Iterate through the players list of animals and see
+            // if there is at least one animal that needs feeding.
+            // If there is, break out of the method.
+            int healthyAnimals = 0;
+            for(Animal animal : currentPlayer.getAnimalList()){
+                if(animal.getHealth()==100){
+                    healthyAnimals +=1;
                 }
-                else if(answer.equals("n")){
-                    HelperMethods.setValidChoice(true);
-                }
-            }while(!answer.equals("y") && !answer.equals("n"));
+            }
+            if(healthyAnimals == currentPlayer.getAnimalList().size()){
+                System.out.println("Yay! All your animals are healthy and you can't feed them!");
+                return;
+            }
 
-        }while(!HelperMethods.getValidChoice());
+        }
     }
 
     public void chooseFood(){
@@ -523,7 +528,6 @@ public class Game {
                     break;
             }
         }while(!HelperMethods.getValidChoice());
-
     }
 
     public static void printPlayerStats(){
