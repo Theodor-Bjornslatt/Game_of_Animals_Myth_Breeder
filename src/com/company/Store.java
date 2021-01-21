@@ -1,10 +1,7 @@
 package com.company;
 
-import java.util.ArrayList;
-
 public class Store {
 
-    private ArrayList<Animal> changedAnimals = new ArrayList<>();
     private Animal tempAnimal;
     private Food tempFood;
 
@@ -21,18 +18,19 @@ public class Store {
     private final int seaweedPrice = 6;
     private final int milkPrice = 4;
     private final int helplessHumanPrice = 8;
+    private int goldToPay;
+    private double wantedFoodAmount;
 
     private final String shopKeeper = "Shopkeeper Lucifer";
     private int unsuccessfulAttempts;
     private boolean leaveStore;
-    private boolean buyAnimal;
+    private boolean madeChange = true;
 
 
     public void goToAnimalStore(){
-        buyAnimal =true;
         leaveStore=false;
         tempFood = null;
-        changedAnimals.clear();
+        madeChange = false;
         System.out.println("\nWELCOME TO MYTH STORE ANIMAL DEPARTMENT, " +
                 Game.getCurrentPlayer().getName().toUpperCase() + "!");
         do{
@@ -114,19 +112,17 @@ public class Store {
                     break;
 
                 case 6:
-                    buyAnimal = false;
                     leaveStore();
             }
-            if(buyAnimal){
+            if(!leaveStore){
                 buyAnimal();
             }
         }while(!leaveStore);
-
     }
 
     public void leaveStore(){
-        if(changedAnimals.isEmpty()){
-            System.out.println("\n" + shopKeeper + ": \nDon't let the door hit you on the way out!");
+        if(!madeChange){
+            System.out.println("\n" + shopKeeper + ":\nDon't let the door hit you on the way out!");
             HelperMethods.setValidChoice(false);
         }
         else{
@@ -140,20 +136,20 @@ public class Store {
     public void notEnoughGold(){
         unsuccessfulAttempts += 1;
         if(unsuccessfulAttempts<=3){
-            System.out.println("\n" + shopKeeper + ": Don't try to cheat me! You don't have that much gold!");
+            System.out.println("\n" + shopKeeper + ":\nDon't try to cheat me! You don't have that much gold!");
         }
         else{
-            System.out.println("\n" + shopKeeper + ": \nReally now. Nobody likes a liar or thief. " +
+            System.out.println("\n" + shopKeeper + ":\nReally now. Nobody likes a liar or thief. " +
                     "\nIf you don't have any gold, it might be time for you to leave.");
         }
-        buyAnimal = false;
+        madeChange = false;
     }
 
     public void buyAnimal(){
         // Let player choose the gender of the animal
         chooseGender();
         // Let player name the animal
-        System.out.println("\n" + shopKeeper + ": \nYou have only made excellent choices so far dear customer. " +
+        System.out.println("\n" + shopKeeper + ":\nYou have only made excellent choices so far dear customer. " +
                 "\nThink carefully now and decide on a name for your new animal friend. What should it be?");
         chosenName = HelperMethods.scan.nextLine();
 
@@ -180,9 +176,8 @@ public class Store {
             Game.getCurrentPlayer().removeGold(tilberiPrice);
         }
 
-        changedAnimals.add(tempAnimal);
+        madeChange = true;
         Game.getCurrentPlayer().addAnimal(tempAnimal);
-        //TODO add tempAnimal = null; and use to check if choice is valid in leave store, instead of list
 
         System.out.println("\n" + shopKeeper + ":\n I'll just go ahead and give you " +
                 chosenName + "'s amulet then. Anything else of interest to you?");
@@ -210,8 +205,10 @@ public class Store {
 
 
     public void goToFoodStore(){
-        tempFood =null;
         leaveStore=false;
+        madeChange = false;
+        tempFood = null;
+
         System.out.println("\nWELCOME TO THE MYTH STORE FOOD DEPARTMENT, " +
                 Game.getCurrentPlayer().getName().toUpperCase() + "!");
         do{
@@ -239,12 +236,7 @@ public class Store {
                HelperMethods.getInputInt() < 4) {
                 buyFood();
             }
-            if(tempFood==null){
-
-            }
-
         }while(!leaveStore);
-
     }
 
     public void buyFood(){
@@ -253,38 +245,30 @@ public class Store {
         double maxSeaweed = playerGold/(double)seaweedPrice;
         double maxMilk = playerGold/(double)milkPrice;
         double maxHelplessHuman = playerGold/(double)helplessHumanPrice;
-        int price;
-        System.out.println(maxSeaweed);
-        System.out.println(maxMilk);
-        System.out.println(maxHelplessHuman);
 
         System.out.println("\n" + shopKeeper + ": We only sell food in increments of 0.5 kg. " +
                            "\nHow many kg of " + tempFood.getFoodType().string() + " would you like to buy?");
         HelperMethods.tryParseDouble();
-        double wantedAmount = HelperMethods.getInputDouble();
-        //TODO round to lowest 0.5
+        wantedFoodAmount = HelperMethods.getInputDouble();
 
         // If player tries to buy an amount they can afford
         // and amount is made of increments of 0.5 kg
         // let the player buy the food
-        if(wantedAmount % 0.5 == 0){
+        if(wantedFoodAmount % 0.5 == 0){
             if(tempFood.getFoodType().string().equals(FoodType.SEAWEED.string()) &&
-               wantedAmount <= maxSeaweed){
-                price = (int)(wantedAmount * seaweedPrice);
-                Game.getCurrentPlayer().removeGold(price);
-                addFood(wantedAmount);
+               wantedFoodAmount <= maxSeaweed){
+                goldToPay = (int)(wantedFoodAmount * seaweedPrice);
+                payForFood();
             }
             else if(tempFood.getFoodType().string().equals(FoodType.MILK.string()) &&
-                    wantedAmount <= maxMilk){
-                price = (int)(wantedAmount * milkPrice);
-                Game.getCurrentPlayer().removeGold(price);
-                addFood(wantedAmount);
+                    wantedFoodAmount <= maxMilk){
+                goldToPay = (int)(wantedFoodAmount * milkPrice);
+                payForFood();
             }
             else if(tempFood.getFoodType().string().equals(FoodType.HELPLESS_HUMAN.string()) &&
-                    wantedAmount <= maxHelplessHuman){
-                price = (int)(wantedAmount * helplessHumanPrice);
-                Game.getCurrentPlayer().removeGold(price);
-                addFood(wantedAmount);
+                    wantedFoodAmount <= maxHelplessHuman){
+                goldToPay = (int)(wantedFoodAmount * helplessHumanPrice);
+                payForFood();
             }
             else{
                 notEnoughGold();
@@ -294,6 +278,12 @@ public class Store {
             HelperMethods.setValidChoice(false);
             System.out.println("You can only buy food in increments of 0.5 kg.");
         }
+    }
+
+    public void payForFood(){
+        Game.getCurrentPlayer().removeGold(goldToPay);
+        addFood(wantedFoodAmount);
+        madeChange = true;
     }
 
     public void addFood(double kilogram){
@@ -315,7 +305,7 @@ public class Store {
     }
 
     public void sellAnimal(){
-        changedAnimals.clear();
+        madeChange = false;
 
         do{
             leaveStore = false;
@@ -339,7 +329,7 @@ public class Store {
 
                         answer = HelperMethods.scan.nextLine();
                         if(answer.equals("y")){
-                            changedAnimals.add(tempAnimal);
+                            madeChange = true;
                             Game.getCurrentPlayer().addGold(getAnimalPrice());
                             Game.getCurrentPlayer().removeAnimal(input-1);
                             System.out.println("You have now sold " + tempAnimal.getName() + " to Myth Store.");
@@ -362,7 +352,7 @@ public class Store {
 
                 default:
                     // If player has not sold an animal, they have not made a move yet
-                    if(changedAnimals.isEmpty()){
+                    if(madeChange){
                         System.out.println("Gamemaker: Well, if you're not going to choose, " +
                                 "I'm gonna choose for you. \nMay the odds be ever in your favour.");
                         //TODO add 1% chance of selling first animal in list?
