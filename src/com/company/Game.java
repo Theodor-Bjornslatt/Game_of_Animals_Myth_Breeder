@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Game {
-    private ArrayList<Player>players = new ArrayList<Player>();
+    private ArrayList<Player>players = new ArrayList<>();
 
     private static Player currentPlayer = null;
 
@@ -22,7 +22,6 @@ public class Game {
 
     public int numOfRounds = -1;
     public int numOfPlayers = -1;
-    private final int startingGold = 50;
 
 
     public Game(){
@@ -44,26 +43,12 @@ public class Game {
                 HelperMethods.tryParseInt();
             }while(HelperMethods.getInputInt()==-1);
 
-            switch (HelperMethods.getInputInt()){
-                case 1:
-                    tryAddPlayers();
-                    break;
-
-                case 2:
-                    setNumberOfRounds();
-                    break;
-
-                case 3:
-                    startGame();
-                    break;
-
-                case 4:
-                    System.exit(0);
-                    break;
-
-                default:
-                    HelperMethods.invalidInput();
-
+            switch (HelperMethods.getInputInt()) {
+                case 1 -> tryAddPlayers();
+                case 2 -> setNumberOfRounds();
+                case 3 -> startGame();
+                case 4 -> System.exit(0);
+                default -> HelperMethods.invalidInput();
             }
         }
     }
@@ -75,11 +60,15 @@ public class Game {
         }
         // Else if user wants to add players but players have already been added
         else{
-            System.out.println("\nWARNING!!! " +
-                    "\nYou have already added players to the game. " +
-                    "If you proceed, the current list of players will be deleted " +
-                    "and you will have to add any and all players again. " +
-                    "\nDo you want to proceed? (y/n)");
+            System.out.println("""
+
+                    WARNING!!!\s
+                    
+                    You have already added players to the game. 
+                    If you proceed, the current list of players will be deleted 
+                    and you will have to add any and all players again.\s
+                    
+                    Do you want to proceed? (y/n)""");
 
             do{
                 String choice = HelperMethods.scan.nextLine().toLowerCase();
@@ -160,6 +149,7 @@ public class Game {
         if (numOfRounds!=-1 && numOfPlayers != -1){
             // Assign all players a starting amount of gold
             for(Player player : players){
+                int startingGold = 50;
                 player.setGoldAmount(startingGold);
             }
             mainGame();
@@ -243,36 +233,24 @@ public class Game {
     }
 
     public void makeMenuChoice(){
-        switch (HelperMethods.getInputInt()){
-            case 1:
-                mythStore.goToAnimalStore();
-                break;
-
-            case 2:
-                mythStore.goToFoodStore();
-                break;
-
-            case 3:
+        switch (HelperMethods.getInputInt()) {
+            case 1 -> mythStore.goToAnimalStore();
+            case 2 -> mythStore.goToFoodStore();
+            case 3 -> {
                 feedAnimals();
-                if(animalsFed){
+                if (animalsFed) {
                     HelperMethods.setValidChoice(true);
                 }
-                if(!animalsFed){
+                if (!animalsFed) {
                     HelperMethods.setValidChoice(false);
                 }
-                break;
-
-            case 4:
-                mateAnimals();
-                break;
-
-            case 5:
-                mythStore.sellAnimal();
-                break;
-
-            default:
+            }
+            case 4 -> mateAnimals();
+            case 5 -> mythStore.sellAnimal();
+            default -> {
                 HelperMethods.invalidInput();
                 HelperMethods.setInputInt(-1);
+            }
         }
     }
 
@@ -416,7 +394,7 @@ public class Game {
         //TODO only proceed to feed if players list of foods contains a type
         // that the animal eats and only feed the animal if a valid food
         // has been chosen
-        double restoredHealth = 0;
+        double restoredHealth;
         int animalIndex = 0;
         animalsFed = false;
 
@@ -522,7 +500,6 @@ public class Game {
                                 "the list of foods the animal eats.");
                         HelperMethods.setValidChoice(false);
                     }
-                    return;
             }
     }
 

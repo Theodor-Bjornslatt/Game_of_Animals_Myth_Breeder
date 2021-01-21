@@ -25,17 +25,17 @@ public class Store {
     private final String shopKeeper = "Shopkeeper Lucifer";
     private int unsuccessfulAttempts;
     private boolean leaveStore;
-    private boolean buy;
+    private boolean buyAnimal;
 
 
     public void goToAnimalStore(){
+        buyAnimal =true;
+        leaveStore=false;
         tempFood = null;
         changedAnimals.clear();
         System.out.println("\nWELCOME TO MYTH STORE ANIMAL DEPARTMENT, " +
                 Game.getCurrentPlayer().getName().toUpperCase() + "!");
         do{
-            buy=true;
-            leaveStore=false;
             Game.printPlayerStats();
 
             System.out.println("\nWhich animal do you want to buy? \n" +
@@ -44,7 +44,7 @@ public class Store {
                                "|3| Kraken...." + krakenPrice + " Gold \n" +
                                "|4| Linnr....." + linnrPrice + " Gold \n" +
                                "|5| Tilberi..." + tilberiPrice + " Gold\n" +
-                               "|6| None, leave store\n");
+                               "|6| Leave store\n");
 
             do{
                 HelperMethods.tryParseInt();
@@ -55,7 +55,7 @@ public class Store {
                 case 1:
                     if(Game.getCurrentPlayer().getGoldAmount() >= nykurPrice){
                         chosenSpecies = Species.NYKUR;
-                        System.out.println(shopKeeper +": Good choice my fine friend. " +
+                        System.out.println("\n" + shopKeeper +":\n Good choice my fine friend. " +
                                            "Just don't go swimming with it. I like my customers alive, " +
                                 Game.getCurrentPlayer().getName());
                     }
@@ -67,7 +67,7 @@ public class Store {
                 case 2:
                     if(Game.getCurrentPlayer().getGoldAmount() >= glosonPrice){
                         chosenSpecies = Species.GLOSON;
-                        System.out.println(shopKeeper + ": Lovely choice. Try not to pet it though, " +
+                        System.out.println("\n" + shopKeeper + ":\n Lovely choice. Try not to pet it though, " +
                                 Game.getCurrentPlayer().getName() +
                                            ", I don't want to see you get hurt. ");
                     }
@@ -79,7 +79,7 @@ public class Store {
                 case 3:
                     if(Game.getCurrentPlayer().getGoldAmount() >= krakenPrice){
                         chosenSpecies = Species.KRAKEN;
-                        System.out.println(shopKeeper + ": Ah, I see you have great taste, " +
+                        System.out.println("\n" + shopKeeper + ":\n Ah, I see you have great taste, " +
                                 Game.getCurrentPlayer().getName() + "! " +
                                            "Watch out for it's ravenous appetite though. ");
                     }
@@ -91,7 +91,7 @@ public class Store {
                 case 4:
                     if(Game.getCurrentPlayer().getGoldAmount() >= linnrPrice){
                         chosenSpecies = Species.LINNR;
-                        System.out.println(shopKeeper + ": Excellent choice " +
+                        System.out.println("\n" + shopKeeper + ":\n Excellent choice " +
                                 Game.getCurrentPlayer().getName() + ". I will not be held " +
                                            "responsible for what happens if you try to kiss it though. ");
                     }
@@ -103,7 +103,7 @@ public class Store {
                 case 5:
                     if(Game.getCurrentPlayer().getGoldAmount() >= tilberiPrice){
                         chosenSpecies = Species.TILBERI;
-                        System.out.println(shopKeeper + ": Truly inspired choice, " +
+                        System.out.println("\n" + shopKeeper + ":\n Truly inspired choice, " +
                                 Game.getCurrentPlayer().getName() + ", my friend. " +
                                            "\nRemember not to bring it home to a friend... " +
                                            "if you want to keep your friends that is.");
@@ -114,10 +114,10 @@ public class Store {
                     break;
 
                 case 6:
+                    buyAnimal = false;
                     leaveStore();
-                    buy = false;
             }
-            if(buy){
+            if(buyAnimal){
                 buyAnimal();
             }
         }while(!leaveStore);
@@ -125,12 +125,12 @@ public class Store {
     }
 
     public void leaveStore(){
-        if(changedAnimals.isEmpty() && tempFood == null){
-            System.out.println(shopKeeper + ": Don't let the door hit you on the way out!");
+        if(changedAnimals.isEmpty()){
+            System.out.println("\n" + shopKeeper + ": \nDon't let the door hit you on the way out!");
             HelperMethods.setValidChoice(false);
         }
         else{
-            System.out.println(shopKeeper + ": Thank you for your patronage. " +
+            System.out.println("\n" + shopKeeper + ":\n Thank you for your patronage. " +
                                "Do come back again soon!");
             HelperMethods.setValidChoice(true);
         }
@@ -140,20 +140,20 @@ public class Store {
     public void notEnoughGold(){
         unsuccessfulAttempts += 1;
         if(unsuccessfulAttempts<=3){
-            System.out.println(shopKeeper + ": Don't try to cheat me! You don't have that much gold!");
+            System.out.println("\n" + shopKeeper + ": Don't try to cheat me! You don't have that much gold!");
         }
         else{
-            System.out.println(shopKeeper + ": Really now. Nobody likes a liar or thief. " +
+            System.out.println("\n" + shopKeeper + ": \nReally now. Nobody likes a liar or thief. " +
                     "\nIf you don't have any gold, it might be time for you to leave.");
         }
-        buy =false;
+        buyAnimal = false;
     }
 
     public void buyAnimal(){
         // Let player choose the gender of the animal
         chooseGender();
         // Let player name the animal
-        System.out.println("Shopkeeper: You have only made excellent choices so far dear customer. " +
+        System.out.println("\n" + shopKeeper + ": \nYou have only made excellent choices so far dear customer. " +
                 "\nThink carefully now and decide on a name for your new animal friend. What should it be?");
         chosenName = HelperMethods.scan.nextLine();
 
@@ -184,7 +184,7 @@ public class Store {
         Game.getCurrentPlayer().addAnimal(tempAnimal);
         //TODO add tempAnimal = null; and use to check if choice is valid in leave store, instead of list
 
-        System.out.println("\n" + shopKeeper + ": I'll just go ahead and give you " +
+        System.out.println("\n" + shopKeeper + ":\n I'll just go ahead and give you " +
                 chosenName + "'s amulet then. Anything else of interest to you?");
     }
 
@@ -239,6 +239,9 @@ public class Store {
                HelperMethods.getInputInt() < 4) {
                 buyFood();
             }
+            if(tempFood==null){
+
+            }
 
         }while(!leaveStore);
 
@@ -247,10 +250,13 @@ public class Store {
     public void buyFood(){
 
         double playerGold = Game.getCurrentPlayer().getGoldAmount();
-        double maxSeaweed = (double) Math.round(playerGold*2/(double)seaweedPrice)/2;
-        double maxMilk = (double) Math.round(playerGold*2/(double)milkPrice)/2;
-        double maxHelplessHuman = Math.round(playerGold*2/(double)helplessHumanPrice/2);
+        double maxSeaweed = playerGold/(double)seaweedPrice;
+        double maxMilk = playerGold/(double)milkPrice;
+        double maxHelplessHuman = playerGold/(double)helplessHumanPrice;
         int price;
+        System.out.println(maxSeaweed);
+        System.out.println(maxMilk);
+        System.out.println(maxHelplessHuman);
 
         System.out.println("\n" + shopKeeper + ": We only sell food in increments of 0.5 kg. " +
                            "\nHow many kg of " + tempFood.getFoodType().string() + " would you like to buy?");
