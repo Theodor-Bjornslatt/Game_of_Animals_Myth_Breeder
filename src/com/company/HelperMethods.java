@@ -60,13 +60,12 @@ public class HelperMethods {
                 }
             }
         }
-
     }
 
     public static void printOnlyEat(){
         System.out.println(Game.getChosenAnimal().getSpecies().string() + "s only eat:");
         for(int i = 0; i<=Game.getChosenAnimal().getOnlyEat().size()-1; i++){
-            System.out.println("|" + (i+1) + "|" + Game.getChosenAnimal().getOnlyEat().get(i).foodType);
+            System.out.println("|" + (i+1) + "| " + Game.getChosenAnimal().getOnlyEat().get(i).foodType);
         }
     }
 
@@ -87,9 +86,7 @@ public class HelperMethods {
                 System.out.println("\nIt seems you don't own any food! But not to worry, " +
                                    "Myth Store might just have some.");
             }
-
         }
-
     }
 
     public static void invalidInput(){
