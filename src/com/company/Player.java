@@ -17,8 +17,6 @@ public class Player {
 
     public Player(String name){
         this.name = name;
-        // Add all possible food types to the players list
-        // of foods (default amount is 0 kg)
     }
 
     public String getName(){

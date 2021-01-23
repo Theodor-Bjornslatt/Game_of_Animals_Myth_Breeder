@@ -33,12 +33,18 @@ enum Species{
     }
 }
 
-public abstract class Animal {
-    private ArrayList<FoodType>onlyEat = new ArrayList<>();
+enum HealthStatus{
+    HEALTHY,
+    DISEASED
+}
 
-    private String name;
-    private Gender gender;
-    private Species species;
+public abstract class Animal {
+    private final ArrayList<FoodType>onlyEat = new ArrayList<>();
+
+    private final String name;
+    private final Gender gender;
+    private final Species species;
+    private HealthStatus healthStatus = HealthStatus.HEALTHY;
     private int hunger;
     private int health = 100;
     private int healthChange = 0;
@@ -48,6 +54,14 @@ public abstract class Animal {
         this.name = name;
         this.gender = gender;
         this.species = species;
+    }
+
+    public HealthStatus getHealthStatus() {
+        return healthStatus;
+    }
+
+    public void setHealthStatus(HealthStatus healthStatus) {
+        this.healthStatus = healthStatus;
     }
 
     public void setHunger(int hunger){
@@ -96,12 +110,8 @@ public abstract class Animal {
     }
 
     public void loseHealth(){
-        // Make the lost amount of health be a random number from 10 to 30
         Random randomNum = new Random();
         healthChange = randomNum.nextInt(21) + 10;
-        // If lostHealth is bigger than health, return
-        // remaining health as lostHealth and let health reach zero
-        // Else, subtract lostHealth from health
         if(healthChange >= health){
             healthChange = health;
             health = 0;
@@ -114,7 +124,6 @@ public abstract class Animal {
     public int getLostHealth(){
         return healthChange;
     }
-
 
     public int getHealth(){
         return health;

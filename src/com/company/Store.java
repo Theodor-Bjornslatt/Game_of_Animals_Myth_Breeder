@@ -96,7 +96,7 @@ public class Store {
                 chosenSpecies = Species.TILBERI;
                 System.out.println("\n" + shopKeeper + ":\n Truly inspired choice, " +
                         Game.getCurrentPlayer().getName() + ", my friend. " +
-                        "\nRemember not to bring it home to a friend... " +
+                        "\n Remember not to bring it home to a friend... " +
                         "if you want to keep your friends that is.");
             }
             case 6 -> leaveStore();
@@ -105,7 +105,7 @@ public class Store {
 
     public void leaveStore(){
         if(!madeChange){
-            System.out.println("\n" + shopKeeper + ":\nDon't let the door hit you on the way out!");
+            System.out.println("\n" + shopKeeper + ":\n Don't let the door hit you on the way out!");
             HelperMethods.setValidChoice(false);
         }
         else{
@@ -123,18 +123,17 @@ public class Store {
                     "You don't have that much gold!");
         }
         else{
-            System.out.println("\n" + shopKeeper + ":\nWait a second... Really now. " +
-                    "Nobody likes a liar or a thief. \nIf you don't have any gold, " +
+            System.out.println("\n" + shopKeeper + ":\n Wait a second... Really now. " +
+                    "Nobody likes a liar or a thief. \n If you don't have any gold, " +
                     "it might be time for you to leave.");
         }
     }
 
     public void buyAnimal(){
-        // Let player choose the gender of the animal
         chooseGender();
-        // Let player name the animal
-        System.out.println("\n" + shopKeeper + ":\nYou have only made excellent choices so far dear customer. " +
-                "\nThink carefully now and decide on a name for your new animal friend. What should it be?");
+        System.out.println("\n" + shopKeeper + ":\n You have only made excellent choices so far dear customer. " +
+                "\n Think carefully now and decide on a name for your new animal friend. " +
+                "\n What will it be?");
         chosenName = HelperMethods.scan.nextLine();
 
         if(chosenSpecies == Species.NYKUR){
@@ -170,7 +169,7 @@ public class Store {
     public void chooseGender(){
         do{
             HelperMethods.setValidChoice(true);
-            System.out.println("\nWhat gender would you prefer? Male or female? (m/f)");
+            System.out.println("\n What gender would you prefer? Male or female? (m/f)");
             String gender = HelperMethods.scan.nextLine().toLowerCase();
             if(gender.equals("m")){
                 chosenGender = Gender.MALE;
@@ -179,12 +178,12 @@ public class Store {
                 chosenGender = Gender.FEMALE;
             }
             else{
-                System.out.println("\nGamemaker: Come on now, i know the shopkeeper is a devil, " +
+                System.out.println("\nGamemaker:\n Come on now, i know the shopkeeper is a devil, " +
                         "but you still need to be nice to the shopkeeper and enter m or f" +
-                        " to let them know which gender your new animal should be.");
+                        "\nto let them know which gender your new animal should be.");
                 HelperMethods.setValidChoice(false);
             }
-        } while(!HelperMethods.getValidChoice());
+        } while(!HelperMethods.isValidChoice());
     }
 
 
@@ -235,9 +234,6 @@ public class Store {
         HelperMethods.tryParseDouble();
         wantedFoodAmount = HelperMethods.getInputDouble();
 
-        // If player tries to buy an amount they can afford
-        // and amount is made of increments of 0.5 kg
-        // let the player buy the food
         if(wantedFoodAmount % 0.5 == 0){
             if(tempFood.getFoodType().string().equals(FoodType.SEAWEED.string()) &&
                wantedFoodAmount <= maxSeaweed){
@@ -271,14 +267,8 @@ public class Store {
     }
 
     public void addFood(double kilogram){
-        // If the player enters a number that is divisible by 2,
-        // (tries to buy food in increments of 0.5 kg), proceed
             HelperMethods.setValidChoice(true);
-            // Go through the players list of food items
             for(Food food : Game.getCurrentPlayer().getFoodList()){
-                // For the item in the players list of foods,
-                // that is of the same type as the food they bought,
-                // add the amount of the food the player wanted
                 if(food.getFoodType().string().equals(tempFood.getFoodType().string())){
                     food.addFoodAmount(kilogram);
                     System.out.println(shopKeeper + ": Thank you for your purchase, " +
@@ -305,7 +295,7 @@ public class Store {
                     int input = HelperMethods.getInputInt();
 
                     if(1 <= input &&
-                            input <= Game.getCurrentPlayer().getAnimalList().size()+1){
+                            input <= Game.getCurrentPlayer().getAnimalList().size()-1){
                         tempAnimal = Game.getCurrentPlayer().getAnimalList().get(input-1);
                         System.out.println("\n" + shopKeeper + ":\nI'll pay you " + getAnimalPrice() +
                                 " gold for " + tempAnimal.getName() + ". ");
@@ -335,17 +325,15 @@ public class Store {
                     break;
 
                 default:
-                    // If player has not sold an animal, they have not made a move yet
                     if(madeChange){
                         System.out.println("\nGamemaker: \nWell, if you're not going to choose, " +
                                 "I'm gonna choose for you. \nMay the odds be ever in your favour.");
                         //TODO add 1% chance of selling first animal in list?
                         HelperMethods.setValidChoice(false);
                     }
-                    // If player has sold an animal, they have made a move.
-                    // Leave the store and end their move.
                     else{
-                        System.out.println("\n" + shopKeeper + ":\nYou're not going to answer? Come back later then!");
+                        System.out.println("\n" + shopKeeper + ":\nYou're not going to answer? " +
+                                "Come back later then!");
                     }
                     leaveStore();
                     break;
