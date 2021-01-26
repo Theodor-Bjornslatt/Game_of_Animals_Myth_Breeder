@@ -9,23 +9,24 @@ public class Hospital {
 
     public static void goToHospital(){
         treatedAnimals = false;
+        HelperMethods.clearConsole();
         System.out.println("\n" + doctor + ":\n" +
-                " Welcome, " + Game.getCurrentPlayer().getName() + ", to my hospital for mythological animals. ");
+                "Welcome, " + Game.getCurrentPlayer().getName() + ", to my hospital for mythological animals. ");
 
         while(true){
-            System.out.println("\n Do you have a diseased animal that needs treatment? (y/n)");
+            System.out.println("\nDo you have a diseased animal that needs treatment? (y/n)");
             //TODO insert y/n method
 
             String answer = HelperMethods.scan.nextLine();
             if(answer.equals("y")){
                 HelperMethods.printPlayerAnimals();
-                System.out.println("\n" + doctor + ":\n Each treatment costs " + treatmentCost + " Gold. " +
-                        "\n Which animal do you want me to try to cure?");
+                System.out.println("\n" + doctor + ":\nEach treatment costs " + treatmentCost + " Gold. " +
+                        "\nWhich animal do you want me to try to cure?");
                 HelperMethods.chooseAnimal();
                 tryTreatment();
             }
             else if(answer.equals("n")){
-                System.out.println("\n" + doctor + ":\n Goodbye! May good health be with you and yours!");
+                System.out.println("\n" + doctor + ":\nGoodbye! May good health be with you and yours!");
                 HelperMethods.setValidChoice(treatedAnimals);
                 return;
             }
@@ -42,8 +43,9 @@ public class Hospital {
 
     public static void tryTreatment(){
         if(Game.getCurrentPlayer().getGoldAmount() < treatmentCost ){
-            System.out.println("\n" + doctor + ":\n Oh dear! It appears you don't have enough " +
-                    "gold to pay for the treatment.\n I'm afraid you'll have to leave for now.");
+            HelperMethods.clearConsole();
+            System.out.println(doctor + ":\nOh dear! It appears you don't have enough " +
+                    "gold to pay for the treatment.\nI'm afraid you'll have to leave for now.");
             HelperMethods.setValidChoice(treatedAnimals);
             noTreatmentAvailable = true;
         }
@@ -55,18 +57,18 @@ public class Hospital {
                 treatedAnimal.setHealthStatus(HealthStatus.HEALTHY);
                 treatedAnimal.gainHealth(100);
                 treatedAnimals = true;
-                System.out.println("\n" + doctor + ":\n I am happy to tell you the treatment worked! " +
+                System.out.println("\n" + doctor + ":\nI am happy to tell you the treatment worked! " +
                         HelperMethods.chosenAnimal.getName() + " is now completely healthy and well fed.");
 
             }
             else{
-                System.out.println(doctor + ":\n I am so sorry, but " + HelperMethods.chosenAnimal.getName() +
+                System.out.println(doctor + ":\nI am so sorry, but " + HelperMethods.chosenAnimal.getName() +
                         " did not respond to my treatment and has sadly passed away.");
                 treatedAnimals = true;
             }
         }
         else{
-            System.out.println("\n" + doctor + ":\n " + HelperMethods.chosenAnimal.getName() +
+            System.out.println("\n" + doctor + ":\n" + HelperMethods.chosenAnimal.getName() +
                     " appears to be perfectly healthy! I think my time is better spent elsewhere.");
         }
     }

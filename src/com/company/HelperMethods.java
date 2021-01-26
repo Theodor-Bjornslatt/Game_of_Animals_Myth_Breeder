@@ -33,9 +33,10 @@ public class HelperMethods {
         return inputInt;
     }
 
-    public static double tryParseDouble(){
+    public static double tryParseDouble(String message, double min){
         do{
-            inputDouble = -1;
+            validChoice = false;
+            System.out.println(message);
             try{
                 String input = scan.nextLine();
                 if(input.contains(",")){
@@ -43,12 +44,18 @@ public class HelperMethods {
                 }
                 else{
                     inputDouble = Double.parseDouble(input);
+                    if(inputDouble<min){
+                        System.out.println("You must enter a valid number to continue.");
+                    }
+                    else{
+                        validChoice = true;
+                    }
                 }
             }
             catch(NumberFormatException e){
                 System.out.println("You have to enter a number to continue");
             }
-        }while(inputDouble==-1);
+        }while(!validChoice);
         return inputDouble;
     }
 
@@ -113,14 +120,12 @@ public class HelperMethods {
     }
 
     public static void chooseAnimal(){
-        boolean choseAnimal = false;
         ArrayList<Animal>playerAnimals = Game.getCurrentPlayer().getAnimalList();
 
         tryParseInt("\nEnter the number of your animal to choose that animal.",
                     1, playerAnimals.size());
 
         chosenAnimal = playerAnimals.get(inputInt-1);
-        choseAnimal = true;
     }
 
     public static boolean fiftyPerChance(){
@@ -154,13 +159,6 @@ public class HelperMethods {
 
     public static int getInputInt(){
         return inputInt;
-    }
-    public static void setInputDouble(double newInput){
-        inputDouble = newInput;
-    }
-
-    public static double getInputDouble(){
-        return inputDouble;
     }
 
     public static void setValidChoice(boolean bool){
