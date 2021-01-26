@@ -44,6 +44,7 @@ public class Hospital {
         if(Game.getCurrentPlayer().getGoldAmount() < treatmentCost ){
             System.out.println("\n" + doctor + ":\n Oh dear! It appears you don't have enough " +
                     "gold to pay for the treatment.\n I'm afraid you'll have to leave for now.");
+            HelperMethods.setValidChoice(treatedAnimals);
             noTreatmentAvailable = true;
         }
         else if(HelperMethods.chosenAnimal.getHealthStatus()==HealthStatus.DISEASED){

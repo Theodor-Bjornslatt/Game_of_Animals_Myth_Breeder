@@ -41,10 +41,10 @@ public class Game implements Serializable {
                  |1| Add player(s)
                  |2| Set number of rounds
                  |3| Start new game
-                 |4| Resume saved game
+                 |4| Load saved game
                  |5| Exit game""");
 
-            HelperMethods.tryParseInt("");
+            HelperMethods.tryParseInt("", 1, 5);
 
             switch (HelperMethods.getInputInt()) {
                 case 1 -> tryAddPlayers();
@@ -67,8 +67,9 @@ public class Game implements Serializable {
             }
             System.out.println(savedFiles.indexOf(gameFile)+ ". " + gameFile.getName());
         }
-        HelperMethods.tryParseInt("What file do you want to load?");
-        int index = HelperMethods.getInputInt();
+        int index = HelperMethods.tryParseInt("What file do you want to load?",
+                1, savedFiles.size());
+        //int index = HelperMethods.getInputInt();
         Game savedGame = (Game) Serializer.deserialize("savedGames/" + savedFiles.get(index).getName());
         this.players = savedGame.players;
         this.round = savedGame.round;
@@ -115,11 +116,9 @@ public class Game implements Serializable {
     public void setPlayers(){
         int minPlayers = 1;
         int maxPlayers = 4;
+            HelperMethods.tryParseInt("\nPlease enter the number of players: | 1 | 2 | 3 | 4 |",
+                    1, 4);
 
-        while(true){
-            HelperMethods.tryParseInt("\nPlease enter the number of players: | 1 | 2 | 3 | 4 |");
-
-            if(minPlayers <= HelperMethods.getInputInt() && HelperMethods.getInputInt() <= maxPlayers) {
                 numOfPlayers = HelperMethods.getInputInt();
                 for(int i = 0; i < HelperMethods.getInputInt(); i++){
                     System.out.println("\nEnter the name of player " + (i+1) + ":");
@@ -127,29 +126,12 @@ public class Game implements Serializable {
                     players.add(new Player(name));
                     System.out.println(name + " is now player " + (i+1));
                 }
-                break;
-            }
-            else{
-                HelperMethods.invalidInput();
-            }
-        }
     }
 
     public void setNumberOfRounds(){
-        int minRounds = 5;
-        int maxRounds = 30;
-
-        while(true){
-            HelperMethods.tryParseInt("Please enter how many rounds you want to play: | 5 | 6 | ... | 29 | 30 |");
-
-            if(minRounds <= HelperMethods.getInputInt() && HelperMethods.getInputInt() <= maxRounds) {
+            HelperMethods.tryParseInt("Please enter how many rounds you want to play: " +
+                    "| 5 | 6 | ... | 29 | 30 |", 5, 30);
                 numOfRounds = HelperMethods.getInputInt();
-                break;
-            }
-            else{
-                HelperMethods.invalidInput();
-            }
-        }
     }
 
     public void startGame(){
@@ -191,8 +173,7 @@ public class Game implements Serializable {
                         printPlayerStats();
                         printMenu();
                         checkMenuChoice();
-                        // Default value is -1
-                    }while(HelperMethods.getInputInt()==-1);
+                    }while(!HelperMethods.isValidChoice());
 
                     makeMenuChoice();
 
@@ -205,10 +186,12 @@ public class Game implements Serializable {
                             "and is out of the game :(");
                 }
             }
-            System.out.println("\nEND OF ROUND " + round + "!" +
-                    "\nPress Enter to continue or press x to exit and save");
-            round++;
-            trySaveGame();
+            if(round!=numOfRounds){
+                System.out.println("\nEND OF ROUND " + round + "!" +
+                        "\nPress Enter to continue or press x to exit and save");
+                round++;
+                trySaveGame();
+            }
         }
 
         endGame();
@@ -237,23 +220,27 @@ public class Game implements Serializable {
                           |4| Try your luck - try for offspring
                           |5| Sell one or more of your mythological animals
                           |6| Send an animal to the hospital""");
-        HelperMethods.tryParseInt("");
+        HelperMethods.tryParseInt("", 1, 6);
     }
 
     public void checkMenuChoice(){
        if(currentPlayer.getAnimalList().isEmpty() && HelperMethods.getInputInt()>2 &&
                HelperMethods.getInputInt()<5){
             System.out.println("You can't perform that action as you don't have any animals");
-            HelperMethods.setInputInt(-1);
+            HelperMethods.setValidChoice(false);
        }
        else if(HelperMethods.getInputInt() == 4 && currentPlayer.getAnimalList().size()<2){
             System.out.println("You need to have two animals in order to try for offspring.");
-            HelperMethods.setInputInt(-1);
+            HelperMethods.setValidChoice(false);
        }
-       else if(HelperMethods.getInputInt()>=5 && HelperMethods.getInputInt()<=6 &&
+       else if(HelperMethods.getInputInt()==5 &&
                currentPlayer.getAnimalList().isEmpty()){
            System.out.println("You can't sell any animals because you don't have any! :(");
-           HelperMethods.setInputInt(-1);
+           HelperMethods.setValidChoice(false);
+       }
+       else if(HelperMethods.getInputInt()==6 && currentPlayer.animals.isEmpty()){
+           System.out.println("You don't have any animals and can't send one to the hospital!");
+           HelperMethods.setValidChoice(false);
        }
     }
 
@@ -271,10 +258,6 @@ public class Game implements Serializable {
             }
             case 5 -> mythStore.sellAnimal();
             case 6 -> Hospital.goToHospital();
-            default -> {
-                HelperMethods.invalidInput();
-                HelperMethods.setInputInt(-1);
-            }
         }
     }
 
@@ -465,7 +448,7 @@ public class Game implements Serializable {
             HelperMethods.setValidChoice(true);
             System.out.println("\nWhich food do you want to feed your animal with?");
             HelperMethods.printOnlyEat();
-            HelperMethods.tryParseInt("");
+            HelperMethods.tryParseInt("", 1, 3);
 
             switch(HelperMethods.getInputInt()){
                 case 1:

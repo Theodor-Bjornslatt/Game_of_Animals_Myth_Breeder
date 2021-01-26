@@ -1,6 +1,7 @@
 package com.company;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Store implements Serializable {
 
@@ -45,7 +46,7 @@ public class Store implements Serializable {
                                "|5| Tilberi..." + tilberiPrice + " Gold\n" +
                                "|6| Leave store\n");
 
-            HelperMethods.tryParseInt("");
+            HelperMethods.tryParseInt("", 1, 6);
 
             animalStoreSwitch();
 
@@ -203,7 +204,7 @@ public class Store implements Serializable {
                                "\n|3| Helpless human..." + helplessHumanPrice + " Gold/kg " +
                                "\n|4| None, leave store");
 
-            HelperMethods.tryParseInt("");
+            HelperMethods.tryParseInt("", 1, 4);
 
             switch (HelperMethods.getInputInt()) {
                 case 1 -> tempFood = new Seaweed();
@@ -229,8 +230,7 @@ public class Store implements Serializable {
 
         System.out.println("\n" + shopKeeper + ": We only sell food in increments of 0.5 kg. " +
                            "\nHow many kg of " + tempFood.getFoodType().string() + " would you like to buy?");
-        HelperMethods.tryParseDouble();
-        wantedFoodAmount = HelperMethods.getInputDouble();
+        wantedFoodAmount = HelperMethods.tryParseDouble();
 
         if(wantedFoodAmount % 0.5 == 0){
             if(tempFood.getFoodType().string().equals(FoodType.SEAWEED.string()) &&
@@ -282,17 +282,16 @@ public class Store implements Serializable {
         do{
             leaveStore = false;
             Game.printPlayerStats();
+            ArrayList<Animal>playerAnimals = Game.getCurrentPlayer().animals;
 
             System.out.println("\nDo you still want to sell one of your animals? (y/n)");
             String answer = HelperMethods.scan.nextLine();
 
             switch(answer){
                 case "y":
-                    HelperMethods.tryParseInt("\nEnter the number of the animal you want to sell:");
+                    HelperMethods.tryParseInt("\nEnter the number of the animal you want to sell:",
+                            1, playerAnimals.size());
                     int input = HelperMethods.getInputInt();
-
-                    if(1 <= input &&
-                            input <= Game.getCurrentPlayer().getAnimalList().size()-1){
                         tempAnimal = Game.getCurrentPlayer().getAnimalList().get(input-1);
                         System.out.println("\n" + shopKeeper + ":\nI'll pay you " + getAnimalPrice() +
                                 " gold for " + tempAnimal.getName() + ". ");
@@ -310,10 +309,6 @@ public class Store implements Serializable {
                                     "but if you're happy, I'm happy, I suppose.");
                         }
 
-                    }
-                    else{
-                        HelperMethods.invalidInput();
-                    }
 
                     break;
 

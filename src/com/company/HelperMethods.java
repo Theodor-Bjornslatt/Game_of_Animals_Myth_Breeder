@@ -12,33 +12,44 @@ public class HelperMethods {
     private static boolean validChoice = true;
     public static Animal chosenAnimal = null;
 
-    public static void tryParseInt(String message){
+    public static int tryParseInt(String message, int min, int max){
         do{
             System.out.println(message);
-            inputInt = -1;
+            validChoice=false;
             try{
                 String input = scan.nextLine();
-                if(input.contains(",")){
-                    System.out.println("To buy fractions, please use a dot (.) instead of a comma (,) ");
+                inputInt = Integer.parseInt(input);
+                if(inputInt < min || inputInt > max){
+                    System.out.println("You must enter a number within the given range to continue.");
                 }
                 else{
-                    inputInt = Integer.parseInt(input);
+                    validChoice = true;
                 }
             }
             catch(NumberFormatException e){
                 System.out.println("You have to enter a number to continue");
             }
-        }while(inputInt==-1);
+        }while(!validChoice);
+        return inputInt;
     }
 
-    public static void tryParseDouble(){
-        inputDouble = -1;
-        try{
-            inputDouble = Double.parseDouble(scan.nextLine());
-        }
-        catch(NumberFormatException e){
-            System.out.println("You have to enter a number to continue");
-        }
+    public static double tryParseDouble(){
+        do{
+            inputDouble = -1;
+            try{
+                String input = scan.nextLine();
+                if(input.contains(",")){
+                    System.out.println("To enter fractions, please use a dot (.) instead of a comma (,) ");
+                }
+                else{
+                    inputDouble = Double.parseDouble(input);
+                }
+            }
+            catch(NumberFormatException e){
+                System.out.println("You have to enter a number to continue");
+            }
+        }while(inputDouble==-1);
+        return inputDouble;
     }
 
     public static void printPlayerAnimals(){
@@ -103,19 +114,13 @@ public class HelperMethods {
 
     public static void chooseAnimal(){
         boolean choseAnimal = false;
-        do{
-            tryParseInt("\nEnter the number of your animal to choose that animal.");
+        ArrayList<Animal>playerAnimals = Game.getCurrentPlayer().getAnimalList();
 
-            int animalNum = inputInt;
-            if(1 <= animalNum &&
-                    animalNum <= Game.getCurrentPlayer().getAnimalList().size()){
-                chosenAnimal = Game.getCurrentPlayer().getAnimalList().get(inputInt-1);
-                choseAnimal = true;
-            }
-            else{
-                System.out.println("You must enter a number corresponding to an animal in your list.");
-            }
-        }while(!choseAnimal);
+        tryParseInt("\nEnter the number of your animal to choose that animal.",
+                    1, playerAnimals.size());
+
+        chosenAnimal = playerAnimals.get(inputInt-1);
+        choseAnimal = true;
     }
 
     public static boolean fiftyPerChance(){
