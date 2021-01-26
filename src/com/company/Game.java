@@ -59,13 +59,9 @@ public class Game implements Serializable {
 
     public void loadGame(){
         System.out.println("What file do you want to load?");
-        File[] gameFiles = new File("savedGames").listFiles();
-        List<File>gameFilesList= Arrays.asList(gameFiles);
-        for(File gameFile : gameFilesList){
-            System.out.println((gameFilesList.indexOf(gameFile)+1) + ". " + gameFile.getName());
-        }
+
         String input = HelperMethods.scan.nextLine();
-        Game savedGame = (Game) Serializer.deserialize(input);
+        Game savedGame = (Game) Serializer.deserialize("savedGames/" + input + ".ser");
         this.players = savedGame.players;
         this.round = savedGame.round;
         this.numOfRounds = savedGame.numOfRounds;
@@ -216,7 +212,7 @@ public class Game implements Serializable {
         System.out.println("Name your save file:");
         String filePath = HelperMethods.scan.nextLine();
         Game saveGame = this;
-        Serializer.serialize("savedGames/" + filePath + ".ser", saveGame);
+        Serializer.serialize(("savedGames/" + filePath + ".ser"), saveGame);
         HelperMethods.clearConsole();
         System.out.println("Your game has been successfully saved. See you later!");
         System.exit(0);
