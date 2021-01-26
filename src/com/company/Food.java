@@ -1,5 +1,7 @@
 package com.company;
 
+import java.io.Serializable;
+
 enum FoodType {
     SEAWEED("Seaweed", 2.0),
     MILK("Milk",1.0),
@@ -17,7 +19,7 @@ enum FoodType {
 
     double foodValue;
 }
-public abstract class Food {
+public abstract class Food implements Serializable {
 
     private final FoodType foodType;
     private double foodAmount;

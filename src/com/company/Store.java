@@ -1,6 +1,8 @@
 package com.company;
 
-public class Store {
+import java.io.Serializable;
+
+public class Store implements Serializable {
 
     private Animal tempAnimal;
     private Food tempFood;
@@ -43,9 +45,7 @@ public class Store {
                                "|5| Tilberi..." + tilberiPrice + " Gold\n" +
                                "|6| Leave store\n");
 
-            do{
-                HelperMethods.tryParseInt();
-            }while(HelperMethods.getInputInt() == -1);
+            HelperMethods.tryParseInt("");
 
             animalStoreSwitch();
 
@@ -203,9 +203,7 @@ public class Store {
                                "\n|3| Helpless human..." + helplessHumanPrice + " Gold/kg " +
                                "\n|4| None, leave store");
 
-            do{
-                HelperMethods.tryParseInt();
-            }while(HelperMethods.getInputInt()==-1);
+            HelperMethods.tryParseInt("");
 
             switch (HelperMethods.getInputInt()) {
                 case 1 -> tempFood = new Seaweed();
@@ -290,8 +288,7 @@ public class Store {
 
             switch(answer){
                 case "y":
-                    System.out.println("\nEnter the number of the animal you want to sell:");
-                    HelperMethods.tryParseInt();
+                    HelperMethods.tryParseInt("\nEnter the number of the animal you want to sell:");
                     int input = HelperMethods.getInputInt();
 
                     if(1 <= input &&

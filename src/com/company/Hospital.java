@@ -61,6 +61,7 @@ public class Hospital {
             else{
                 System.out.println(doctor + ":\n I am so sorry, but " + HelperMethods.chosenAnimal.getName() +
                         " did not respond to my treatment and has sadly passed away.");
+                treatedAnimals = true;
             }
         }
         else{

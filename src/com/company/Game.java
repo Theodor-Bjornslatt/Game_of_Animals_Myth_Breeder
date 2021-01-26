@@ -1,10 +1,15 @@
 package com.company;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
+import java.io.Serializable;
+import java.io.File;
 
-public class Game {
+public class Game implements Serializable {
     private ArrayList<Player>players = new ArrayList<>();
 
+    private Player savedPlayer = null;
     private static Player currentPlayer = null;
 
     private static Animal animalToMate;
@@ -18,7 +23,7 @@ public class Game {
     private final double foodRemove = 0.5;
 
     Store mythStore = new Store();
-
+    public int round = 1;
     public int numOfRounds = -1;
     public int numOfPlayers = -1;
 
@@ -36,20 +41,36 @@ public class Game {
                  |1| Add player(s)
                  |2| Set number of rounds
                  |3| Start new game
-                 |4| Exit game""");
+                 |4| Resume saved game
+                 |5| Exit game""");
 
-            do{
-                HelperMethods.tryParseInt();
-            }while(HelperMethods.getInputInt()==-1);
+            HelperMethods.tryParseInt("");
 
             switch (HelperMethods.getInputInt()) {
                 case 1 -> tryAddPlayers();
                 case 2 -> setNumberOfRounds();
                 case 3 -> startGame();
-                case 4 -> System.exit(0);
+                case 4 -> loadGame();
+                case 5 -> System.exit(0);
                 default -> HelperMethods.invalidInput();
             }
         }
+    }
+
+    public void loadGame(){
+        System.out.println("What file do you want to load?");
+        File[] gameFiles = new File("savedGames").listFiles();
+        List<File>gameFilesList= Arrays.asList(gameFiles);
+        for(File gameFile : gameFilesList){
+            System.out.println((gameFilesList.indexOf(gameFile)+1) + ". " + gameFile.getName());
+        }
+        String input = HelperMethods.scan.nextLine();
+        Game savedGame = (Game) Serializer.deserialize(input);
+        this.players = savedGame.players;
+        this.round = savedGame.round;
+        this.numOfRounds = savedGame.numOfRounds;
+        this.savedPlayer = savedGame.savedPlayer;
+        runGame();
     }
 
     public void tryAddPlayers(){
@@ -92,10 +113,7 @@ public class Game {
         int maxPlayers = 4;
 
         while(true){
-            do{
-                System.out.println("\nPlease enter the number of players: | 1 | 2 | 3 | 4 |");
-                HelperMethods.tryParseInt();
-            } while(HelperMethods.getInputInt()==-1);
+            HelperMethods.tryParseInt("\nPlease enter the number of players: | 1 | 2 | 3 | 4 |");
 
             if(minPlayers <= HelperMethods.getInputInt() && HelperMethods.getInputInt() <= maxPlayers) {
                 numOfPlayers = HelperMethods.getInputInt();
@@ -118,10 +136,7 @@ public class Game {
         int maxRounds = 30;
 
         while(true){
-            do{
-                System.out.println("Please enter how many rounds you want to play: | 5 | 6 | ... | 29 | 30 |");
-                HelperMethods.tryParseInt();
-            } while(HelperMethods.getInputInt()==-1);
+            HelperMethods.tryParseInt("Please enter how many rounds you want to play: | 5 | 6 | ... | 29 | 30 |");
 
             if(minRounds <= HelperMethods.getInputInt() && HelperMethods.getInputInt() <= maxRounds) {
                 numOfRounds = HelperMethods.getInputInt();
@@ -140,7 +155,7 @@ public class Game {
                 player.setGoldAmount(startingGold);
                 player.getAnimalList().clear();
             }
-            mainGame();
+            runGame();
         }
         else if(numOfRounds == -1 && numOfPlayers == -1){
             System.out.println("Sorry, you have to add players and set the number " +
@@ -156,8 +171,7 @@ public class Game {
         }
     }
 
-    public void mainGame(){
-        int round = 1;
+    public void runGame(){
         while(round <= numOfRounds){
 
             for (Player player : players){
@@ -187,10 +201,27 @@ public class Game {
                             "and is out of the game :(");
                 }
             }
+            System.out.println("\nEND OF ROUND " + round + "!" +
+                    "\nPress Enter to continue or press x to exit and save");
             round++;
+            trySaveGame();
         }
 
         endGame();
+    }
+
+    public void trySaveGame(){
+        String action = HelperMethods.scan.nextLine();
+        if(action.equals("x")){
+        System.out.println("Name your save file:");
+        String filePath = HelperMethods.scan.nextLine();
+        Game saveGame = this;
+        Serializer.serialize("savedGames/" + filePath + ".ser", saveGame);
+        HelperMethods.clearConsole();
+        System.out.println("Your game has been successfully saved. See you later!");
+        System.exit(0);
+        }
+
     }
 
     public void printMenu(){
@@ -202,7 +233,7 @@ public class Game {
                           |4| Try your luck - try for offspring
                           |5| Sell one or more of your mythological animals
                           |6| Send an animal to the hospital""");
-        HelperMethods.tryParseInt();
+        HelperMethods.tryParseInt("");
     }
 
     public void checkMenuChoice(){
@@ -430,7 +461,7 @@ public class Game {
             HelperMethods.setValidChoice(true);
             System.out.println("\nWhich food do you want to feed your animal with?");
             HelperMethods.printOnlyEat();
-            HelperMethods.tryParseInt();
+            HelperMethods.tryParseInt("");
 
             switch(HelperMethods.getInputInt()){
                 case 1:

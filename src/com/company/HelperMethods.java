@@ -12,20 +12,23 @@ public class HelperMethods {
     private static boolean validChoice = true;
     public static Animal chosenAnimal = null;
 
-    public static void tryParseInt(){
-        inputInt = -1;
-        try{
-            String input = scan.nextLine();
-            if(input.contains(",")){
-                System.out.println("To buy fractions, please use a dot (.) instead of a comma (,) ");
+    public static void tryParseInt(String message){
+        do{
+            System.out.println(message);
+            inputInt = -1;
+            try{
+                String input = scan.nextLine();
+                if(input.contains(",")){
+                    System.out.println("To buy fractions, please use a dot (.) instead of a comma (,) ");
+                }
+                else{
+                    inputInt = Integer.parseInt(input);
+                }
             }
-            else{
-                inputInt = Integer.parseInt(input);
+            catch(NumberFormatException e){
+                System.out.println("You have to enter a number to continue");
             }
-        }
-        catch(NumberFormatException e){
-            System.out.println("You have to enter a number to continue");
-        }
+        }while(inputInt==-1);
     }
 
     public static void tryParseDouble(){
@@ -101,10 +104,7 @@ public class HelperMethods {
     public static void chooseAnimal(){
         boolean choseAnimal = false;
         do{
-            do{
-                System.out.println("\nEnter the number of your animal to choose that animal.");
-                tryParseInt();
-            }while(inputInt==-1);
+            tryParseInt("\nEnter the number of your animal to choose that animal.");
 
             int animalNum = inputInt;
             if(1 <= animalNum &&
@@ -136,6 +136,10 @@ public class HelperMethods {
             diseased = true;
         }
         return diseased;
+    }
+
+    public static void clearConsole(){
+        System.out.println("\n".repeat(60));
     }
 
 

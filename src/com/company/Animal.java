@@ -1,6 +1,7 @@
 package com.company;
 import java.util.Random;
 import java.util.ArrayList;
+import java.io.Serializable;
 
 enum Gender{
     MALE("Male"),
@@ -38,7 +39,7 @@ enum HealthStatus{
     DISEASED
 }
 
-public abstract class Animal {
+public abstract class Animal implements Serializable {
     private final ArrayList<FoodType>onlyEat = new ArrayList<>();
 
     private final String name;
