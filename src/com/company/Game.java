@@ -58,10 +58,18 @@ public class Game implements Serializable {
     }
 
     public void loadGame(){
-        System.out.println("What file do you want to load?");
-
-        String input = HelperMethods.scan.nextLine();
-        Game savedGame = (Game) Serializer.deserialize("savedGames/" + input + ".ser");
+        System.out.println("Saved Games:");
+        File[] gameFiles = new File("savedGames").listFiles();
+        List<File>savedFiles = Arrays.asList(gameFiles);
+        for(File gameFile : savedFiles){
+            if (gameFile.getName().equals(".keep")) {
+                continue;
+            }
+            System.out.println(savedFiles.indexOf(gameFile)+ ". " + gameFile.getName());
+        }
+        HelperMethods.tryParseInt("What file do you want to load?");
+        int index = HelperMethods.getInputInt();
+        Game savedGame = (Game) Serializer.deserialize("savedGames/" + savedFiles.get(index).getName());
         this.players = savedGame.players;
         this.round = savedGame.round;
         this.numOfRounds = savedGame.numOfRounds;
