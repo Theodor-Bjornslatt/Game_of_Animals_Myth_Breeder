@@ -12,7 +12,7 @@ public class Player implements Serializable {
     private HelplessHuman helplessHuman = new HelplessHuman();
     private ArrayList<Food> foods = new ArrayList<>(List.of(seaweed, milk, helplessHuman));
 
-    private String name;
+    private final String name;
     private int goldAmount = 0;
 
 
