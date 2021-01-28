@@ -12,6 +12,15 @@ public class HelperMethods {
     private static boolean validChoice = true;
     public static Animal chosenAnimal = null;
 
+    public static String tryPrintPlayerName(){
+        if(Game.getCurrentPlayer()!=null){
+            return ", " + Game.getCurrentPlayer().getName() + ".";
+        }
+        else{
+            return ".";
+        }
+    }
+
     public static int tryParseInt(String message, int min, int max){
         do{
             System.out.println(message);
@@ -20,14 +29,15 @@ public class HelperMethods {
                 String input = scan.nextLine();
                 inputInt = Integer.parseInt(input);
                 if(inputInt < min || inputInt > max){
-                    System.out.println("You must enter a number within the given range to continue.");
+                    System.out.println("You must enter a number within the given range to continue" +
+                                       tryPrintPlayerName());
                 }
                 else{
                     validChoice = true;
                 }
             }
             catch(NumberFormatException e){
-                System.out.println("You have to enter a number to continue");
+                System.out.println("You have to enter a number to continue" + tryPrintPlayerName());
             }
         }while(!validChoice);
         return inputInt;
@@ -45,7 +55,7 @@ public class HelperMethods {
                 else{
                     inputDouble = Double.parseDouble(input);
                     if(inputDouble<min){
-                        System.out.println("You must enter a valid number to continue.");
+                        System.out.println("You must enter a valid number to continue" + tryPrintPlayerName());
                     }
                     else{
                         validChoice = true;
@@ -53,7 +63,7 @@ public class HelperMethods {
                 }
             }
             catch(NumberFormatException e){
-                System.out.println("You have to enter a number to continue");
+                System.out.println("You have to enter a number to continue" + tryPrintPlayerName());
             }
         }while(!validChoice);
         return inputDouble;
@@ -61,7 +71,7 @@ public class HelperMethods {
 
     public static void printPlayerAnimals(){
         System.out.println("\nMythological Animals: ");
-        if(Game.getCurrentPlayer().getAnimalList().isEmpty()){
+        if(Game.getCurrentPlayer().animals.isEmpty()){
             System.out.println("\nOh no, you have no animals :'( ");
         }
         else{
@@ -69,11 +79,11 @@ public class HelperMethods {
                 if(Game.getCurrentPlayer().getAnimalList().get(i).getHealth()==0){
                     Game.getCurrentPlayer().getAnimalList().remove(i);
                     System.out.println("\nOh no! It looks like " +
-                            Game.getCurrentPlayer().getAnimalList().get(i).getName() + " has died :'(" );
+                            Game.getCurrentPlayer().animals.get(i).getName() + " has died :'(" );
                 }
             }
-            for(Animal animal : Game.getCurrentPlayer().getAnimalList()){
-                System.out.println("\n|" + (Game.getCurrentPlayer().getAnimalList().indexOf(animal) + 1) +
+            for(Animal animal : Game.getCurrentPlayer().animals){
+                System.out.println("\n|" + (Game.getCurrentPlayer().animals.indexOf(animal) + 1) +
                         "| " + animal.getName() + " the " + animal.getGender() + " " +
                         animal.getClass().getSimpleName() + "\nHealth: " + animal.getHealth() +
                         " (" + animal.getLostHealth() + " lost since last round.)" +
@@ -120,7 +130,7 @@ public class HelperMethods {
     }
 
     public static void chooseAnimal(){
-        ArrayList<Animal>playerAnimals = Game.getCurrentPlayer().getAnimalList();
+        ArrayList<Animal>playerAnimals = Game.getCurrentPlayer().animals;
 
         tryParseInt("\nEnter the number of your animal to choose that animal.",
                     1, playerAnimals.size());
@@ -151,7 +161,6 @@ public class HelperMethods {
     public static void clearConsole(){
         System.out.println("\n".repeat(60));
     }
-
 
     public static void setInputInt(int newInput){
         inputInt = newInput;
