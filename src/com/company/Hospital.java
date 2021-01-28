@@ -14,10 +14,15 @@ public class Hospital {
                 "Welcome, " + Game.getCurrentPlayer().getName() + ", to my hospital for mythological animals. ");
 
         while(true){
-            System.out.println("\nDo you have a diseased animal that needs treatment? (y/n)");
-            //TODO insert y/n method
 
-            String answer = HelperMethods.scan.nextLine();
+            if(noTreatmentAvailable){
+                noTreatmentAvailable=false;
+                return;
+            }
+
+            String answer = HelperMethods.yesOrNo(
+                    "\nDo you have a diseased animal that needs treatment? (y/n)");
+
             if(answer.equals("y")){
                 HelperMethods.printPlayerAnimals();
                 System.out.println("\n" + doctor + ":\nEach treatment costs " + treatmentCost + " Gold. " +
@@ -25,28 +30,20 @@ public class Hospital {
                 HelperMethods.chooseAnimal();
                 tryTreatment();
             }
-            else if(answer.equals("n")){
+            else{
                 HelperMethods.clearConsole();
                 System.out.println("\n" + doctor + ":\nGoodbye! May good health be with you and yours!");
                 HelperMethods.setValidChoice(treatedAnimals);
                 return;
             }
-            else{
-                System.out.println("You must enter y or n to make a choice.");
-            }
-            if(noTreatmentAvailable){
-                noTreatmentAvailable=false;
-                return;
-            }
         }
-
     }
 
     public static void tryTreatment(){
         if(Game.getCurrentPlayer().getGoldAmount() < treatmentCost ){
             HelperMethods.clearConsole();
             System.out.println(doctor + ":\nOh dear! It appears you don't have enough " +
-                    "gold to pay for the treatment.\nI'm afraid you'll have to leave for now.");
+                    "gold to pay for a treatment.\nI'm afraid you'll have to leave for now.");
             HelperMethods.setValidChoice(treatedAnimals);
             noTreatmentAvailable = true;
         }

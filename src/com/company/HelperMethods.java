@@ -12,12 +12,39 @@ public class HelperMethods {
     private static boolean validChoice = true;
     public static Animal chosenAnimal = null;
 
+    public static String yesOrNo(String question){
+        while(true){
+            System.out.println(question);
+            String answer = scan.nextLine();
+            if(answer.equals("n") || answer.equals("y")){
+                return answer;
+            }
+            else{
+                System.out.println("You must enter y or n to continue.");
+            }
+        }
+
+    }
+
     public static String tryPrintPlayerName(){
         if(Game.getCurrentPlayer()!=null){
             return ", " + Game.getCurrentPlayer().getName() + ".";
         }
         else{
             return ".";
+        }
+    }
+
+    public static String assignName(String message){
+        while(true){
+            System.out.println(message);
+            String name = scan.nextLine();
+            if(name.trim().isEmpty()){
+                System.out.println("You must enter a name to continue.");
+            }
+            else{
+                return name;
+            }
         }
     }
 
