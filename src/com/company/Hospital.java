@@ -26,6 +26,7 @@ public class Hospital {
                 tryTreatment();
             }
             else if(answer.equals("n")){
+                HelperMethods.clearConsole();
                 System.out.println("\n" + doctor + ":\nGoodbye! May good health be with you and yours!");
                 HelperMethods.setValidChoice(treatedAnimals);
                 return;
