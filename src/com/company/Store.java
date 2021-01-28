@@ -112,8 +112,8 @@ public class Store implements Serializable {
             HelperMethods.setValidChoice(false);
         }
         else{
-            System.out.println("\n" + shopKeeper + ":\n Thank you for your patronage. " +
-                               "Do come back again soon!");
+            System.out.println("\n" + shopKeeper + ":\n Thank you for your patronage, " +
+                    Game.getCurrentPlayer().getName() + ". Do come back again soon!");
             HelperMethods.setValidChoice(true);
         }
         leaveStore = true;
@@ -201,13 +201,13 @@ public class Store implements Serializable {
         do{
             Game.printPlayerStats();
 
-            String menu = ("\nWhat kind of food do you want to buy?" +
+            String menuText = ("\nWhat kind of food do you want to buy?" +
                                "\n|1| Seaweed.........." + seaweedPrice + " Gold/kg " +
                                "\n|2| Milk............." + milkPrice + " Gold/kg " +
                                "\n|3| Helpless human..." + helplessHumanPrice + " Gold/kg " +
                                "\n|4| None, leave store");
 
-            int input = HelperMethods.tryParseInt(menu, 1, 4);
+            int input = HelperMethods.tryParseInt(menuText, 1, 4);
 
             switch (input) {
                 case 1 -> tempFood = new Seaweed();
@@ -231,9 +231,8 @@ public class Store implements Serializable {
         double maxMilk = playerGold/(double)milkPrice;
         double maxHelplessHuman = playerGold/(double)helplessHumanPrice;
 
-        HelperMethods.clearConsole();
         String chooseAmount = shopKeeper + ": We only sell food in increments of 0.5 kg. " +
-                "\nHow many kg of " + tempFood.getFoodType().string() + " would you like to buy?";
+                "\nHow many kg of " + tempFood.getFoodType().string().toLowerCase() + " would you like to buy?";
 
         wantedFoodAmount = HelperMethods.tryParseDouble(chooseAmount, 0.5);
 
