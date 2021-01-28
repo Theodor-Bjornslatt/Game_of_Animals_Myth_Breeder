@@ -8,7 +8,7 @@ import java.io.File;
 
 public class Game implements Serializable {
     private ArrayList<Player>players = new ArrayList<>();
-    boolean singlePlayer = false;
+    boolean singlePlayer;
 
     private Player savedPlayer = null;
     private static Player currentPlayer = null;
@@ -49,7 +49,7 @@ public class Game implements Serializable {
             switch (HelperMethods.getInputInt()) {
                 case 1 -> tryAddPlayers();
                 case 2 -> setNumberOfRounds();
-                case 3 -> startGame();
+                case 3 -> tryRunGame();
                 case 4 -> loadGame();
                 case 5 -> System.exit(0);
                 default -> HelperMethods.invalidInput();
@@ -70,8 +70,8 @@ public class Game implements Serializable {
         }
         System.out.println("Do you want to load one of these files?");
         //Todo y/n method, if n, break
+        // if(answer.equals("n") return;
         index = HelperMethods.tryParseInt("What file do you want to load?", 1, savedFiles.size()-1);
-        //int index = HelperMethods.getInputInt();
         Game savedGame = (Game) Serializer.deserialize("savedGames/" + savedFiles.get(index).getName());
         this.players = savedGame.players;
         this.round = savedGame.round;
@@ -98,11 +98,12 @@ public class Game implements Serializable {
                     Do you want to proceed? (y/n)""");
 
             do{
+                HelperMethods.setValidChoice(false);
                 String choice = HelperMethods.scan.nextLine().toLowerCase();//TODO y/n method
                 if(choice.equals("y")){
                     players.clear();
                     setPlayers();
-                    HelperMethods.setInputInt(1);
+                    HelperMethods.setValidChoice(true);
                 }
                 else if(choice.equals("n")){
                     return;
@@ -111,9 +112,8 @@ public class Game implements Serializable {
                     System.out.println("You must make a choice to continue. " +
                             "Press y to delete all players and create a new list of players. " +
                             "Press n to return to Main Menu without making any changes.");
-                    HelperMethods.setInputInt(-1);
                 }
-            }while(HelperMethods.getInputInt()==-1);
+            }while(!HelperMethods.isValidChoice());
         }
     }
 
@@ -128,9 +128,7 @@ public class Game implements Serializable {
             String name = HelperMethods.scan.nextLine();
             players.add(new Player(name));System.out.println(name + " is now player " + (i+1));
         }
-        if(players.size()==1){
-            singlePlayer = true;
-        }
+        singlePlayer = players.size() == 1;
     }
 
     public void setNumberOfRounds(){
@@ -140,7 +138,7 @@ public class Game implements Serializable {
         numOfRounds = HelperMethods.getInputInt();
     }
 
-    public void startGame(){
+    public void tryRunGame(){
         HelperMethods.clearConsole();
         if (numOfRounds != 0 && !players.isEmpty()){
             for(Player player : players){
@@ -190,17 +188,18 @@ public class Game implements Serializable {
             checkPlayerStats();
             if(round!=numOfRounds){
                 System.out.println("\nEND OF ROUND " + round + "!" +
-                        "\nPress Enter to continue or press x to exit and save");
-                trySaveGame();
+                        "\nPress Enter to continue or press x to save and exit.");
+                String action = HelperMethods.scan.nextLine();
+                if(action.equals("x")){
+                    saveGame();
+                }
             }
             round++;
         }
         findWinner();
     }
 
-    public void trySaveGame(){
-        String action = HelperMethods.scan.nextLine();
-        if(action.equals("x")){
+    public void saveGame(){ //TODO check if input is empty string
         System.out.println("Name your save file:");
         String filePath = HelperMethods.scan.nextLine();
         Game saveGame = this;
@@ -208,20 +207,17 @@ public class Game implements Serializable {
         HelperMethods.clearConsole();
         System.out.println("Your game has been successfully saved. See you later!");
         System.exit(0);
-        }
-
     }
 
     public void printMenu(){
         System.out.println("\nMake your move " + currentPlayer.getName() + ":");
-        System.out.println("""
-                          |1| Buy animals from Myth Store\s
-                          |2| Buy food from Myth Store
-                          |3| Feed your mythological animals
-                          |4| Try your luck - try for offspring
-                          |5| Sell one or more of your mythological animals
-                          |6| Send an animal to the hospital""");
-        HelperMethods.tryParseInt("", 1, 6);
+        HelperMethods.tryParseInt("|1| Buy animals from Myth Store\n" +
+                "|2| Buy food from Myth Store\n" +
+                "|3| Feed your mythological animals\n" +
+                "|4| Try your luck - try for offspring\n" +
+                "|5| Sell one or more of your mythological animals\n" +
+                "|6| Send an animal to the hospital",
+                1, 6);
     }
 
     public void checkMenuChoice(){
@@ -289,12 +285,7 @@ public class Game implements Serializable {
     }
 
     public void checkAction(){
-        if(animalsChanged) {
-            HelperMethods.setValidChoice(true);
-        }
-        if(!animalsChanged) {
-            HelperMethods.setValidChoice(false);
-        }
+     HelperMethods.setValidChoice(animalsChanged);
     }
 
     public void clearGameData(){
@@ -327,8 +318,8 @@ public class Game implements Serializable {
                     "\nAnimals left: " + currentPlayer.animals.size());
         }
         clearGameData();
-        //  TODO press enter to return to main menu (break;)
-
+        System.out.println("Press Enter to return to Main Menu");
+        HelperMethods.scan.nextLine();
     }
 
     public void mateAnimals(){
@@ -338,7 +329,7 @@ public class Game implements Serializable {
         System.out.println("\nChoose the mythological animal you want to mate.");
         HelperMethods.chooseAnimal();
         animalToMate = HelperMethods.chosenAnimal;
-        System.out.println("\nChoose the mythological animal you want to mate with.");
+        System.out.println("\nChoose the mythological animal you want to mate " + animalToMate.getName() + " with.");
         HelperMethods.chooseAnimal();
 
         if(animalToMate == HelperMethods.chosenAnimal){
@@ -420,6 +411,7 @@ public class Game implements Serializable {
         double restoredHealth;
         int animalIndex = 0;
         animalsChanged = false;
+        HelperMethods.setValidChoice(false);
 
         while(true){
             String answer;
@@ -442,7 +434,6 @@ public class Game implements Serializable {
                     Here you can feed your animals with 0.5 kg food at a time until they and you are satisfied.
                     
                     """);
-
             do{
                 HelperMethods.chooseAnimal();
 
@@ -550,7 +541,7 @@ public class Game implements Serializable {
         for(int i =currentPlayer.animals.size()-1; i>=0; i--){
             if(currentPlayer.animals.get(i).getHealthStatus()==HealthStatus.DISEASED){
                 System.out.println(currentPlayer.animals.get(i).getName() +
-                        ", has passed away as a result of their disease :'(");
+                        " has passed away as a result of their disease :'(");
                 currentPlayer.animals.remove(i);
             }
         }
