@@ -73,18 +73,24 @@ public class Game implements Serializable {
             }
             System.out.println(savedFiles.indexOf(gameFile)+ ". " + gameFile.getName());
         }
-        String answer = HelperMethods.yesOrNo("Do you want to load one of these files?");
+        String answer = HelperMethods.yesOrNo("Do you want to load one of these files? (y/n)");
         switch (answer){
             case "y":
                 index = HelperMethods.tryParseInt("Which file do you want to load?",
                         1, savedFiles.size()-1);
-                Game savedGame = (Game) Serializer.deserialize("savedGames/" + savedFiles.get(index).getName());
-                this.players = savedGame.players;
-                this.round = savedGame.round;
-                this.numOfRounds = savedGame.numOfRounds;
-                this.savedPlayer = savedGame.savedPlayer;
-                this.singlePlayer = savedGame.singlePlayer;
-                runGame();
+                Object deserializedObj = Serializer.deserialize("savedGames/" + savedFiles.get(index).getName());
+                if( deserializedObj instanceof Game){
+                    Game savedGame = (Game) deserializedObj;
+                    this.players = savedGame.players;
+                    this.round = savedGame.round;
+                    this.numOfRounds = savedGame.numOfRounds;
+                    this.savedPlayer = savedGame.savedPlayer;
+                    this.singlePlayer = savedGame.singlePlayer;
+                    runGame();
+                }
+                else{
+                    System.out.println("You can't load a file that is not a saved game.");
+                }
                 break;
 
             case "n":
@@ -98,33 +104,15 @@ public class Game implements Serializable {
         }
         else{
             HelperMethods.clearConsole();
-            System.out.println("""
+            String choice = HelperMethods.yesOrNo("\nWARNING!!!\nYou have already added players to the game. " +
+                    "\nIf you proceed, the current list of players will be deleted " +
+                    "\nand you will have to add any and all players again." +
+                    "\nDo you want to proceed? (y/n)");
 
-                    WARNING!!!\s
-                    
-                    You have already added players to the game. 
-                    If you proceed, the current list of players will be deleted 
-                    and you will have to add any and all players again.\s
-                    
-                    Do you want to proceed? (y/n)""");
-
-            do{
-                HelperMethods.setValidChoice(false);
-                String choice = HelperMethods.scan.nextLine().toLowerCase();//TODO y/n method
-                if(choice.equals("y")){
-                    players.clear();
-                    setPlayers();
-                    HelperMethods.setValidChoice(true);
-                }
-                else if(choice.equals("n")){
-                    return;
-                }
-                else{
-                    System.out.println("You must make a choice to continue. " +
-                            "Press y to delete all players and create a new list of players. " +
-                            "Press n to return to Main Menu without making any changes.");
-                }
-            }while(!HelperMethods.isValidChoice());
+            if(choice.equals("y")){
+                players.clear();
+                setPlayers();
+            }
         }
     }
 
@@ -156,6 +144,7 @@ public class Game implements Serializable {
                 player.setGoldAmount(startingGold);
                 player.getAnimalList().clear();
             }
+            round = 1;
             runGame();
         }
         else if(numOfRounds == 0 && players.isEmpty()){
@@ -173,13 +162,12 @@ public class Game implements Serializable {
     }
 
     public void runGame(){
-        round = 1;
         while(round <= numOfRounds){
             HelperMethods.clearConsole();
             for (Player player : players){
                 currentPlayer = player;
                 if(!singlePlayer){
-                    System.out.println(currentPlayer.getName() + ", press Enter to start your turn!");
+                    System.out.println("\n" + currentPlayer.getName() + ", press Enter to start your turn!");
                 }
                 killDiseasedAnimals();
                 setDiseasedStatus();
@@ -206,12 +194,12 @@ public class Game implements Serializable {
             if(round!=numOfRounds){
                 System.out.println("\nEND OF ROUND " + round + "!" +
                         "\nPress Enter to continue or press x to save and exit.");
+                round++;
                 String action = HelperMethods.scan.nextLine();
                 if(action.equals("x")){
                     saveGame();
                 }
             }
-            round++;
         }
         findWinner();
     }
