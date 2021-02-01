@@ -7,10 +7,10 @@ import java.util.List;
 public class Player implements Serializable {
 
     ArrayList<Animal>animals = new ArrayList<>();
-    private Seaweed seaweed = new Seaweed();
+    /*private Seaweed seaweed = new Seaweed();
     private Milk milk = new Milk();
-    private HelplessHuman helplessHuman = new HelplessHuman();
-    private ArrayList<Food> foods = new ArrayList<>(List.of(seaweed, milk, helplessHuman));
+    private HelplessHuman helplessHuman = new HelplessHuman();*/
+    private ArrayList<Food> foods = new ArrayList<>(); /*= new ArrayList<>(List.of(seaweed, milk, helplessHuman));*/
 
     private final String name;
     private int goldAmount = 0;

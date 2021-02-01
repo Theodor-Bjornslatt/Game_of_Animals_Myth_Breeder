@@ -19,7 +19,7 @@ public class Game implements Serializable {
     private static String chosenName;
     private static Species chosenSpecies;
     private static Gender chosenGender;
-    private static FoodType chosenFood;
+    private static Food chosenFood;
     private boolean animalsChanged = false;
     private final double foodRemove = 0.5;
 
@@ -464,11 +464,16 @@ public class Game implements Serializable {
 
             // Change the health of the animal the player chose
             // that is at index animalIndex in players animal list
-            restoredHealth = (double) HelperMethods.chosenAnimal.getHunger() * foodRemove * chosenFood.foodValue;
-            currentPlayer.getAnimalList().get(animalIndex).gainHealth((int) restoredHealth);
+            if(animalsChanged){
+                restoredHealth = (double) HelperMethods.chosenAnimal.getHunger() * foodRemove *
+                        chosenFood.getFoodType().foodValue;
 
-            System.out.println("\n" + HelperMethods.chosenAnimal.getName() + " has restored " + restoredHealth +
-                    " healthpoints!");
+                currentPlayer.getAnimalList().get(animalIndex).gainHealth((int) restoredHealth);
+
+                System.out.println("\n" + HelperMethods.chosenAnimal.getName() + " has restored " + restoredHealth +
+                        " healthpoints!");
+
+            }
 
             int healthyAnimals = 0;
             for(Animal animal : currentPlayer.getAnimalList()){
@@ -518,27 +523,12 @@ public class Game implements Serializable {
     }
 
     public void removeFood(){
-        for(Food food : currentPlayer.getFoodList()){
-            if(food.getFoodType()==chosenFood && food.getFoodAmount()==0){
-                System.out.println("You can't feed " + HelperMethods.chosenAnimal.getName() +
-                        " with " + chosenFood.foodType.toLowerCase() +
-                        " as you don't have enough of that food.");
-                HelperMethods.setValidChoice(false);
-                return;
-            }
-            else if(chosenFood==FoodType.SEAWEED && food instanceof Seaweed){
-                food.removeFoodAmount(foodRemove);
-                animalsChanged = true;
-            }
-            else if(chosenFood==FoodType.MILK && food instanceof Milk){
-                food.removeFoodAmount(foodRemove);
-                animalsChanged = true;
-            }
-            else if(chosenFood==FoodType.HELPLESS_HUMAN && food instanceof HelplessHuman){
-                food.removeFoodAmount(foodRemove);
-                animalsChanged = true;
-            }
-
+        animalsChanged = Food.removeFood(chosenFood, foodRemove);
+        if(!animalsChanged){
+            System.out.println("Your animal can't be fed :(");
+        }
+        else{
+            System.out.println("Your animal has been fed!");
         }
     }
 

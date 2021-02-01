@@ -269,15 +269,10 @@ public class Store implements Serializable {
     }
 
     public void addFood(double kilogram){
-            HelperMethods.setValidChoice(true);
-            for(Food food : Game.getCurrentPlayer().getFoodList()){
-                if(food.getFoodType().string().equals(tempFood.getFoodType().string())){
-                    food.addFoodAmount(kilogram);
-                    System.out.println(shopKeeper + ": Thank you for your purchase, " +
-                                       "I'm sure your animals will appreciate it!");
-                    break;
-                }
-            }
+        HelperMethods.setValidChoice(true);
+        Food.addFood(tempFood, kilogram);
+        System.out.println(shopKeeper + ": Thank you for your purchase, " +
+                "I'm sure your animals will appreciate it!");
     }
 
     public void sellAnimal(){

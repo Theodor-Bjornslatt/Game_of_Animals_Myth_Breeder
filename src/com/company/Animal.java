@@ -40,7 +40,7 @@ enum HealthStatus{
 }
 
 public abstract class Animal implements Serializable {
-    private final ArrayList<FoodType>onlyEat = new ArrayList<>();
+    private final ArrayList<Food>onlyEat = new ArrayList<>();
 
     private final String name;
     private final Gender gender;
@@ -93,11 +93,11 @@ public abstract class Animal implements Serializable {
         return gender.string();
     }
 
-    public void addOnlyEat(FoodType foodtype){
-        onlyEat.add(foodtype);
+    public void addOnlyEat(Food food){
+        onlyEat.add(food);
     }
 
-    public ArrayList<FoodType> getOnlyEat(){
+    public ArrayList<Food> getOnlyEat(){
         return onlyEat;
     }
 

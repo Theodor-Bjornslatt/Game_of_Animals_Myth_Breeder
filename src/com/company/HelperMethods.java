@@ -123,30 +123,23 @@ public class HelperMethods {
     public static void printOnlyEat(){
         System.out.println(chosenAnimal.getSpecies().string() + "s only eat:");
         for(int i = 0; i<=chosenAnimal.getOnlyEat().size()-1; i++){
-            System.out.println("|" + (i+1) + "| " + chosenAnimal.getOnlyEat().get(i).foodType);
+            System.out.println("|" + (i+1) + "| " + chosenAnimal.getOnlyEat().get(i).getFoodType());
         }
     }
 
     public static void printPlayerFoodList(){
-        int skipped = 0;
-        ArrayList<Food>playerFoods = Game.getCurrentPlayer().getFoodList();
         System.out.println("\nFood: ");
-        for(int i = 0; i<=playerFoods.size()-1; i++){
-            if(playerFoods.get(i).getFoodAmount() == 0){
-                skipped += 1;
-            }
-            else{
-                System.out.println("|" + (i + 1 - skipped) + "| " +
-                                   playerFoods.get(i).getFoodType().string() +
-                                   " (" + playerFoods.get(i).getFoodAmount() + " kg)");
-            }
-            // If skipped is the same number as the number of existing food types
-            // Tell player they have no food
-            if(skipped == 3){
-                System.out.println("\nIt seems you don't own any food! But not to worry, " +
-                                   "Myth Store might just have some.");
+        if(Game.getCurrentPlayer().getFoodList().isEmpty()){
+            System.out.println("It's empty!");
+        }
+        else{
+            for(int i = 0; i<=Game.getCurrentPlayer().getFoodList().size()-1; i++){
+                System.out.println("|" + (i + 1) + "| " +
+                        Game.getCurrentPlayer().getFoodList().get(i).getFoodType().string() +
+                        " (" + Game.getCurrentPlayer().getFoodList().get(i).getFoodAmount() + " kg)");
             }
         }
+
     }
 
     public static void invalidInput(){
@@ -187,10 +180,6 @@ public class HelperMethods {
 
     public static void clearConsole(){
         System.out.println("\n".repeat(60));
-    }
-
-    public static void setInputInt(int newInput){
-        inputInt = newInput;
     }
 
     public static int getInputInt(){

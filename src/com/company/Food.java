@@ -22,7 +22,7 @@ enum FoodType {
 public abstract class Food implements Serializable {
 
     private final FoodType foodType;
-    private double foodAmount;
+    private double foodAmount = 0;
 
     public Food(FoodType foodType){
         this.foodType = foodType;
@@ -36,12 +36,31 @@ public abstract class Food implements Serializable {
         return foodAmount;
     }
 
-    public void addFoodAmount(double foodAmount){
-        this.foodAmount += foodAmount;
+    public static void addFood(Food chosenFood, double foodAmount){
+        for(Food food : Game.getCurrentPlayer().getFoodList()){
+            if(chosenFood.getFoodType() == food.getFoodType()){
+                food.foodAmount += foodAmount;
+                return;
+            }
+        }
+        chosenFood.foodAmount = foodAmount;
+        Game.getCurrentPlayer().getFoodList().add(chosenFood);
     }
 
-    public void removeFoodAmount(double foodAmount){
-        this.foodAmount -= foodAmount;
+    public static boolean removeFood(Food chosenFood, double foodAmount){
+        for(Food food : Game.getCurrentPlayer().getFoodList()){
+            if(chosenFood.getFoodType() == food.getFoodType()){
+                if(food.foodAmount == 0){
+                    return false;
+                }
+                food.foodAmount -= foodAmount;
+                if(food.foodAmount<=0){
+                    Game.getCurrentPlayer().getFoodList().remove(food);
+                }
+                return true;
+            }
+        }
+        return false;
     }
 
 
