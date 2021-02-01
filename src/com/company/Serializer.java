@@ -10,11 +10,11 @@ public class Serializer {
             out.writeObject(data);
             out.close();
             fileOut.close();
-            System.out.println("Success!");
+            System.out.println("Your game has been saved!");
             return true;
         }
         catch(Exception error){
-            System.out.println("Failure!");
+            System.out.println("Your game could not be saved :(");
             return false;
         }
     }
@@ -26,11 +26,11 @@ public class Serializer {
             Object data = in.readObject();
             in.close();
             file.close();
-            System.out.println("Success!");
+            System.out.println("Finished loading game!");
             return data;
         }
         catch(Exception error){
-            System.out.println("Failure!");
+            System.out.println("Your game could not be loaded :'(");
             return false;
         }
     }
