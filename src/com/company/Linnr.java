@@ -6,8 +6,8 @@ public class Linnr extends Animal{
 
     public Linnr(String name, Gender gender){
         super(name, gender, Species.LINNR);
-        this.setMaxOffspring(6);
-        this.setHunger(8);
+        this.setMaxOffspring(4);
+        this.setHungerSatisfaction(8);
         addOnlyEat(helplessHuman);
         addOnlyEat(milk);
     }

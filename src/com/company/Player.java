@@ -2,16 +2,11 @@ package com.company;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Player implements Serializable {
 
     ArrayList<Animal>animals = new ArrayList<>();
-    /*private Seaweed seaweed = new Seaweed();
-    private Milk milk = new Milk();
-    private HelplessHuman helplessHuman = new HelplessHuman();*/
-    private ArrayList<Food> foods = new ArrayList<>(); /*= new ArrayList<>(List.of(seaweed, milk, helplessHuman));*/
-
+    private ArrayList<Food> foods = new ArrayList<>();
     private final String name;
     private int goldAmount = 0;
 

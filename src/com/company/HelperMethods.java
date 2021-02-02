@@ -121,9 +121,9 @@ public class HelperMethods {
     }
 
     public static void printOnlyEat(){
-        System.out.println(chosenAnimal.getSpecies().string() + "s only eat:");
+        System.out.println(chosenAnimal.getSpecies().species + "s only eat:");
         for(int i = 0; i<=chosenAnimal.getOnlyEat().size()-1; i++){
-            System.out.println("|" + (i+1) + "| " + chosenAnimal.getOnlyEat().get(i).getFoodType());
+            System.out.println("|" + (i+1) + "| " + chosenAnimal.getOnlyEat().get(i).getFoodType().foodType);
         }
     }
 
@@ -135,18 +135,11 @@ public class HelperMethods {
         else{
             for(int i = 0; i<=Game.getCurrentPlayer().getFoodList().size()-1; i++){
                 System.out.println("|" + (i + 1) + "| " +
-                        Game.getCurrentPlayer().getFoodList().get(i).getFoodType().string() +
+                        Game.getCurrentPlayer().getFoodList().get(i).getFoodType().foodType +
                         " (" + Game.getCurrentPlayer().getFoodList().get(i).getFoodAmount() + " kg)");
             }
         }
 
-    }
-
-    public static void invalidInput(){
-        System.out.println("You pressed " + inputInt + ". This is not a valid number. " +
-                "Please try again and enter a number within the specified range.");
-        inputInt=-1;
-        validChoice = false;
     }
 
     public static void chooseAnimal(){

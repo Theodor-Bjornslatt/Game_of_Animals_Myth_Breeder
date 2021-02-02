@@ -5,8 +5,8 @@ public class Tilberi extends Animal{
 
     public Tilberi(String name, Gender gender){
         super(name, gender, Species.TILBERI);
-        this.setMaxOffspring(3);
-        this.setHunger(15);
+        this.setMaxOffspring(2);
+        this.setHungerSatisfaction(20);
         addOnlyEat(milk);
     }
 

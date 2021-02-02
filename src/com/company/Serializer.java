@@ -30,7 +30,7 @@ public class Serializer {
             return data;
         }
         catch(Exception error){
-            System.out.println("Your game could not be loaded :'(");
+            System.out.println("The chosen file is not compatible and couldn't be loaded. :'(");
             return false;
         }
     }

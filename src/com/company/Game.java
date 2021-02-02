@@ -1,10 +1,11 @@
 package com.company;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-import java.io.Serializable;
-import java.io.File;
 
 public class Game implements Serializable {
     private ArrayList<Player>players = new ArrayList<>();
@@ -21,7 +22,6 @@ public class Game implements Serializable {
     private static Gender chosenGender;
     private static Food chosenFood;
     private boolean animalsChanged = false;
-    private final double foodRemove = 0.5;
 
     Store mythStore = new Store();
     public int round;
@@ -42,25 +42,36 @@ public class Game implements Serializable {
                  |2| Set number of rounds
                  |3| Start new game
                  |4| Load saved game
-                 |5| Exit game""");
+                 |5| Open rulebook
+                 |6| Exit game""");
 
-            HelperMethods.tryParseInt("", 1, 5);
+            HelperMethods.tryParseInt("", 1, 6);
 
             switch (HelperMethods.getInputInt()) {
                 case 1 -> tryAddPlayers();
                 case 2 -> setNumberOfRounds();
                 case 3 -> tryRunGame();
                 case 4 -> loadGame();
-                case 5 -> System.exit(0);
-                default -> HelperMethods.invalidInput();
+                case 5 -> printRules();
+                case 6 -> System.exit(0);
             }
+        }
+    }
+
+    public void printRules(){
+        HelperMethods.setValidChoice(false);
+        try {
+            String ruleBook = new String(Files.readAllBytes(Paths.get("gameFiles/.README")));
+            System.out.println(ruleBook);
+        } catch (IOException e) {
+            System.out.println("The rulebook seems to be missing!");
         }
     }
 
     public void loadGame(){
         int index;
         System.out.println("Saved Games:");
-        File[] gameFiles = new File("savedGames").listFiles();
+        File[] gameFiles = new File("gameFiles/savedGames").listFiles();
         List<File>savedFiles = Arrays.asList(gameFiles);
 
         if(savedFiles.size() == 1){
@@ -78,7 +89,7 @@ public class Game implements Serializable {
             case "y":
                 index = HelperMethods.tryParseInt("Which file do you want to load?",
                         1, savedFiles.size()-1);
-                Object deserializedObj = Serializer.deserialize("savedGames/" + savedFiles.get(index).getName());
+                Object deserializedObj = Serializer.deserialize("gameFiles/savedGames/" + savedFiles.get(index).getName());
                 if( deserializedObj instanceof Game){
                     Game savedGame = (Game) deserializedObj;
                     this.players = savedGame.players;
@@ -87,9 +98,6 @@ public class Game implements Serializable {
                     this.savedPlayer = savedGame.savedPlayer;
                     this.singlePlayer = savedGame.singlePlayer;
                     runGame();
-                }
-                else{
-                    System.out.println("You can't load a file that is not a saved game.");
                 }
                 break;
 
@@ -213,7 +221,7 @@ public class Game implements Serializable {
                 continue;
             }
             Game saveGame = this;
-            Serializer.serialize(("savedGames/" + filePath + ".ser"), saveGame);
+            Serializer.serialize(("gameFiles/savedGames/" + filePath + ".ser"), saveGame);
             HelperMethods.clearConsole();
             System.out.println("Your game has been successfully saved. See you later!");
             System.exit(0);
@@ -222,13 +230,15 @@ public class Game implements Serializable {
 
     public void chooseAction(){
         System.out.println("\nMake your move " + currentPlayer.getName() + ":");
-        HelperMethods.tryParseInt("|1| Buy animals from Myth Store\n" +
+        HelperMethods.tryParseInt(
+                "|1| Buy animals from Myth Store\n" +
                 "|2| Buy food from Myth Store\n" +
                 "|3| Feed your mythological animals\n" +
                 "|4| Try your luck - try for offspring\n" +
                 "|5| Sell one or more of your mythological animals\n" +
-                "|6| Send an animal to the hospital",
-                1, 6);
+                "|6| Send an animal to the hospital\n" +
+                "|7| Open rulebook",
+                1, 7);
     }
 
     public void checkValidAction(){
@@ -260,24 +270,22 @@ public class Game implements Serializable {
         switch (HelperMethods.getInputInt()) {
             case 1 -> mythStore.goToAnimalStore();
             case 2 -> mythStore.goToFoodStore();
-            case 3 ->
-                feedAnimals();
-            case 4 -> {
-                mateAnimals();
-                checkAction();
-            }
+            case 3 -> feedAnimals();
+            case 4 -> mateAnimals();
             case 5 -> mythStore.sellAnimal();
             case 6 -> Hospital.goToHospital();
+            case 7 -> printRules();
         }
     }
 
     public void checkPlayerStats(){
         if(!singlePlayer){
             for(int i = players.size()-1; i>0; i--){
-                if(players.get(i).animals.isEmpty() && players.get(i).getGoldAmount() == 0){
+                if(players.get(i).animals.isEmpty() && players.get(i).getGoldAmount() < 10){
                     players.remove(i);
-                    System.out.println("\n" + players.get(i).getName() + " owns nothing of value anymore " +
-                            "and is out of the game :(");
+                    System.out.println("\n" + players.get(i).getName() +
+                            " has no animals and can't afford new ones. " +
+                            "\n" + players.get(i).getName() + " is out of the game :(");
                 }
             }
             if(players.size()==1){
@@ -297,9 +305,6 @@ public class Game implements Serializable {
         }
     }
 
-    public void checkAction(){
-     HelperMethods.setValidChoice(animalsChanged);
-    }
 
     public void clearGameData(){
         currentPlayer = null;
@@ -353,12 +358,12 @@ public class Game implements Serializable {
         }
         else if(HelperMethods.chosenAnimal.getSpecies().equals(animalToMate.getSpecies())){
             tryOffspring();
-            HelperMethods.setValidChoice(true);
             animalsChanged = true;
         }
         else{
             System.out.println("Animals of different species can't mate.");
         }
+        HelperMethods.setValidChoice(animalsChanged);
         animalToMate = null;
         HelperMethods.chosenAnimal = null;
     }
@@ -456,36 +461,38 @@ public class Game implements Serializable {
 
             chooseFood();
             if(HelperMethods.isValidChoice()){
-                removeFood();
-            }
-            if(!HelperMethods.isValidChoice()){
-                continue;
-            }
-
-            // Change the health of the animal the player chose
-            // that is at index animalIndex in players animal list
-            if(animalsChanged){
-                restoredHealth = (double) HelperMethods.chosenAnimal.getHunger() * foodRemove *
-                        chosenFood.getFoodType().foodValue;
-
-                currentPlayer.getAnimalList().get(animalIndex).gainHealth((int) restoredHealth);
-
-                System.out.println("\n" + HelperMethods.chosenAnimal.getName() + " has restored " + restoredHealth +
-                        " healthpoints!");
-
-            }
-
-            int healthyAnimals = 0;
-            for(Animal animal : currentPlayer.getAnimalList()){
-                if(animal.getHealth()==100){
-                    healthyAnimals +=1;
+                double foodToRemove = 0.5;
+                HelperMethods.setValidChoice(Food.removeFood(chosenFood, foodToRemove));
+                if(!HelperMethods.isValidChoice()){
+                    System.out.println("Your animal can't be fed :(");
                 }
+                else{
+                    animalsChanged = true;
+
+                    restoredHealth = (double) HelperMethods.chosenAnimal.getHungerSatisfaction() * foodToRemove *
+                            chosenFood.getFoodType().foodValue;
+
+                    currentPlayer.getAnimalList().get(animalIndex).gainHealth((int) restoredHealth);
+
+                    System.out.println("\n" + HelperMethods.chosenAnimal.getName() + " has restored " + restoredHealth +
+                            " healthpoints!");
+                }
+
+                int healthyAnimals = 0;
+                for(Animal animal : currentPlayer.getAnimalList()){
+                    if(animal.getHealth()==100){
+                        healthyAnimals +=1;
+                    }
+                }
+                if(healthyAnimals == currentPlayer.getAnimalList().size()){
+                    System.out.println("Wow! All your animals are at full health and you can't feed them!");
+                    return;
+                }
+
             }
-            if(healthyAnimals == currentPlayer.getAnimalList().size()){
-                System.out.println("Wow! All your animals are at full health and you can't feed them!");
-                return;
-            }
+
         }
+
     }
 
     public void chooseFood(){
@@ -520,16 +527,6 @@ public class Game implements Serializable {
                         HelperMethods.setValidChoice(false);
                     }
             }
-    }
-
-    public void removeFood(){
-        animalsChanged = Food.removeFood(chosenFood, foodRemove);
-        if(!animalsChanged){
-            System.out.println("Your animal can't be fed :(");
-        }
-        else{
-            System.out.println("Your animal has been fed!");
-        }
     }
 
     public void killDiseasedAnimals(){

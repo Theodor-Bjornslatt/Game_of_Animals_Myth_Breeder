@@ -13,12 +13,9 @@ enum FoodType {
         this.foodValue = foodValue;
     }
 
-    public String string(){
-        return foodType;
-    }
-
     double foodValue;
 }
+
 public abstract class Food implements Serializable {
 
     private final FoodType foodType;

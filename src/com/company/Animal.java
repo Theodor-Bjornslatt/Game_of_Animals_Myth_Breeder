@@ -46,7 +46,7 @@ public abstract class Animal implements Serializable {
     private final Gender gender;
     private final Species species;
     private HealthStatus healthStatus = HealthStatus.HEALTHY;
-    private int hunger;
+    private int hungerSatisfaction;
     private int health = 100;
     private int healthChange = 0;
     private int maxOffspring;
@@ -65,12 +65,12 @@ public abstract class Animal implements Serializable {
         this.healthStatus = healthStatus;
     }
 
-    public void setHunger(int hunger){
-        this.hunger = hunger;
+    public void setHungerSatisfaction(int hungerSatisfaction){
+        this.hungerSatisfaction = hungerSatisfaction;
     }
 
-    public int getHunger(){
-        return hunger;
+    public int getHungerSatisfaction(){
+        return hungerSatisfaction;
     }
 
     public void setMaxOffspring(int offspring){

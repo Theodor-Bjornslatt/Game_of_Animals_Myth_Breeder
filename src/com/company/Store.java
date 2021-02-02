@@ -201,10 +201,13 @@ public class Store implements Serializable {
             Game.printPlayerStats();
 
             String menuText = ("\nWhat kind of food do you want to buy?" +
-                               "\n|1| Seaweed.........." + seaweedPrice + " Gold/kg " +
-                               "\n|2| Milk............." + milkPrice + " Gold/kg " +
-                               "\n|3| Helpless human..." + helplessHumanPrice + " Gold/kg " +
-                               "\n|4| None, leave store");
+                    "\n|1| Seaweed (foodvalue: " + FoodType.SEAWEED.foodValue + ")" +
+                    ".............." + seaweedPrice + " Gold/kg" +
+                    "\n|2| Milk (foodvalue: " + FoodType.MILK.foodValue + ")" +
+                    "................." + milkPrice + " Gold/kg" +
+                    "\n|3| Helpless human (foodvalue: " + FoodType.HELPLESS_HUMAN.foodValue + ")" +
+                    "......." + helplessHumanPrice + " Gold/kg" +
+                    "\n|4| None, leave store");
 
             int input = HelperMethods.tryParseInt(menuText, 1, 4);
 
@@ -231,22 +234,22 @@ public class Store implements Serializable {
         double maxHelplessHuman = playerGold/(double)helplessHumanPrice;
 
         String chooseAmount = shopKeeper + ": We only sell food in increments of 0.5 kg. " +
-                "\nHow many kg of " + tempFood.getFoodType().string().toLowerCase() + " would you like to buy?";
+                "\nHow many kg of " + tempFood.getFoodType().foodType.toLowerCase() + " would you like to buy?";
 
         wantedFoodAmount = HelperMethods.tryParseDouble(chooseAmount, 0.5);
 
         if(wantedFoodAmount % 0.5 == 0){
-            if(tempFood.getFoodType().string().equals(FoodType.SEAWEED.string()) &&
+            if(tempFood.getFoodType().foodType.equals(FoodType.SEAWEED.foodType) &&
                wantedFoodAmount <= maxSeaweed){
                 goldToPay = (int)(wantedFoodAmount * seaweedPrice);
                 payForFood();
             }
-            else if(tempFood.getFoodType().string().equals(FoodType.MILK.string()) &&
+            else if(tempFood.getFoodType().foodType.equals(FoodType.MILK.foodType) &&
                     wantedFoodAmount <= maxMilk){
                 goldToPay = (int)(wantedFoodAmount * milkPrice);
                 payForFood();
             }
-            else if(tempFood.getFoodType().string().equals(FoodType.HELPLESS_HUMAN.string()) &&
+            else if(tempFood.getFoodType().foodType.equals(FoodType.HELPLESS_HUMAN.foodType) &&
                     wantedFoodAmount <= maxHelplessHuman){
                 goldToPay = (int)(wantedFoodAmount * helplessHumanPrice);
                 payForFood();
@@ -264,15 +267,12 @@ public class Store implements Serializable {
 
     public void payForFood(){
         Game.getCurrentPlayer().removeGold(goldToPay);
-        addFood(wantedFoodAmount);
-        madeChange = true;
-    }
-
-    public void addFood(double kilogram){
-        HelperMethods.setValidChoice(true);
-        Food.addFood(tempFood, kilogram);
+        Food.addFood(tempFood, wantedFoodAmount);
         System.out.println(shopKeeper + ": Thank you for your purchase, " +
                 "I'm sure your animals will appreciate it!");
+
+        HelperMethods.setValidChoice(true);
+        madeChange = true;
     }
 
     public void sellAnimal(){
