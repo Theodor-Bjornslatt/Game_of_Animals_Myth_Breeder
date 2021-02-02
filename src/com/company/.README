@@ -1,0 +1,201 @@
+------------------------------------------------------------------------
+RULEBOOK
+------------------------------------------------------------------------
+
+SINGLEPLAYER
+The player must make it through their chosen number of rounds.
+
+The player chooses how many rounds to play and
+must make it through to the last round owning
+something of value - be it animals or gold.
+If the player does not have enough gold left to buy
+a new animal and does not own any animals, the
+game ends and the player loses.
+At the end of the game, the player's animals are sold
+and their gold is counted.
+
+
+MULTIPLAYER
+2-4 players.
+
+If a player does not own any animals and does not have enough
+gold left to buy a new animal, they're out of the game.
+The last player left, wins.
+If more than one player make it to the end of the chosen number
+of rounds, their animals are sold and the player with the most
+gold wins.
+
+
+------------------------------------------------------------------------
+PROGRESSION
+------------------------------------------------------------------------
+
+At the start of a players turn, each of their animals
+loses 10-30 health points and have a 50% chance of becoming sick.
+If an animal reaches 0 health, it dies.
+
+Animals can regain health by being fed or by going to the hospital,
+but can only be treated at the hospital when they are sick.
+
+Each player must choose to perform ONE of the following moves per turn:
+
+
+BUYING ANIMALS AND FOOD
+
+These are the only moves a player can choose between when they own no
+animals. When shopping, a player may buy as many animals or types of
+food as they please. Their turn ends when a transaction has been made
+and the player leaves the store.
+
+
+FEEDING ANIMALS
+
+If a player owns food and animals, they may feed their animals to
+restore their health. Some animals eat more than one type of food and
+each food is differently beneficial (see "Animals and Food").
+When the player has fed as many animals as they want, their turn ends.
+
+
+BREEDING ANIMALS
+
+When a player owns two animals of the same species, but of opposite
+genders, they may try to breed them for a 50% chance at offspring.
+Different species have a maximum amount of offspring, and how many
+babies they have at a given time is randomized. A player may only
+try to mate one pair of animals during their turn, when they choose
+this action.
+
+
+SELLING ANIMALS
+
+A player may sell as many of their animals as they please. When sold,
+the gold the player gains is dependent on the animal's health.
+
+
+HOSPITALIZE
+
+The only way to save a diseased animal is by sending it to the hospital.
+If an animal does not receive treatment, it will die at the beginning
+of the player's next round.
+To try curing an animal of its disease, a player must pay 5 gold.
+There is a 50% chance that the animal will be cured and regain all lost
+health. If treatment is not successful, the animal dies.
+
+Healthy animals cannot be treated at the hospital.
+
+
+------------------------------------------------------------------------
+ANIMALS AND FOOD
+------------------------------------------------------------------------
+
+There are five different species of animals and three types
+of food.
+
+Each animal only eats certain food types, and each
+food type has its own "foodvalue" - a basic amount by which
+it restores hunger. Each animal species also has a basic hunger
+satisfaction, which determines how much that species benefits
+from eating.
+
+When an animal eats they gain a set amount of health per kilogram
+of food which depends on the food type and the animal species.
+It is calculated as follows:
+
+Gained health per kg of food = foodvalue * hunger satisfaction
+
+Example:
+A Kraken fed with 1 kg of seaweed would regain
+2 (foodvalue) * 4 (hunger satisfaction) = 8 health points.
+
+Fed with 1kg of helpless human, the same kraken would regain
+3 (foodvalue) * 4 (hunger satisfaction) = 12 health points.
+
+------------------------------------------------------------------------
+
+GLOSON
+
+A huge, hog-like creature with saw-toothed hairs on its back and
+glowing eyes.
+
+Hunger satisfaction: 5
+
+Food: Helpless humans (foodvalue 3)
+
+
+ORIGINS
+The gloson is originally from Swedish folklore and is said
+to guard secret knowledge and magic, that can only be won by
+defeating it. Gloson also tried to attack people who try to
+walk a "yearwalk", a practice where people tried to divine
+knowledge of the coming year. One could try to hold it at bay
+by sacrificing food or something valuable.
+
+
+------------------------------------------------------------------------
+
+KRAKEN
+
+A giant octopus with ten long tentacles.
+
+Hunger satisfaction: 4
+
+Food: Helpless humans (foodvalue 3), seaweed (foodvalue 2)
+
+
+ORIGINS
+The kraken originally appears in the folklore of Nordic countries,
+where it lived at the bottom of the ocean, occasionally creating
+fish. Should the kraken rise to the surface, one would surely be
+dragged with it into the deep sea when it dived down once more.
+
+------------------------------------------------------------------------
+
+LINNR
+
+A maned, many metres long, white snake.
+
+Hunger satisfaction: 8
+
+Food: Helpless humans (foodvalue 3), milk (foodvalue 1)
+
+
+ORIGINS
+The linnr, also known as lindorm, was a creature originally from the
+folklore of Nordic countries. It existed in two forms. One was an
+enchanted prince which brought those who touched it great fortune.
+The other form was as an evil, dangerous creature that was hard to
+escape from and which moved by biting its own tail and spinning like
+a wheel.
+
+------------------------------------------------------------------------
+
+NYKUR
+
+A beautiful black or grey horse with inverted hoofs.
+
+Hunger satisfaction: 10
+Food: Helpless humans (foodvalue 3), milk (foodvalue 1)
+
+ORIGINS
+The nykur is a creature in Scandinavian folklore which lives in
+naturally occurring waters, be they lakes or rivers. It would
+use its beauty lure humans to pet it or sit on it, whereupon the
+person would be stuck and the nykur would drag them into the water
+to their demise.
+
+------------------------------------------------------------------------
+
+TILBERI
+
+A creature that takes the shape of a hare or a cat.
+
+Hunger satisfaction: 20
+Food: Milk (foodvalue 1)
+
+ORIGINS
+A creature of Icelandic folklore, a witch could create a tilberi using
+a human rib, sheep's wool, and wine from the catholic communion.
+The witch could then send the tilberi to steal milk from her neighbors.
+
+------------------------------------------------------------------------
+
