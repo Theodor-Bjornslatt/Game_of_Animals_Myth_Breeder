@@ -97,6 +97,18 @@ it restores hunger. Each animal species also has a basic hunger
 satisfaction, which determines how much that species benefits
 from eating.
 
+------------------------------------------------------------------------
+
+FOODVALUES
+
+Helpless human: 3
+Seaweed: 2
+Milk: 1
+
+------------------------------------------------------------------------
+
+EATING RESTORES HEALTH
+
 When an animal eats they gain a set amount of health per kilogram
 of food which depends on the food type and the animal species.
 It is calculated as follows:
