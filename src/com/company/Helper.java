@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Random;
 
-public class HelperMethods {
+public class Helper {
     static Random randomNum = new Random();
     static Scanner scan = new Scanner(System.in);
     private static int inputInt = -1;
@@ -104,15 +104,15 @@ public class HelperMethods {
         else{
             for(int i = Game.getCurrentPlayer().getAnimalList().size()-1; i>=0; i--){
                 if(Game.getCurrentPlayer().getAnimalList().get(i).getHealth()==0){
-                    Game.getCurrentPlayer().getAnimalList().remove(i);
                     System.out.println("\nOh no! It looks like " +
                             Game.getCurrentPlayer().animals.get(i).getName() + " has died :'(" );
+                    Game.getCurrentPlayer().getAnimalList().remove(i);
                 }
             }
             for(Animal animal : Game.getCurrentPlayer().animals){
                 System.out.println("\n|" + (Game.getCurrentPlayer().animals.indexOf(animal) + 1) +
-                        "| " + animal.getName() + " the " + animal.getGender() + " " +
-                        animal.getClass().getSimpleName() + "\nHealth: " + animal.getHealth() +
+                        "| " + animal.getName() + " the " + animal.getGender().gender + " " +
+                        animal.getSpecies().species + "\nHealth: " + animal.getHealth() +
                         " (" + animal.getLostHealth() + " lost since last round.)" +
                         "\n" + animal.getHealthStatus());
             }
@@ -130,7 +130,7 @@ public class HelperMethods {
     public static void printPlayerFoodList(){
         System.out.println("\nFood: ");
         if(Game.getCurrentPlayer().getFoodList().isEmpty()){
-            System.out.println("It's empty!");
+            System.out.println("You don't have any food!");
         }
         else{
             for(int i = 0; i<=Game.getCurrentPlayer().getFoodList().size()-1; i++){
