@@ -28,10 +28,6 @@ enum Species{
     Species (String species){
         this.species=species;
     }
-
-    public String string(){
-        return species;
-    }
 }
 
 enum HealthStatus{
@@ -89,8 +85,8 @@ public abstract class Animal implements Serializable {
         return species;
     }
 
-    public String getGender(){
-        return gender.string();
+    public Gender getGender(){
+        return gender;
     }
 
     public void addOnlyEat(Food food){
