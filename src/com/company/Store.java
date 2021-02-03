@@ -33,7 +33,7 @@ public class Store implements Serializable {
         tempFood = null;
         madeChange = false;
         unsuccessfulAttempts = 0;
-        HelperMethods.clearConsole();
+        Helper.clearConsole();
         System.out.println("WELCOME TO MYTH STORE ANIMAL DEPARTMENT, " +
                 Game.getCurrentPlayer().getName().toUpperCase() + "!");
         do{
@@ -47,7 +47,7 @@ public class Store implements Serializable {
                                "|5| Tilberi..." + tilberiPrice + " Gold\n" +
                                "|6| Leave store\n");
 
-            HelperMethods.tryParseInt("", 1, 6);
+            Helper.tryParseInt("", 1, 6);
 
             animalStoreSwitch();
 
@@ -64,8 +64,8 @@ public class Store implements Serializable {
     }
 
     public void animalStoreSwitch(){
-        HelperMethods.clearConsole();
-        switch (HelperMethods.getInputInt()) {
+        Helper.clearConsole();
+        switch (Helper.getInputInt()) {
             case 1 -> {
                 goldToPay = nykurPrice;
                 chosenSpecies = Species.NYKUR;
@@ -90,14 +90,14 @@ public class Store implements Serializable {
             case 4 -> {
                 goldToPay = linnrPrice;
                 chosenSpecies = Species.LINNR;
-                System.out.println(shopKeeper + ":\n Excellent choice " +
+                System.out.println(shopKeeper + ":\nExcellent choice " +
                         Game.getCurrentPlayer().getName() + ". But be advised " +
                         "that this is not an enchanted prince. ");
             }
             case 5 -> {
                 goldToPay = tilberiPrice;
                 chosenSpecies = Species.TILBERI;
-                System.out.println(shopKeeper + ":\n Truly inspired choice, " +
+                System.out.println(shopKeeper + ":\nTruly inspired choice, " +
                         Game.getCurrentPlayer().getName() + ". " +
                         "\n Remember not to bring it home to a friend... " +
                         "if you want to keep your friends that is.");
@@ -108,13 +108,13 @@ public class Store implements Serializable {
 
     public void leaveStore(){
         if(!madeChange){
-            System.out.println("\n" + shopKeeper + ":\n Don't let the door hit you on the way out!");
-            HelperMethods.setValidChoice(false);
+            System.out.println("\n" + shopKeeper + ":\nDon't let the door hit you on the way out!");
+            Helper.setValidChoice(false);
         }
         else{
-            System.out.println("\n" + shopKeeper + ":\n Thank you for your patronage, " +
+            System.out.println("\n" + shopKeeper + ":\nThank you for your patronage, " +
                     Game.getCurrentPlayer().getName() + ". Do come back again soon!");
-            HelperMethods.setValidChoice(true);
+            Helper.setValidChoice(true);
         }
         leaveStore = true;
     }
@@ -134,15 +134,13 @@ public class Store implements Serializable {
 
     public void buyAnimal(){
         chooseGender();
-        chosenName = HelperMethods.assignName("\n" + shopKeeper + ":" +
+        chosenName = Helper.assignName("\n" + shopKeeper + ":" +
                                               "\nYou have only made excellent choices so far dear customer. " +
                                               "\nThink carefully now and let me know what you want to name " +
                                               "your animal friend:");
 
         if(chosenSpecies == Species.NYKUR){
-            // Create the animal according to the player's choices
             tempAnimal = new Nykur(chosenName, chosenGender);
-            // Make player pay for the animal
             Game.getCurrentPlayer().removeGold(nykurPrice);
         }
         else if(chosenSpecies == Species.GLOSON){
@@ -164,16 +162,16 @@ public class Store implements Serializable {
 
         madeChange = true;
         Game.getCurrentPlayer().addAnimal(tempAnimal);
-        HelperMethods.clearConsole();
+        Helper.clearConsole();
         System.out.println("\n" + shopKeeper + ":\nI'll just go ahead and give you " +
                 chosenName + "'s amulet then. Anything else of interest to you?");
     }
 
     public void chooseGender(){
         do{
-            HelperMethods.setValidChoice(true);
+            Helper.setValidChoice(true);
             System.out.println("\nWhat gender would you prefer? Male or female? (m/f)");
-            String gender = HelperMethods.scan.nextLine().toLowerCase();
+            String gender = Helper.scan.nextLine().toLowerCase();
             if(gender.equals("m")){
                 chosenGender = Gender.MALE;
             }
@@ -184,9 +182,9 @@ public class Store implements Serializable {
                 System.out.println("\nGamemaker:" + "\nCome on now, i know the shopkeeper is a devil, " +
                         "but you still need to be nice to the shopkeeper and enter m or f" +
                         "\nto let them know which gender your new animal should be.");
-                HelperMethods.setValidChoice(false);
+                Helper.setValidChoice(false);
             }
-        } while(!HelperMethods.isValidChoice());
+        } while(!Helper.isValidChoice());
     }
 
     public void goToFoodStore(){
@@ -194,7 +192,7 @@ public class Store implements Serializable {
         madeChange = false;
         tempFood = null;
 
-        HelperMethods.clearConsole();
+        Helper.clearConsole();
         System.out.println("WELCOME TO THE MYTH STORE FOOD DEPARTMENT, " +
                 Game.getCurrentPlayer().getName().toUpperCase() + "!");
         do{
@@ -209,7 +207,7 @@ public class Store implements Serializable {
                     "......." + helplessHumanPrice + " Gold/kg" +
                     "\n|4| None, leave store");
 
-            int input = HelperMethods.tryParseInt(menuText, 1, 4);
+            int input = Helper.tryParseInt(menuText, 1, 4);
 
             switch (input) {
                 case 1 -> tempFood = new Seaweed();
@@ -220,7 +218,7 @@ public class Store implements Serializable {
                         "number from the list.");
             }
             if(0 < input &&
-               input < 4) {
+               input < 4){
                 buyFood();
             }
         }while(!leaveStore);
@@ -236,7 +234,7 @@ public class Store implements Serializable {
         String chooseAmount = shopKeeper + ": We only sell food in increments of 0.5 kg. " +
                 "\nHow many kg of " + tempFood.getFoodType().foodType.toLowerCase() + " would you like to buy?";
 
-        wantedFoodAmount = HelperMethods.tryParseDouble(chooseAmount, 0.5);
+        wantedFoodAmount = Helper.tryParseDouble(chooseAmount, 0.5);
 
         if(wantedFoodAmount % 0.5 == 0){
             if(tempFood.getFoodType().foodType.equals(FoodType.SEAWEED.foodType) &&
@@ -259,8 +257,8 @@ public class Store implements Serializable {
             }
         }
         else{
-            HelperMethods.clearConsole();
-            HelperMethods.setValidChoice(false);
+            Helper.clearConsole();
+            Helper.setValidChoice(false);
             System.out.println("You can only buy food in increments of 0.5 kg.");
         }
     }
@@ -271,7 +269,7 @@ public class Store implements Serializable {
         System.out.println(shopKeeper + ": Thank you for your purchase, " +
                 "I'm sure your animals will appreciate it!");
 
-        HelperMethods.setValidChoice(true);
+        Helper.setValidChoice(true);
         madeChange = true;
     }
 
@@ -283,21 +281,22 @@ public class Store implements Serializable {
             Game.printPlayerStats();
             ArrayList<Animal>playerAnimals = Game.getCurrentPlayer().animals;
 
-            String answer = HelperMethods.yesOrNo("\nDo you still want to sell one of your animals? (y/n)");
+            String answer = Helper.yesOrNo("\nDo you still want to sell one of your animals? (y/n)");
 
             switch (answer) {
                 case "y" -> {
-                    HelperMethods.tryParseInt("\nEnter the number of the animal you want to sell:",
+                    Helper.tryParseInt("\nEnter the number of the animal you want to sell:",
                             1, playerAnimals.size());
-                    int input = HelperMethods.getInputInt();
+                    int input = Helper.getInputInt();
                     tempAnimal = playerAnimals.get(input - 1);
-                    answer = HelperMethods.yesOrNo("\n" + shopKeeper + ":\nI'll pay you " +
+                    answer = Helper.yesOrNo("\n" + shopKeeper + ":\nI'll pay you " +
                                                    animalPrice() + " gold for " + tempAnimal.getName() +
                                                    ". Do you accept? (y/n)");
                     if (answer.equals("y")) {
                         madeChange = true;
                         Game.getCurrentPlayer().addGold(animalPrice());
                         Game.getCurrentPlayer().removeAnimal(input - 1);
+                        Helper.clearConsole();
                         System.out.println("You have now sold " + tempAnimal.getName() + " to Myth Store.");
                     } else {
                         System.out.println(shopKeeper + ": Shame, " +
