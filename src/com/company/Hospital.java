@@ -53,10 +53,9 @@ public class Hospital {
             if(successful){
                 Game.getCurrentPlayer().removeGold(treatmentCost);
                 treatedAnimal.setHealthStatus(HealthStatus.HEALTHY);
-                treatedAnimal.gainHealth(100);
                 treatedAnimals = true;
                 System.out.println("\n" + doctor + ":\nI am happy to tell you the treatment worked! " +
-                        Helper.chosenAnimal.getName() + " is now completely healthy and well fed.");
+                        Helper.chosenAnimal.getName() + " is now healthy again.");
 
             }
             else{
