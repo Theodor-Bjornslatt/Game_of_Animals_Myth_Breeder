@@ -16,15 +16,6 @@ public class Store implements Serializable {
 
     private Species chosenSpecies;
     private Gender chosenGender;
-
-    private final int nykurPrice = 30;
-    private final int glosonPrice = 40;
-    private final int krakenPrice = 10;
-    private final int linnrPrice = 20;
-    private final int tilberiPrice = 50;
-    private final int seaweedPrice = 6;
-    private final int milkPrice = 4;
-    private final int helplessHumanPrice = 8;
     private int goldToPay;
     private double wantedFoodAmount;
 
@@ -45,11 +36,11 @@ public class Store implements Serializable {
             Game.printPlayerStats();
 
             System.out.println("\nWhich animal do you want to buy? \n" +
-                               "|1| Nykur....." + nykurPrice + " Gold \n" +
-                               "|2| Gloson...." + glosonPrice + " Gold \n" +
-                               "|3| Kraken...." + krakenPrice + " Gold \n" +
-                               "|4| Linnr....." + linnrPrice + " Gold \n" +
-                               "|5| Tilberi..." + tilberiPrice + " Gold\n" +
+                               "|1| Nykur....." + Species.NYKUR.price + " Gold \n" +
+                               "|2| Gloson...." + Species.GLOSON.price + " Gold \n" +
+                               "|3| Kraken...." + Species.KRAKEN.price + " Gold \n" +
+                               "|4| Linnr....." + Species.LINNR.price + " Gold \n" +
+                               "|5| Tilberi..." + Species.TILBERI.price + " Gold\n" +
                                "|6| Leave store\n");
 
             Helper.tryParseInt("", 1, 6);
@@ -72,35 +63,30 @@ public class Store implements Serializable {
         Helper.clearConsole();
         switch (Helper.getInputInt()) {
             case 1 -> {
-                goldToPay = nykurPrice;
                 chosenSpecies = Species.NYKUR;
                 System.out.println(shopKeeper + ":\nGood choice my fine friend. " +
                         "Just don't go swimming with it. I like my customers alive, " +
                         Game.getCurrentPlayer().getName());
             }
             case 2 -> {
-                goldToPay = glosonPrice;
                 chosenSpecies = Species.GLOSON;
                 System.out.println(shopKeeper + ":\nLovely choice. Try not to pet it though, " +
                         Game.getCurrentPlayer().getName() +
                         ", I don't want to see you get hurt. ");
             }
             case 3 -> {
-                goldToPay = krakenPrice;
                 chosenSpecies = Species.KRAKEN;
                 System.out.println(shopKeeper + ":\nAh, I see you have great taste, " +
                         Game.getCurrentPlayer().getName() + "! " +
                         "Watch out for it's ravenous appetite though. ");
             }
             case 4 -> {
-                goldToPay = linnrPrice;
                 chosenSpecies = Species.LINNR;
                 System.out.println(shopKeeper + ":\nExcellent choice " +
                         Game.getCurrentPlayer().getName() + ". But be advised " +
                         "that this is not an enchanted prince. ");
             }
             case 5 -> {
-                goldToPay = tilberiPrice;
                 chosenSpecies = Species.TILBERI;
                 System.out.println(shopKeeper + ":\nTruly inspired choice, " +
                         Game.getCurrentPlayer().getName() + ". " +
@@ -109,6 +95,7 @@ public class Store implements Serializable {
             }
             case 6 -> leaveStore();
         }
+        goldToPay = chosenSpecies.price;
     }
 
     public void leaveStore(){
@@ -146,27 +133,22 @@ public class Store implements Serializable {
 
         if(chosenSpecies == Species.NYKUR){
             tempAnimal = new Nykur(chosenName, chosenGender);
-            Game.getCurrentPlayer().removeGold(nykurPrice);
         }
         else if(chosenSpecies == Species.GLOSON){
             tempAnimal = new Gloson(chosenName, chosenGender);
-            Game.getCurrentPlayer().removeGold(glosonPrice);
         }
         else if(chosenSpecies == Species.KRAKEN){
             tempAnimal = new Kraken(chosenName, chosenGender);
-            Game.getCurrentPlayer().removeGold(krakenPrice);
         }
         else if(chosenSpecies == Species.LINNR){
             tempAnimal = new Linnr(chosenName, chosenGender);
-            Game.getCurrentPlayer().removeGold(linnrPrice);
         }
         else if(chosenSpecies == Species.TILBERI){
             tempAnimal = new Tilberi(chosenName, chosenGender);
-            Game.getCurrentPlayer().removeGold(tilberiPrice);
         }
-
-        madeChange = true;
+        Game.getCurrentPlayer().removeGold(goldToPay);
         Game.getCurrentPlayer().addAnimal(tempAnimal);
+        madeChange = true;
         Helper.clearConsole();
         System.out.println("\n" + shopKeeper + ":\nI'll just go ahead and give you " +
                 chosenName + "'s amulet then. Anything else of interest to you?");
@@ -207,11 +189,11 @@ public class Store implements Serializable {
 
             String menuText = ("\nWhat kind of food do you want to buy?" +
                     "\n|1| Seaweed (foodvalue: " + FoodType.SEAWEED.foodValue + ")" +
-                    ".............." + seaweedPrice + " Gold/kg" +
+                    ".............." + FoodType.SEAWEED.price + " Gold/kg" +
                     "\n|2| Milk (foodvalue: " + FoodType.MILK.foodValue + ")" +
-                    "................." + milkPrice + " Gold/kg" +
+                    "................." + FoodType.MILK.price + " Gold/kg" +
                     "\n|3| Helpless human (foodvalue: " + FoodType.HELPLESS_HUMAN.foodValue + ")" +
-                    "......." + helplessHumanPrice + " Gold/kg" +
+                    "......." + FoodType.HELPLESS_HUMAN.price + " Gold/kg" +
                     "\n|4| None, leave store");
 
             int input = Helper.tryParseInt(menuText, 1, 4);
@@ -234,9 +216,7 @@ public class Store implements Serializable {
     public void buyFood(){
 
         double playerGold = Game.getCurrentPlayer().getGoldAmount();
-        double maxSeaweed = playerGold/(double)seaweedPrice;
-        double maxMilk = playerGold/(double)milkPrice;
-        double maxHelplessHuman = playerGold/(double)helplessHumanPrice;
+        double maxFoodAmount = playerGold/(double)tempFood.getFoodType().price;
 
         String chooseAmount = shopKeeper + ": We only sell food in increments of 0.5 kg. " +
                 "\nHow many kg of " + tempFood.getFoodType().foodType.toLowerCase() + " would you like to buy?";
@@ -244,19 +224,8 @@ public class Store implements Serializable {
         wantedFoodAmount = Helper.tryParseDouble(chooseAmount, 0.5);
 
         if(wantedFoodAmount % 0.5 == 0){
-            if(tempFood.getFoodType().foodType.equals(FoodType.SEAWEED.foodType) &&
-               wantedFoodAmount <= maxSeaweed){
-                goldToPay = (int)(wantedFoodAmount * seaweedPrice);
-                payForFood();
-            }
-            else if(tempFood.getFoodType().foodType.equals(FoodType.MILK.foodType) &&
-                    wantedFoodAmount <= maxMilk){
-                goldToPay = (int)(wantedFoodAmount * milkPrice);
-                payForFood();
-            }
-            else if(tempFood.getFoodType().foodType.equals(FoodType.HELPLESS_HUMAN.foodType) &&
-                    wantedFoodAmount <= maxHelplessHuman){
-                goldToPay = (int)(wantedFoodAmount * helplessHumanPrice);
+            if(wantedFoodAmount <= maxFoodAmount){
+                goldToPay = (int)(wantedFoodAmount * tempFood.getFoodType().price);
                 payForFood();
             }
             else{
@@ -275,7 +244,7 @@ public class Store implements Serializable {
         Food.addFood(tempFood, wantedFoodAmount);
         Helper.clearConsole();
         System.out.println(shopKeeper + ": Thank you for your purchase of " + wantedFoodAmount +
-                " kg of" + tempFood.getFoodType().foodType.toLowerCase() + "." +
+                " kg of " + tempFood.getFoodType().foodType.toLowerCase() + "." +
                 "\nI'm sure your animals will appreciate it!");
 
         Helper.setValidChoice(true);
@@ -318,27 +287,14 @@ public class Store implements Serializable {
     }
 
     public int animalPrice(){
-        int price = 0;
+        int price;
         double health;
         double decimal = 0.01;
 
         health = tempAnimal.getHealth();
 
-        if(tempAnimal.getSpecies()==Species.NYKUR){
-            price = (int) Math.ceil(nykurPrice * health * decimal);
-        }
-        else if(tempAnimal.getSpecies()==Species.GLOSON){
-            price = (int) Math.ceil(glosonPrice * health * decimal);
-        }
-        else if(tempAnimal.getSpecies()==Species.KRAKEN){
-            price = (int) Math.ceil(krakenPrice * health * decimal);
-        }
-        else if(tempAnimal.getSpecies()==Species.LINNR){
-            price = (int) Math.ceil(linnrPrice * health * decimal);
-        }
-        else if(tempAnimal.getSpecies()==Species.TILBERI){
-            price = (int) Math.ceil(tilberiPrice * health * decimal);
-        }
+        price = (int) Math.ceil(tempAnimal.getSpecies().price * health * decimal);
+
         return price;
     }
 
