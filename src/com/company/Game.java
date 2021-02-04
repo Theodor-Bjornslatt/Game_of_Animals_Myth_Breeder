@@ -24,6 +24,8 @@ public class Game implements Serializable {
     private boolean animalsChanged = false;
 
     Store mythStore = new Store();
+
+    int startingGold;
     public int round;
     public int numOfRounds = 0;
 
@@ -147,13 +149,25 @@ public class Game implements Serializable {
         Helper.tryParseInt("Please enter how many rounds you want to play: " +
                 "| 5 | 6 | ... | 29 | 30 |", 5, 30);
         numOfRounds = Helper.getInputInt();
+
+        if(numOfRounds<8){
+            startingGold = 100;
+        }
+        else if(numOfRounds<16){
+            startingGold = 150;
+        }
+        else if(numOfRounds<20){
+            startingGold = 200;
+        }
+        else{
+            startingGold = 250;
+        }
     }
 
     public void tryRunGame(){
         Helper.clearConsole();
         if (numOfRounds != 0 && !players.isEmpty()){
             for(Player player : players){
-                int startingGold = 200;
                 player.setGoldAmount(startingGold);
                 player.getAnimalList().clear();
             }
@@ -180,7 +194,9 @@ public class Game implements Serializable {
             for (Player player : players){
                 currentPlayer = player;
                 if(!singlePlayer){
-                    System.out.println("\n" + currentPlayer.getName() + ", press Enter to start your turn!");
+                    System.out.println("\n".repeat(10) + "----------------------------------------------" +
+                            currentPlayer.getName() + ", press Enter to start your turn!" +
+                            "\n----------------------------------------------");
                 }
                 killDiseasedAnimals();
                 setDiseasedStatus();
@@ -205,19 +221,20 @@ public class Game implements Serializable {
             }
             checkPlayerStats();
             if(round!=numOfRounds){
-                System.out.println("\nEND OF ROUND " + round + "!" +
+                System.out.println("\nEND OF ROUND " + (round) + "!" +
                         "\nPress Enter to continue or press x to save and exit.");
-                round++;
                 String action = Helper.scan.nextLine();
                 if(action.equals("x")){
                     saveGame();
                 }
             }
+            round++;
         }
         findWinner();
     }
 
     public void saveGame(){
+        round++;
         while (true) {
             String filePath = Helper.assignName("Name your save:");
             Helper.clearConsole();
@@ -291,10 +308,13 @@ public class Game implements Serializable {
                     System.out.println("\n" + players.get(i).getName() +
                             " has no animals and can't afford new ones. " +
                             "\n" + players.get(i).getName() + " is out of the game :(");
+                    System.out.println("\nPress Enter to continue.");
+                    Helper.scan.nextLine();
                 }
             }
             if(players.size()==1){
-                round = numOfRounds;
+                findWinner();
+                mainMenu();
             }
         }
         if(singlePlayer){
@@ -321,6 +341,7 @@ public class Game implements Serializable {
         Helper.clearConsole();
         if(!singlePlayer){
             int winnerGold = 0;
+
             String winnerName = "";
 
             for(Player player : players){
@@ -331,9 +352,8 @@ public class Game implements Serializable {
                     winnerName = player.getName();
                 }
             }
-            System.out.println("\nEND OF GAME!" +
-                    "\n\n......AND THE WINNER IS......" +
-                    "\n" + winnerName.toUpperCase());
+            System.out.println("\n......AND THE WINNER IS " + winnerName.toUpperCase() + "!......" +
+                    "\nCongratulations! You won with " + winnerGold + " Gold!");
         }
         else{
             System.out.println("WOW, YOU WIN!" +
@@ -341,7 +361,7 @@ public class Game implements Serializable {
                     "\nAnimals left: " + currentPlayer.animals.size());
         }
         clearGameData();
-        System.out.println("Press Enter to return to Main Menu");
+        System.out.println("\nPress Enter to return to Main Menu");
         Helper.scan.nextLine();
     }
 
@@ -402,11 +422,8 @@ public class Game implements Serializable {
             else{
                 chosenGender = Gender.MALE;
             }
-
-            System.out.println("\nName baby number " + i + ", it's a " +
+            chosenName = Helper.assignName("\nName baby number " + i + ", it's a " +
                     chosenGender.string().toLowerCase() + "!" );
-
-            chosenName = Helper.scan.nextLine();
             createAnimal();
         }
     }
