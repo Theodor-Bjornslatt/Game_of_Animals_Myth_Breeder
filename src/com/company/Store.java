@@ -10,7 +10,6 @@ public class Store implements Serializable {
 
     private Species chosenSpecies;
     private Gender chosenGender;
-    private String chosenName;
 
     private final int nykurPrice = 30;
     private final int glosonPrice = 40;
@@ -134,10 +133,10 @@ public class Store implements Serializable {
 
     public void buyAnimal(){
         chooseGender();
-        chosenName = Helper.assignName("\n" + shopKeeper + ":" +
-                                              "\nYou have only made excellent choices so far dear customer. " +
-                                              "\nThink carefully now and let me know what you want to name " +
-                                              "your animal friend:");
+        String chosenName = Helper.assignName("\n" + shopKeeper + ":" +
+                "\nYou have only made excellent choices so far dear customer. " +
+                "\nThink carefully now and let me know what you want to name " +
+                "your animal friend:");
 
         if(chosenSpecies == Species.NYKUR){
             tempAnimal = new Nykur(chosenName, chosenGender);
@@ -179,9 +178,11 @@ public class Store implements Serializable {
                 chosenGender = Gender.FEMALE;
             }
             else{
-                System.out.println("\nGamemaker:" + "\nCome on now, i know the shopkeeper is a devil, " +
-                        "but you still need to be nice to the shopkeeper and enter m or f" +
-                        "\nto let them know which gender your new animal should be.");
+                System.out.println("""
+
+                        Gamemaker:
+                        Come on now, i know the shopkeeper is a devil, but you still need to be nice to the shopkeeper and enter m or f
+                        to let them know which gender your new animal should be.""");
                 Helper.setValidChoice(false);
             }
         } while(!Helper.isValidChoice());
@@ -266,8 +267,10 @@ public class Store implements Serializable {
     public void payForFood(){
         Game.getCurrentPlayer().removeGold(goldToPay);
         Food.addFood(tempFood, wantedFoodAmount);
-        System.out.println(shopKeeper + ": Thank you for your purchase, " +
-                "I'm sure your animals will appreciate it!");
+        Helper.clearConsole();
+        System.out.println(shopKeeper + ": Thank you for your purchase of " + wantedFoodAmount +
+                " kg of" + tempFood.getFoodType().foodType.toLowerCase() + "." +
+                "\nI'm sure your animals will appreciate it!");
 
         Helper.setValidChoice(true);
         madeChange = true;
