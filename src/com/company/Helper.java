@@ -1,5 +1,7 @@
 package com.company;
 
+import com.company.Animals.Animal;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Random;

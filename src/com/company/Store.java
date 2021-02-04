@@ -1,5 +1,11 @@
 package com.company;
 
+import com.company.Animals.*;
+import com.company.Enums.FoodType;
+import com.company.Enums.Gender;
+import com.company.Enums.Species;
+import com.company.Foods.*;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 

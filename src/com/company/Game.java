@@ -1,4 +1,9 @@
 package com.company;
+
+import com.company.Animals.*;
+import com.company.Enums.*;
+import com.company.Foods.*;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -206,7 +211,7 @@ public class Game implements Serializable {
             for (Player player : players){
                 currentPlayer = player;
                 if(!singlePlayer){
-                    System.out.println("\n".repeat(10) + "----------------------------------------------" +
+                    System.out.println("\n".repeat(10) + "----------------------------------------------\n" +
                             currentPlayer.getName() + ", press Enter to start your turn!" +
                             "\n----------------------------------------------");
                 }
@@ -386,6 +391,7 @@ public class Game implements Serializable {
     }
 
     public void mateAnimals(){
+        Helper.clearConsole();
         animalsChanged = false;
         Helper.setValidChoice(false);
         Helper.printPlayerAnimals();
@@ -585,7 +591,7 @@ public class Game implements Serializable {
 
     public void changeHealth(){
         for(int i =currentPlayer.animals.size()-1; i>=0; i--){
-            if(currentPlayer.animals.get(i).getHealthStatus()==HealthStatus.DISEASED){
+            if(currentPlayer.animals.get(i).getHealthStatus()== HealthStatus.DISEASED){
                 System.out.println("\n" + currentPlayer.animals.get(i).getName() +
                         " has passed away as a result of their disease!");
                 currentPlayer.animals.remove(i);

@@ -1,6 +1,10 @@
-package com.company;
+package com.company.Animals;
 
-public class Tilberi extends Animal{
+import com.company.Enums.Gender;
+import com.company.Enums.Species;
+import com.company.Foods.Milk;
+
+public class Tilberi extends Animal {
     Milk milk = new Milk();
 
     public Tilberi(String name, Gender gender){

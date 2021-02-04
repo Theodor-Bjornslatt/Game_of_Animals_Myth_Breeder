@@ -1,20 +1,9 @@
-package com.company;
+package com.company.Foods;
+
+import com.company.Enums.FoodType;
+import com.company.Game;
 
 import java.io.Serializable;
-
-enum FoodType {
-    SEAWEED("Seaweed", 2.0),
-    MILK("Milk",1.0),
-    HELPLESS_HUMAN("Helpless human",3.0);
-
-    String foodType;
-    FoodType(String foodType, double foodValue){
-        this.foodType = foodType;
-        this.foodValue = foodValue;
-    }
-
-    double foodValue;
-}
 
 public abstract class Food implements Serializable {
 

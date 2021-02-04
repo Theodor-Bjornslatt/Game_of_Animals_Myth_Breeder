@@ -1,39 +1,12 @@
-package com.company;
+package com.company.Animals;
+import com.company.Enums.Gender;
+import com.company.Enums.HealthStatus;
+import com.company.Enums.Species;
+import com.company.Foods.Food;
+
 import java.util.Random;
 import java.util.ArrayList;
 import java.io.Serializable;
-
-enum Gender{
-    MALE("Male"),
-    FEMALE("Female");
-
-    String gender;
-    Gender(String gender){
-        this.gender = gender;
-    }
-
-    public String string() {
-        return gender;
-    }
-}
-
-enum Species{
-    NYKUR("Nykur"),
-    GLOSON("Gloson"),
-    KRAKEN("Kraken"),
-    LINNR("Linnr"),
-    TILBERI("Tilberi");
-
-    String species;
-    Species (String species){
-        this.species=species;
-    }
-}
-
-enum HealthStatus{
-    HEALTHY,
-    DISEASED
-}
 
 public abstract class Animal implements Serializable {
     private final ArrayList<Food>onlyEat = new ArrayList<>();

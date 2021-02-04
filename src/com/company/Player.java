@@ -1,5 +1,8 @@
 package com.company;
 
+import com.company.Animals.Animal;
+import com.company.Foods.Food;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 

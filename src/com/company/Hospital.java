@@ -1,5 +1,8 @@
 package com.company;
 
+import com.company.Animals.Animal;
+import com.company.Enums.HealthStatus;
+
 public class Hospital {
     private static final String doctor = "Doctor Artemis";
     private final static int treatmentCost = 5;
@@ -47,7 +50,7 @@ public class Hospital {
             Helper.setValidChoice(treatedAnimals);
             noTreatmentAvailable = true;
         }
-        else if(Helper.chosenAnimal.getHealthStatus()==HealthStatus.DISEASED){
+        else if(Helper.chosenAnimal.getHealthStatus()== HealthStatus.DISEASED){
             boolean successful = Helper.fiftyPerChance();
             Animal treatedAnimal = Game.getCurrentPlayer().getAnimalList().get(Helper.getInputInt()-1);
             if(successful){
