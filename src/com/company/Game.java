@@ -92,21 +92,18 @@ public class Game implements Serializable {
             System.out.println("Something went wrong!");
             return;
         }
-        if(savedFiles.size() == 1){
+        if(savedFiles.size() == 0){
             System.out.println("You have no saved games :(");
             return;
         }
         for(File gameFile : savedFiles){
-            if (gameFile.getName().equals(".keep")) {
-                continue;
-            }
-            System.out.println(savedFiles.indexOf(gameFile)+ ". " + gameFile.getName());
+            System.out.println(savedFiles.indexOf(gameFile)+1 + ". " + gameFile.getName());
         }
         String answer = Helper.yesOrNo("Do you want to load one of these files? (y/n)");
         switch (answer){
             case "y":
                 index = Helper.tryParseInt("Which file do you want to load?",
-                        1, savedFiles.size()-1);
+                        1, savedFiles.size()) - 1;
                 Object deserializedObj = Serializer.deserialize("gameFiles/savedGames/" +
                         savedFiles.get(index).getName());
 
@@ -123,6 +120,24 @@ public class Game implements Serializable {
 
             case "n":
                 break;
+        }
+    }
+
+    public void saveGame(){
+        round++;
+        while (true) {
+            String saveDir = "gameFiles/savedGames";
+            String filePath = Helper.assignName("Name your save:");
+            Helper.clearConsole();
+            if(filePath.equals("") || filePath.contains(" ")){
+                System.out.println("You must give your game a name to save it.");
+                continue;
+            }
+            Game saveGame = this;
+            Serializer.serialize(saveDir, filePath + ".ser", saveGame);
+            Helper.clearConsole();
+
+            System.exit(0);
         }
     }
 
@@ -247,23 +262,6 @@ public class Game implements Serializable {
             round++;
         }
         findWinner();
-    }
-
-    public void saveGame(){
-        round++;
-        while (true) {
-            String filePath = Helper.assignName("Name your save:");
-            Helper.clearConsole();
-            if(filePath.equals("") || filePath.contains(" ")){
-                System.out.println("You must give your game a name to save it.");
-                continue;
-            }
-            Game saveGame = this;
-            Serializer.serialize(("gameFiles/savedGames/" + filePath + ".ser"), saveGame);
-            Helper.clearConsole();
-            System.out.println("Your game has been successfully saved. See you later!");
-            System.exit(0);
-        }
     }
 
     public void chooseAction(){
