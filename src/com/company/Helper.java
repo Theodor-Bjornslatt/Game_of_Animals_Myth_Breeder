@@ -56,7 +56,7 @@ public class Helper {
                 String input = scan.nextLine();
                 inputInt = Integer.parseInt(input);
                 if(inputInt < min || inputInt > max){
-                    System.out.println("You must enter a number within the given range to continue" +
+                    System.out.println("\nYou must enter a number within the given range to continue" +
                                        tryPrintPlayerName());
                 }
                 else{
@@ -64,7 +64,7 @@ public class Helper {
                 }
             }
             catch(NumberFormatException e){
-                System.out.println("You have to enter a number to continue" + tryPrintPlayerName());
+                System.out.println("\nYou have to enter a number to continue" + tryPrintPlayerName());
             }
         }while(!validChoice);
         return inputInt;
@@ -101,14 +101,6 @@ public class Helper {
         if(Game.getCurrentPlayer().animals.isEmpty()){
             System.out.println("\nOh no, you have no animals :'( ");
         }
-        else{
-            for(int i = Game.getCurrentPlayer().getAnimalList().size()-1; i>=0; i--){
-                if(Game.getCurrentPlayer().getAnimalList().get(i).getHealth()==0){
-                    System.out.println("\nOh no! It looks like " +
-                            Game.getCurrentPlayer().animals.get(i).getName() + " has died :'(" );
-                    Game.getCurrentPlayer().getAnimalList().remove(i);
-                }
-            }
             for(Animal animal : Game.getCurrentPlayer().animals){
                 System.out.println("\n|" + (Game.getCurrentPlayer().animals.indexOf(animal) + 1) +
                         "| " + animal.getName() + " the " + animal.getGender().gender + " " +
@@ -117,7 +109,7 @@ public class Helper {
                         "\n" + animal.getHealthStatus());
             }
 
-        }
+        //}
     }
 
     public static void printOnlyEat(){
