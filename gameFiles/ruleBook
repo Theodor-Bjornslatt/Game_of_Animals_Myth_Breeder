@@ -5,24 +5,21 @@ RULEBOOK
 SINGLEPLAYER
 The player must make it through their chosen number of rounds.
 
-The player chooses how many rounds to play and
-must make it through to the last round owning
-something of value - be it animals or gold.
-If the player does not have enough gold left to buy
-a new animal and does not own any animals, the
-game ends and the player loses.
-At the end of the game, the player's animals are sold
-and their gold is counted.
+The player chooses how many rounds to play and must make it through
+to the last round owning something of value - be it animals or gold.
+If the player does not have enough gold left to buy a new animal and
+does not own any animals, the game ends and the player loses.
+At the end of the game, the player's animals are sold and their gold
+is counted.
 
 
 MULTIPLAYER
 2-4 players.
 
-If a player does not own any animals and does not have enough
-gold left to buy a new animal, they're out of the game.
-The last player left, wins.
-If more than one player make it to the end of the chosen number
-of rounds, their animals are sold and the player with the most
+If a player does not own any animals and does not have enough gold
+left to buy a new animal, they're out of the game. The last player
+left, wins. If more than one player make it to the end of the chosen
+number of rounds, their animals are sold and the player with the most
 gold wins.
 
 
@@ -30,12 +27,12 @@ gold wins.
 PROGRESSION
 ------------------------------------------------------------------------
 
-At the start of a players turn, each of their animals
-loses 10-30 health points and have a 50% chance of becoming sick.
-If an animal reaches 0 health, it dies.
+At the start of a players turn, each of their animals loses 10-30
+health points and have a 50% chance of becoming sick. If an animal
+reaches 0 health, it dies.
 
-Animals can regain health by being fed or by going to the hospital,
-but can only be treated at the hospital when they are sick.
+Animals can regain health by being fed and can only be cured of
+disease by going to the hopital.
 
 Each player must choose to perform ONE of the following moves per turn:
 
@@ -74,14 +71,12 @@ the gold the player gains is dependent on the animal's health.
 
 HOSPITALIZE
 
-The only way to save a diseased animal is by sending it to the hospital.
-If an animal does not receive treatment, it will die at the beginning
-of the player's next round.
+The only way to save a diseased animal is by sending it to the
+hospital. If an animal does not receive treatment, it will die at the
+beginning of the player's next round.
 To try curing an animal of its disease, a player must pay 5 gold.
-There is a 50% chance that the animal will be cured and regain all lost
-health. If treatment is not successful, the animal dies.
-
-Healthy animals cannot be treated at the hospital.
+There is a 50% chance that the animal will be cured. If treatment is
+not successful, the animal dies.
 
 
 ------------------------------------------------------------------------
@@ -134,7 +129,7 @@ Hunger satisfaction: 5
 Food: Helpless humans (foodvalue 3)
 
 
-ORIGINS
+MYTHOLOGICAL ORIGINS
 The gloson is originally from Swedish folklore and is said
 to guard secret knowledge and magic, that can only be won by
 defeating it. Gloson also tried to attack people who try to
@@ -154,7 +149,7 @@ Hunger satisfaction: 4
 Food: Helpless humans (foodvalue 3), seaweed (foodvalue 2)
 
 
-ORIGINS
+MYTHOLOGICAL ORIGINS
 The kraken originally appears in the folklore of Nordic countries,
 where it lived at the bottom of the ocean, occasionally creating
 fish. Should the kraken rise to the surface, one would surely be
@@ -171,7 +166,7 @@ Hunger satisfaction: 8
 Food: Helpless humans (foodvalue 3), milk (foodvalue 1)
 
 
-ORIGINS
+MYTHOLOGICAL ORIGINS
 The linnr, also known as lindorm, was a creature originally from the
 folklore of Nordic countries. It existed in two forms. One was an
 enchanted prince which brought those who touched it great fortune.
@@ -188,12 +183,11 @@ A beautiful black or grey horse with inverted hoofs.
 Hunger satisfaction: 10
 Food: Helpless humans (foodvalue 3), milk (foodvalue 1)
 
-ORIGINS
+MYTHOLOGICAL ORIGINS
 The nykur is a creature in Scandinavian folklore which lives in
-naturally occurring waters, be they lakes or rivers. It would
-use its beauty lure humans to pet it or sit on it, whereupon the
-person would be stuck and the nykur would drag them into the water
-to their demise.
+naturally occurring waters, be they lakes or rivers. It would use its
+beauty lure humans to pet it or sit on it, whereupon the person would
+be stuck and the nykur would drag them into the water to their demise.
 
 ------------------------------------------------------------------------
 
@@ -204,7 +198,7 @@ A creature that takes the shape of a hare or a cat.
 Hunger satisfaction: 20
 Food: Milk (foodvalue 1)
 
-ORIGINS
+MYTHOLOGICAL ORIGINS
 A creature of Icelandic folklore, a witch could create a tilberi using
 a human rib, sheep's wool, and wine from the catholic communion.
 The witch could then send the tilberi to steal milk from her neighbors.
