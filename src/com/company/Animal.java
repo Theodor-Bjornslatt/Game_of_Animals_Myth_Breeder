@@ -97,13 +97,17 @@ public abstract class Animal implements Serializable {
         return onlyEat;
     }
 
-    public void gainHealth(int healthChange){
+    public int gainHealth(int healthChange){
+        int restoredHealth;
         if(health + healthChange > 100){
+            restoredHealth = 100 - health;
             health = 100;
         }
         else{
             health += healthChange;
+            restoredHealth = healthChange;
         }
+        return restoredHealth;
     }
 
     public void loseHealth(){
