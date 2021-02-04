@@ -341,8 +341,6 @@ public class Store implements Serializable {
         Game.getCurrentPlayer().animals.clear();
 
         System.out.println("\nSelling " + Game.getCurrentPlayer().getName() + "'s animals...");
-        System.out.println("\n" + Game.getCurrentPlayer().getName() + " has " +
-                Game.getCurrentPlayer().getGoldAmount() + " Gold. ");
     }
 
 }
