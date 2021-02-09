@@ -93,6 +93,12 @@ public class Game implements Serializable {
             System.out.println("You have no saved games!");
             return;
         }
+
+        if(savedFiles.isEmpty()){
+            Helper.clearConsole();
+            System.out.println("You have no saved games!");
+            return;
+        }
         for(File gameFile : savedFiles){
             System.out.println(savedFiles.indexOf(gameFile)+1 + ". " + gameFile.getName());
         }
