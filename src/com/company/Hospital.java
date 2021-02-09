@@ -25,6 +25,7 @@ public class Hospital {
 
             String answer = Helper.yesOrNo(
                     "\nDo you have a diseased animal that needs treatment? (y/n)");
+            Helper.clearConsole();
 
             if(answer.equals("y")){
                 Helper.printPlayerAnimals();
