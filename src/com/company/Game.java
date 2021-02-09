@@ -89,11 +89,8 @@ public class Game implements Serializable {
             savedFiles = Arrays.asList(gameFiles);
         }
         else{
-            System.out.println("Something went wrong!");
-            return;
-        }
-        if(savedFiles.size() == 0){
-            System.out.println("You have no saved games :(");
+            Helper.clearConsole();
+            System.out.println("You have no saved games!");
             return;
         }
         for(File gameFile : savedFiles){
@@ -484,12 +481,12 @@ public class Game implements Serializable {
                 return;
             }
 
-            printPlayerStats();
             System.out.println("""
 
                     WELCOME TO THE KITCHEN!\s
                     Here, you can feed your animals with 0.5kg portions of any food you own, until you and they are satisfied
                     """);
+            printPlayerStats();
 
             do{
                 Helper.chooseAnimal();
@@ -602,12 +599,13 @@ public class Game implements Serializable {
                 System.out.println("\n" + currentPlayer.animals.get(i).getName() +
                         " has reached 0 health points and died!" );
                 currentPlayer.animals.remove(i);
+                continue;
             }
 
-            boolean diseased = Helper.diseaseChance();
-            if(diseased){
-                currentPlayer.animals.get(i).setHealthStatus(HealthStatus.DISEASED);
-            }
+                boolean diseased = Helper.diseaseChance();
+                if(diseased){
+                    currentPlayer.animals.get(i).setHealthStatus(HealthStatus.DISEASED);
+                }
         }
     }
 
