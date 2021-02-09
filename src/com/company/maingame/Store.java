@@ -32,16 +32,17 @@ public class Store implements Serializable {
         Helper.clearConsole();
         System.out.println("WELCOME TO MYTH STORE ANIMAL DEPARTMENT, " +
                 Game.getCurrentPlayer().getName().toUpperCase() + "!");
+
         do{
             Game.printPlayerStats();
 
-            System.out.println("\nWhich animal do you want to buy? \n" +
-                               "|1| Nykur....." + Species.NYKUR.price + " Gold \n" +
-                               "|2| Gloson...." + Species.GLOSON.price + " Gold \n" +
-                               "|3| Kraken...." + Species.KRAKEN.price + " Gold \n" +
-                               "|4| Linnr....." + Species.LINNR.price + " Gold \n" +
-                               "|5| Tilberi..." + Species.TILBERI.price + " Gold\n" +
-                               "|6| Leave store\n");
+            System.out.println("\nWhich animal do you want to buy? " +
+                               "\n|1| Nykur....." + Species.NYKUR.price + " Gold  " +
+                               "\n|2| Gloson...." + Species.GLOSON.price + "  Gold " +
+                               "\n|3| Kraken...." + Species.KRAKEN.price + " Gold  " +
+                               "\n|4| Linnr....." + Species.LINNR.price + " Gold  " +
+                               "\n|5| Tilberi..." + Species.TILBERI.price + " Gold  " +
+                               "\n|6| Leave store\n");
 
             Helper.tryParseInt("", 1, 6);
 
