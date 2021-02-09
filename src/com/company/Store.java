@@ -93,12 +93,16 @@ public class Store implements Serializable {
                         "\n Remember not to bring it home to a friend... " +
                         "if you want to keep your friends that is.");
             }
-            case 6 -> leaveStore();
+            case 6 -> {
+                leaveStore();
+                return;
+            }
         }
         goldToPay = chosenSpecies.price;
     }
 
     public void leaveStore(){
+        Helper.clearConsole();
         if(!madeChange){
             System.out.println("\n" + shopKeeper + ":\nDon't let the door hit you on the way out!");
             Helper.setValidChoice(false);
@@ -268,14 +272,20 @@ public class Store implements Serializable {
                     int input = Helper.getInputInt();
                     tempAnimal = playerAnimals.get(input - 1);
                     answer = Helper.yesOrNo("\n" + shopKeeper + ":\nI'll pay you " +
-                                                   animalPrice() + " gold for " + tempAnimal.getName() +
+                                                   findAnimalPrice() + " gold for " + tempAnimal.getName() +
                                                    ". Do you accept? (y/n)");
+                    Helper.clearConsole();
                     if (answer.equals("y")) {
                         madeChange = true;
-                        Game.getCurrentPlayer().addGold(animalPrice());
+                        Game.getCurrentPlayer().addGold(findAnimalPrice());
                         Game.getCurrentPlayer().removeAnimal(input - 1);
                         Helper.clearConsole();
                         System.out.println("You have now sold " + tempAnimal.getName() + " to Myth Store.");
+                        if(Game.getCurrentPlayer().animals.isEmpty()){
+                            System.out.println("\n" + shopKeeper + ": " +
+                                    "\nI see that I've bought all your animals. I love a loyal customer." +
+                                    "\nPlease come back soon!");
+                        }
                     } else {
                         System.out.println(shopKeeper + ": Shame, " +
                                            "but if you're happy, I'm happy, I suppose.");
@@ -286,7 +296,7 @@ public class Store implements Serializable {
         }while(!Game.getCurrentPlayer().animals.isEmpty() && !leaveStore);
     }
 
-    public int animalPrice(){
+    public int findAnimalPrice(){
         int price;
         double health;
         double decimal = 0.01;
@@ -301,7 +311,7 @@ public class Store implements Serializable {
     public void sellAllAnimals(){
         for(Animal animal : Game.getCurrentPlayer().animals){
             tempAnimal = animal;
-            Game.getCurrentPlayer().addGold(animalPrice());
+            Game.getCurrentPlayer().addGold(findAnimalPrice());
         }
         Game.getCurrentPlayer().animals.clear();
 
