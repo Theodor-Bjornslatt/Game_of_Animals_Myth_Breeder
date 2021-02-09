@@ -1,7 +1,7 @@
-package com.company.MainGame;
+package com.company.maingame;
 
-import com.company.Animals.Animal;
-import com.company.Foods.Food;
+import com.company.animals.Animal;
+import com.company.foods.Food;
 
 import java.io.Serializable;
 import java.util.ArrayList;

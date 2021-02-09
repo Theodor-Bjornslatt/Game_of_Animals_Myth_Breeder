@@ -1,6 +1,6 @@
-package com.company.Foods;
+package com.company.foods;
 
-import com.company.Enums.FoodType;
+import com.company.enums.FoodType;
 
 public class HelplessHuman extends Food {
     public HelplessHuman(){

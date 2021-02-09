@@ -1,4 +1,4 @@
-package com.company.Enums;
+package com.company.enums;
 
 public enum FoodType {
     SEAWEED("Seaweed", 2.0, 6),

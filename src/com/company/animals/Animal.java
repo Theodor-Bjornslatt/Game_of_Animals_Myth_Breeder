@@ -1,8 +1,8 @@
-package com.company.Animals;
-import com.company.Enums.Gender;
-import com.company.Enums.HealthStatus;
-import com.company.Enums.Species;
-import com.company.Foods.Food;
+package com.company.animals;
+import com.company.enums.Gender;
+import com.company.enums.HealthStatus;
+import com.company.enums.Species;
+import com.company.foods.Food;
 
 import java.util.Random;
 import java.util.ArrayList;

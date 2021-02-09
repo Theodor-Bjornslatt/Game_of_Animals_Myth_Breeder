@@ -1,8 +1,8 @@
-package com.company.MainGame;
+package com.company.maingame;
 
-import com.company.Animals.*;
-import com.company.Enums.*;
-import com.company.Foods.*;
+import com.company.animals.*;
+import com.company.enums.*;
+import com.company.foods.*;
 
 import java.io.*;
 import java.nio.file.Files;

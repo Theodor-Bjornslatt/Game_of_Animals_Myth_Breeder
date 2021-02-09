@@ -1,7 +1,7 @@
-package com.company.Foods;
+package com.company.foods;
 
-import com.company.Enums.FoodType;
-import com.company.MainGame.Game;
+import com.company.enums.FoodType;
+import com.company.maingame.Game;
 
 import java.io.Serializable;
 

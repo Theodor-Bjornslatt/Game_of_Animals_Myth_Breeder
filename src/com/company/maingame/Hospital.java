@@ -1,7 +1,7 @@
-package com.company.MainGame;
+package com.company.maingame;
 
-import com.company.Animals.Animal;
-import com.company.Enums.HealthStatus;
+import com.company.animals.Animal;
+import com.company.enums.HealthStatus;
 
 public class Hospital {
     private static final String doctor = "Doctor Artemis";

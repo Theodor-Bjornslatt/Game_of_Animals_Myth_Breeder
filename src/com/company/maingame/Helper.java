@@ -1,6 +1,7 @@
-package com.company.MainGame;
+package com.company.maingame;
 
-import com.company.Animals.Animal;
+import com.company.animals.*;
+import com.company.enums.Gender;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -13,6 +14,14 @@ public class Helper {
     private static double inputDouble = -1;
     private static boolean validChoice = true;
     public static Animal chosenAnimal = null;
+
+    Gloson gloson = new Gloson("Gloson", Gender.FEMALE);
+    Kraken kraken = new Kraken("Kraken", Gender.FEMALE);
+    Linnr linnr = new Linnr("Linnr", Gender.FEMALE);
+    Nykur nykur = new Nykur("Nykur", Gender.FEMALE);
+    Tilberi tilberi = new Tilberi("Tilberi", Gender.FEMALE);
+
+    public static ArrayList<Animal>allAnimals = new ArrayList<>();
 
     public static String yesOrNo(String question){
         while(true){
@@ -179,6 +188,10 @@ public class Helper {
 
     public static boolean isValidChoice(){
         return validChoice;
+    }
+
+    public static void printAllOnlyEat(){
+
     }
 
 }

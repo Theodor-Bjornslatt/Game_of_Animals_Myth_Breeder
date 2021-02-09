@@ -1,4 +1,4 @@
-package com.company.MainGame;
+package com.company.maingame;
 
 public class Main {
 

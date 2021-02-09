@@ -1,4 +1,4 @@
-package com.company.Enums;
+package com.company.enums;
 
 public enum Species {
     NYKUR("Nykur", 30),

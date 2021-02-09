@@ -1,4 +1,4 @@
-package com.company.Enums;
+package com.company.enums;
 
 public enum Gender {
     MALE("Male", "His"),

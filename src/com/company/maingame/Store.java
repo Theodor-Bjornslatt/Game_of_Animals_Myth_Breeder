@@ -1,10 +1,10 @@
-package com.company.MainGame;
+package com.company.maingame;
 
-import com.company.Animals.*;
-import com.company.Enums.FoodType;
-import com.company.Enums.Gender;
-import com.company.Enums.Species;
-import com.company.Foods.*;
+import com.company.animals.*;
+import com.company.enums.FoodType;
+import com.company.enums.Gender;
+import com.company.enums.Species;
+import com.company.foods.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;

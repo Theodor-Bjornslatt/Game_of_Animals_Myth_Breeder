@@ -1,9 +1,9 @@
-package com.company.Animals;
+package com.company.animals;
 
-import com.company.Enums.Gender;
-import com.company.Enums.Species;
-import com.company.Foods.HelplessHuman;
-import com.company.Foods.Milk;
+import com.company.enums.Gender;
+import com.company.enums.Species;
+import com.company.foods.HelplessHuman;
+import com.company.foods.Milk;
 
 public class Linnr extends Animal {
     HelplessHuman helplessHuman = new HelplessHuman();
