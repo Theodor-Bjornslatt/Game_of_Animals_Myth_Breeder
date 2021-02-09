@@ -1,4 +1,4 @@
-package com.company;
+package com.company.MainGame;
 
 import com.company.Animals.Animal;
 import com.company.Foods.Food;

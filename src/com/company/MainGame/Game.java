@@ -1,4 +1,4 @@
-package com.company;
+package com.company.MainGame;
 
 import com.company.Animals.*;
 import com.company.Enums.*;
@@ -329,7 +329,7 @@ public class Game implements Serializable {
     public void checkPlayerStats(){
         if(!singlePlayer){
             for(int i = players.size()-1; i>=0; i--){
-                if(players.get(i).animals.isEmpty() && players.get(i).getGoldAmount() < 10){
+                if(players.get(i).animals.isEmpty() && players.get(i).getGoldAmount() < Species.KRAKEN.price){
                     players.remove(i);
                     System.out.println("\n" + players.get(i).getName() +
                             " has no animals and can't afford new ones. " +
@@ -344,11 +344,15 @@ public class Game implements Serializable {
             }
         }
         if(singlePlayer){
-            if(currentPlayer.animals.isEmpty() && currentPlayer.getGoldAmount()==0){
+            if(currentPlayer.animals.isEmpty() && currentPlayer.getGoldAmount() < Species.KRAKEN.price){
                 round = numOfRounds;
                 Helper.clearConsole();
-                System.out.println("Oh no! You have no Gold and no animals! You lost the game! :'(" +
-                        "\nPress Enter to exit to Main Menu");
+                System.out.println("""
+                        Oh no! You have no animals and can't afford any new ones!
+                        
+                        YOU LOST THE GAME! :'(
+                        
+                        Press Enter to exit to Main Menu""");
                 Helper.scan.nextLine();
                 clearGameData();
                 mainMenu();
@@ -450,7 +454,7 @@ public class Game implements Serializable {
                 chosenGender = Gender.MALE;
             }
             chosenName = Helper.assignName("\nName baby number " + i + ", it's a " +
-                    chosenGender.string().toLowerCase() + "!" );
+                    chosenGender.gender.toLowerCase() + "!" );
             createAnimal();
         }
     }
@@ -593,8 +597,9 @@ public class Game implements Serializable {
     public void changeHealth(){
         for(int i =currentPlayer.animals.size()-1; i>=0; i--){
             if(currentPlayer.animals.get(i).getHealthStatus()== HealthStatus.DISEASED){
-                System.out.println("\n" + currentPlayer.animals.get(i).getName() +
-                        " has passed away as a result of their disease!");
+                System.out.println("\n" + currentPlayer.animals.get(i).getName() + " has passed away as " +
+                        "a result of " + currentPlayer.animals.get(i).getGender().pronoun.toLowerCase() +
+                        " disease!");
                 currentPlayer.animals.remove(i);
                 continue;
             }
