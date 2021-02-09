@@ -1,7 +1,6 @@
 package com.company.maingame;
 
 import com.company.animals.*;
-import com.company.enums.Gender;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -14,14 +13,6 @@ public class Helper {
     private static double inputDouble = -1;
     private static boolean validChoice = true;
     public static Animal chosenAnimal = null;
-
-    Gloson gloson = new Gloson("Gloson", Gender.FEMALE);
-    Kraken kraken = new Kraken("Kraken", Gender.FEMALE);
-    Linnr linnr = new Linnr("Linnr", Gender.FEMALE);
-    Nykur nykur = new Nykur("Nykur", Gender.FEMALE);
-    Tilberi tilberi = new Tilberi("Tilberi", Gender.FEMALE);
-
-    public static ArrayList<Animal>allAnimals = new ArrayList<>();
 
     public static String yesOrNo(String question){
         while(true){
@@ -109,18 +100,18 @@ public class Helper {
 
     public static void printPlayerAnimals(){
         System.out.println("\nMythological Animals: ");
+
         if(Game.getCurrentPlayer().animals.isEmpty()){
             System.out.println("\nOh no, you have no animals :'( ");
         }
-            for(Animal animal : Game.getCurrentPlayer().animals){
-                System.out.println("\n|" + (Game.getCurrentPlayer().animals.indexOf(animal) + 1) +
-                        "| " + animal.getName() + " the " + animal.getGender().gender + " " +
-                        animal.getSpecies().species + "\nHealth: " + animal.getHealth() +
-                        " (" + animal.getLostHealth() + " lost since last round.)" +
-                        "\n" + animal.getHealthStatus());
-            }
+        for(Animal animal : Game.getCurrentPlayer().animals){
+            System.out.println("\n|" + (Game.getCurrentPlayer().animals.indexOf(animal) + 1) +
+                    "| " + animal.getName() + " the " + animal.getGender().gender + " " +
+                    animal.getSpecies().species + "\nHealth: " + animal.getHealth() +
+                    " (" + animal.getLostHealth() + " lost since last round.)" +
+                    "\n" + animal.getHealthStatus());
+        }
 
-        //}
     }
 
     public static void printOnlyEat(){
@@ -142,7 +133,16 @@ public class Helper {
                         " (" + Game.getCurrentPlayer().getFoodList().get(i).getFoodAmount() + " kg)");
             }
         }
-
+        System.out.println("""
+                
+                
+                -----------------------------------------------------
+                * Nykurs only eat seaweed
+                * Glosons only eat helpless humans               
+                * Krakens only eat helpless humans and seaweed                
+                * Linnrs only eat helpless humans and milk                
+                * Tilberis only eat milk
+                -----------------------------------------------------""");
     }
 
     public static void chooseAnimal(){
@@ -188,10 +188,6 @@ public class Helper {
 
     public static boolean isValidChoice(){
         return validChoice;
-    }
-
-    public static void printAllOnlyEat(){
-
     }
 
 }
