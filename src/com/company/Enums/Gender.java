@@ -1,16 +1,15 @@
 package com.company.Enums;
 
 public enum Gender {
-    MALE("Male"),
-    FEMALE("Female");
+    MALE("Male", "His"),
+    FEMALE("Female", "Her");
 
     public String gender;
 
-    Gender(String gender) {
-        this.gender = gender;
-    }
+    public String pronoun;
 
-    public String string() {
-        return gender;
+    Gender(String gender, String pronoun) {
+        this.gender = gender;
+        this.pronoun = pronoun;
     }
 }
