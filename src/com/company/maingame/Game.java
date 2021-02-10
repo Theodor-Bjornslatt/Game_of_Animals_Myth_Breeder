@@ -233,9 +233,9 @@ public class Game implements Serializable {
                             currentPlayer.getName() + ", press Enter to start your turn!" +
                             "\n----------------------------------------------");
                 }
-                // Removes sick animals from playerList,
-                // lets all animals lose health
-                // and flips coin for diseased status
+                // Remove sick animals from playerList,
+                // let all animals lose health
+                // and flip coin for diseased status
                 changeHealth();
                 if(!singlePlayer){
                     Helper.scan.nextLine();
