@@ -27,9 +27,11 @@ gold wins.
 PROGRESSION
 ------------------------------------------------------------------------
 
-At the start of a players turn, each of their animals loses 10-30
-health points and have a 50% chance of becoming sick. If an animal
-reaches 0 health, it dies.
+At the end of a turn, each of a player's animals loses 10-30
+health points and have a 20% chance of becoming sick. A diseased
+animal will lose it's remaining health if it does not receive
+treatment. If an animal reaches 0 health, it dies at the start
+of the next round.
 
 Animals can regain health by being fed and can only be cured of
 disease by going to the hopital.
@@ -128,6 +130,8 @@ Hunger satisfaction: 5
 
 Food: Helpless humans (foodvalue 3)
 
+Max Offspring: 4
+
 
 MYTHOLOGICAL ORIGINS
 The gloson is originally from Swedish folklore and is said
@@ -148,6 +152,8 @@ Hunger satisfaction: 4
 
 Food: Helpless humans (foodvalue 3), seaweed (foodvalue 2)
 
+Max Offspring: 6
+
 
 MYTHOLOGICAL ORIGINS
 The kraken originally appears in the folklore of Nordic countries,
@@ -165,6 +171,8 @@ Hunger satisfaction: 8
 
 Food: Helpless humans (foodvalue 3), milk (foodvalue 1)
 
+Max Offspring: 5
+
 
 MYTHOLOGICAL ORIGINS
 The linnr, also known as lindorm, was a creature originally from the
@@ -181,7 +189,11 @@ NYKUR
 A beautiful black or grey horse with inverted hoofs.
 
 Hunger satisfaction: 10
+
 Food: Helpless humans (foodvalue 3), milk (foodvalue 1)
+
+Max Offspring: 5
+
 
 MYTHOLOGICAL ORIGINS
 The nykur is a creature in Scandinavian folklore which lives in
@@ -196,7 +208,11 @@ TILBERI
 A creature that takes the shape of a hare or a cat.
 
 Hunger satisfaction: 20
+
 Food: Milk (foodvalue 1)
+
+Max Offspring: 3
+
 
 MYTHOLOGICAL ORIGINS
 A creature of Icelandic folklore, a witch could create a tilberi using

@@ -11,7 +11,7 @@ public class Kraken extends Animal {
 
     public Kraken(String name, Gender gender){
         super(name, gender, Species.KRAKEN);
-        this.setMaxOffspring(5);
+        this.setMaxOffspring(6);
         this.setHungerSatisfaction(4);
         addOnlyEat(helplessHuman);
         addOnlyEat(seaweed);
