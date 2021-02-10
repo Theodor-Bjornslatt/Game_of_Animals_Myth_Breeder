@@ -117,15 +117,16 @@ public class Store implements Serializable {
     }
 
     public void notEnoughGold(){
+        Helper.clearConsole();
         unsuccessfulAttempts += 1;
         if(unsuccessfulAttempts<=3){
             System.out.println("\n" + shopKeeper + ":\nHang on! Don't try to cheat me! " +
-                    "You don't have that much gold!");
+                               "You don't have that much gold!");
         }
         else{
             System.out.println("\n" + shopKeeper + ":\n Wait a second... Really now. " +
-                    "Nobody likes a liar or a thief. \n If you don't have any gold, " +
-                    "it might be time for you to leave.");
+                               "Nobody likes a liar or a thief. \n If you don't have any gold, " +
+                               "it might be time for you to leave.");
         }
     }
 
@@ -182,6 +183,7 @@ public class Store implements Serializable {
     }
 
     public void goToFoodStore(){
+        unsuccessfulAttempts = 0;
         leaveStore=false;
         madeChange = false;
         tempFood = null;
