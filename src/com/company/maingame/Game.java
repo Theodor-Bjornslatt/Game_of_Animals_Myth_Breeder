@@ -398,7 +398,7 @@ public class Game implements Serializable {
                     "\n..........................................................");
         }
         else{
-            System.out.println("\nWOW, YOU WIN!" +
+            System.out.println("\nWOW, YOU WON!" +
                     "\nGold: " + currentPlayer.getGoldAmount());
         }
         clearGameData();
