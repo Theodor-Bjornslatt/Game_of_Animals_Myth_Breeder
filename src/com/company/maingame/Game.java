@@ -233,14 +233,12 @@ public class Game implements Serializable {
                             currentPlayer.getName() + ", press Enter to start your turn!" +
                             "\n----------------------------------------------");
                 }
-                // Remove sick animals from playerList,
-                // let all animals lose health
-                // and flip coin for diseased status
-                changeHealth();
+                killAndSetAnimals();
+                System.out.println("\n".repeat(3));
                 if(!singlePlayer){
                     Helper.scan.nextLine();
+                    Helper.clearConsole();
                 }
-                Helper.clearConsole();
                 do{
                     do{
                         System.out.println("\nRound " + round + " of " + numOfRounds);
@@ -252,6 +250,7 @@ public class Game implements Serializable {
                     performChosenAction();
 
                 }while(!Helper.isValidChoice());
+                changeHealth();
             }
             checkPlayerStats();
             if(round!=numOfRounds){
@@ -369,30 +368,43 @@ public class Game implements Serializable {
 
     public void findWinner(){
         Helper.clearConsole();
-        if(!singlePlayer){
-            int winnerGold = 0;
+        int winnerGold = 0;
 
-            String winnerName = "";
+        String winnerName = "";
 
-            for(Player player : players){
-                currentPlayer = player;
-                mythStore.sellAllAnimals();
-                if(player.getGoldAmount() > winnerGold){
-                    winnerGold = player.getGoldAmount();
-                    winnerName = player.getName();
-                }
+        for(Player player : players){
+            currentPlayer = player;
+            System.out.println("\n.........................................................." +
+                    "\nPLAYER: " + currentPlayer.getName().toUpperCase() +
+                    "\nGold: " + currentPlayer.getGoldAmount());
+            killAndSetAnimals();
+            System.out.println("Animals left: " + currentPlayer.getAnimalList().size());
+            mythStore.sellAllAnimals();
+            System.out.println("Recalculating Gold..." +
+                    "\n..........................................................");
+            if(player.getGoldAmount() > winnerGold){
+                winnerGold = player.getGoldAmount();
+                winnerName = player.getName();
             }
-            System.out.println("\n......AND THE WINNER IS " + winnerName.toUpperCase() + "!......" +
-                    "\nCongratulations! You won with " + winnerGold + " Gold!");
+        }
+        if(!singlePlayer){
+            System.out.println("\n......AND THE WINNER IS......");
+            System.out.println("\npress Enter to reveal the winner");
+            Helper.scan.nextLine();
+            Helper.clearConsole();
+            System.out.println("\n......AND THE WINNER IS......" +
+                    "\n" + "          " + winnerName.toUpperCase() +
+                    "\nCongratulations! You won with " + winnerGold + " Gold!" +
+                    "\n..........................................................");
         }
         else{
-            System.out.println("WOW, YOU WIN!" +
-                    "\nGold left: " + currentPlayer.getGoldAmount() +
-                    "\nAnimals left: " + currentPlayer.animals.size());
+            System.out.println("\nWOW, YOU WIN!" +
+                    "\nGold: " + currentPlayer.getGoldAmount());
         }
         clearGameData();
         System.out.println("\nPress Enter to return to Main Menu");
         Helper.scan.nextLine();
+        Helper.clearConsole();
     }
 
     public void mateAnimals(){
@@ -439,7 +451,7 @@ public class Game implements Serializable {
         chosenSpecies = Helper.chosenAnimal.getSpecies();
 
         Random random = new Random();
-        int numberOfOffspring = 1 + random.nextInt(Helper.chosenAnimal.getMaxOffspring()+1);
+        int numberOfOffspring = 1 + random.nextInt(Helper.chosenAnimal.getMaxOffspring());
 
         System.out.println("Wow! " + Helper.chosenAnimal.getName() + " and " + animalToMate.getName() + " had " +
                 numberOfOffspring + " offspring!\nNow it's time to name them!");
@@ -491,11 +503,9 @@ public class Game implements Serializable {
                 return;
             }
 
-            System.out.println("""
-
-                    WELCOME TO THE KITCHEN!\s
-                    Here, you can feed your animals with 0.5kg portions of any food you own, until you and they are satisfied
-                    """);
+            System.out.println("\nWELCOME TO THE KITCHEN! \n" +
+                               "Here, you can feed your animals with 0.5kg portions of any food you own, " +
+                               "until you and they are satisfied\n");
             printPlayerStats();
 
             do{
@@ -594,29 +604,30 @@ public class Game implements Serializable {
         }
     }
 
+    public void killAndSetAnimals(){
+        for(int i =currentPlayer.animals.size()-1; i>=0; i--){
+            if(currentPlayer.animals.get(i).getHealth()==0){
+                System.out.println(currentPlayer.animals.get(i).getName().toUpperCase() +
+                        " HAS DIED!" );
+                currentPlayer.animals.remove(i);
+                continue;
+            }
+
+            boolean diseased = Helper.diseaseChance();
+            if(diseased){
+                currentPlayer.animals.get(i).setHealthStatus(HealthStatus.DISEASED);
+            }
+        }
+    }
+
     public void changeHealth(){
         for(int i =currentPlayer.animals.size()-1; i>=0; i--){
             if(currentPlayer.animals.get(i).getHealthStatus()== HealthStatus.DISEASED){
-                System.out.println("\n" + currentPlayer.animals.get(i).getName() + " has passed away as " +
-                        "a result of " + currentPlayer.animals.get(i).getGender().pronoun.toLowerCase() +
-                        " disease!");
-                currentPlayer.animals.remove(i);
-                continue;
+               currentPlayer.animals.get(i).setHealth(0);
             }
-
-            currentPlayer.animals.get(i).loseHealth();
-
-            if(currentPlayer.animals.get(i).getHealth()==0){
-                System.out.println("\n" + currentPlayer.animals.get(i).getName() +
-                        " has reached 0 health points and died!" );
-                currentPlayer.animals.remove(i);
-                continue;
+            else{
+                currentPlayer.animals.get(i).loseHealth();
             }
-
-                boolean diseased = Helper.diseaseChance();
-                if(diseased){
-                    currentPlayer.animals.get(i).setHealthStatus(HealthStatus.DISEASED);
-                }
         }
     }
 
