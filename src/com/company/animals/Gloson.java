@@ -9,7 +9,7 @@ public class Gloson extends Animal {
 
     public Gloson(String name, Gender gender){
         super(name, gender, Species.GLOSON);
-        this.setMaxOffspring(7);
+        this.setMaxOffspring(6);
         this.setHungerSatisfaction(5);
         addOnlyEat(helplessHuman);
     }

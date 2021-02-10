@@ -9,7 +9,7 @@ public class Nykur extends Animal {
 
     public Nykur(String name, Gender gender){
         super(name, gender, Species.NYKUR);
-        this.setMaxOffspring(3);
+        this.setMaxOffspring(4);
         this.setHungerSatisfaction(10);
         addOnlyEat(seaweed);
     }

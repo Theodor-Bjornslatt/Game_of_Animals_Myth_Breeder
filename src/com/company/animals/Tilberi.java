@@ -9,7 +9,7 @@ public class Tilberi extends Animal {
 
     public Tilberi(String name, Gender gender){
         super(name, gender, Species.TILBERI);
-        this.setMaxOffspring(2);
+        this.setMaxOffspring(3);
         this.setHungerSatisfaction(20);
         addOnlyEat(milk);
     }
