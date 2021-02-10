@@ -156,9 +156,9 @@ public class Helper {
 
     public static boolean fiftyPerChance(){
         boolean successful = false;
-        int result = randomNum.nextInt(100);
+        int result = randomNum.nextInt(2);
 
-        if(result >=50){
+        if(result==0){
             successful = true;
         }
         return successful;
@@ -166,9 +166,9 @@ public class Helper {
 
     public static boolean diseaseChance(){
         boolean diseased = false;
-        int diseaseChance = randomNum.nextInt(100);
+        int diseaseChance = randomNum.nextInt(5);
 
-        if(diseaseChance>80){
+        if(diseaseChance==3){
             diseased = true;
         }
         return diseased;
