@@ -103,4 +103,8 @@ public abstract class Animal implements Serializable {
         return health;
     }
 
+    public void setHealth(int health){
+        this.health = health;
+    }
+
 }
