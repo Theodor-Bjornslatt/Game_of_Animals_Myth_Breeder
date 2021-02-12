@@ -14,10 +14,11 @@ import java.util.Random;
 
 public class Game implements Serializable {
     private ArrayList<Player>players = new ArrayList<>();
-    boolean singlePlayer;
-
-    private Player savedPlayer = null;
+    private ArrayList<Player>winners = new ArrayList<>();
+    int winnerGold;
+    private Player winningPlayer = null;
     private static Player currentPlayer = null;
+    boolean singlePlayer;
 
     private static Animal animalToMate;
     private static Animal offspring;
@@ -115,7 +116,6 @@ public class Game implements Serializable {
                     this.players = savedGame.players;
                     this.round = savedGame.round;
                     this.numOfRounds = savedGame.numOfRounds;
-                    this.savedPlayer = savedGame.savedPlayer;
                     this.singlePlayer = savedGame.singlePlayer;
                     runGame();
                 }
@@ -263,7 +263,7 @@ public class Game implements Serializable {
             }
             round++;
         }
-        findWinner();
+        findWinners();
     }
 
     public void chooseAction(){
@@ -338,13 +338,12 @@ public class Game implements Serializable {
                 }
             }
             if(players.size()==1){
-                findWinner();
+                findWinners();
                 mainMenu();
             }
         }
         if(singlePlayer){
             if(currentPlayer.animals.isEmpty() && currentPlayer.getGoldAmount() < Species.KRAKEN.price){
-                round = numOfRounds;
                 Helper.clearConsole();
                 System.out.println("""
                         Oh no! You have no animals and can't afford any new ones!
@@ -354,6 +353,7 @@ public class Game implements Serializable {
                         Press Enter to exit to Main Menu""");
                 Helper.scan.nextLine();
                 clearGameData();
+                Helper.clearConsole();
                 mainMenu();
             }
         }
@@ -362,16 +362,53 @@ public class Game implements Serializable {
 
     public void clearGameData(){
         currentPlayer = null;
+        winners.clear();
         players.clear();
         round = 1;
     }
 
-    public void findWinner(){
+    public void findWinners(){
         Helper.clearConsole();
-        int winnerGold = 0;
+        winnerGold = 0;
 
-        String winnerName = "";
+        checkPlayersGold();
+        if(winners.size()==1){
+            if(!singlePlayer){
+                System.out.println("\n......AND THE WINNER IS......");
+                System.out.println("\npress Enter to reveal the winner");
+                Helper.scan.nextLine();
+                Helper.clearConsole();
+                System.out.println("\n......AND THE WINNER IS......" +
+                        "\n" + "          " + winningPlayer.getName().toUpperCase() +
+                        "\nCongratulations! You won with " + winnerGold + " Gold!" +
+                        "\n..........................................................");
+            }
+            else{
+                System.out.println("\nWOW, YOU WON!" +
+                        "\nGold: " + currentPlayer.getGoldAmount());
+            }
+        }
+        else{
+            System.out.println("""
 
+                    .......THERE IS MORE THAN ONE WINNER!......
+                         press Enter to reveal the winners""");
+            Helper.scan.nextLine();
+            Helper.clearConsole();
+            System.out.println("\n.......AND THE WINNERS ARE.......");
+            for(Player winner: winners){
+                System.out.println("\n" + winner.getName().toUpperCase());
+            }
+            System.out.println("\nCongratulations! You won by ending the game with " + winnerGold + " Gold each.");
+        }
+
+        clearGameData();
+        System.out.println("\nPress Enter to return to Main Menu");
+        Helper.scan.nextLine();
+        Helper.clearConsole();
+    }
+
+    public void checkPlayersGold(){
         for(Player player : players){
             currentPlayer = player;
             System.out.println("\n.........................................................." +
@@ -384,27 +421,14 @@ public class Game implements Serializable {
                     "\n..........................................................");
             if(player.getGoldAmount() > winnerGold){
                 winnerGold = player.getGoldAmount();
-                winnerName = player.getName();
+                winningPlayer = player;
             }
         }
-        if(!singlePlayer){
-            System.out.println("\n......AND THE WINNER IS......");
-            System.out.println("\npress Enter to reveal the winner");
-            Helper.scan.nextLine();
-            Helper.clearConsole();
-            System.out.println("\n......AND THE WINNER IS......" +
-                    "\n" + "          " + winnerName.toUpperCase() +
-                    "\nCongratulations! You won with " + winnerGold + " Gold!" +
-                    "\n..........................................................");
+        for(Player player : players){
+            if(winnerGold == player.getGoldAmount()){
+                winners.add(player);
+            }
         }
-        else{
-            System.out.println("\nWOW, YOU WON!" +
-                    "\nGold: " + currentPlayer.getGoldAmount());
-        }
-        clearGameData();
-        System.out.println("\nPress Enter to return to Main Menu");
-        Helper.scan.nextLine();
-        Helper.clearConsole();
     }
 
     public void mateAnimals(){
