@@ -128,7 +128,7 @@ GLOSON
 A huge, hog-like creature with saw-toothed hairs on its back and
 glowing eyes.
 
-Hunger satisfaction: 5
+Hunger Satisfaction: 5
 
 Food: Helpless humans (foodvalue 3)
 
@@ -150,7 +150,7 @@ KRAKEN
 
 A giant octopus with ten long tentacles.
 
-Hunger satisfaction: 4
+Hunger Satisfaction: 4
 
 Food: Helpless humans (foodvalue 3), seaweed (foodvalue 2)
 
@@ -169,7 +169,7 @@ LINNR
 
 A maned, many metres long, white snake.
 
-Hunger satisfaction: 8
+Hunger Satisfaction: 8
 
 Food: Helpless humans (foodvalue 3), milk (foodvalue 1)
 
@@ -190,7 +190,7 @@ NYKUR
 
 A beautiful black or grey horse with inverted hoofs.
 
-Hunger satisfaction: 10
+Hunger Satisfaction: 10
 
 Food: Helpless humans (foodvalue 3), milk (foodvalue 1)
 
@@ -209,7 +209,7 @@ TILBERI
 
 A creature that takes the shape of a hare or a cat.
 
-Hunger satisfaction: 20
+Hunger Satisfaction: 20
 
 Food: Milk (foodvalue 1)
 
