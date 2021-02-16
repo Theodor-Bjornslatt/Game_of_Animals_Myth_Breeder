@@ -28,10 +28,13 @@ public class Hospital {
             Helper.clearConsole();
 
             if(answer.equals("y")){
+                System.out.println("Your gold: " + Game.getCurrentPlayer().getGoldAmount());
                 Helper.printPlayerAnimals();
                 System.out.println("\n" + doctor + ":\nWhich animal do you want me to try to cure?");
                 Helper.chooseAnimal();
+                Helper.clearConsole();
                 calculateTreatmentCost();
+                System.out.println("Your gold: " + Game.getCurrentPlayer().getGoldAmount());
                 answer = Helper.yesOrNo("\n" + doctor + ":\nTreating " + Helper.chosenAnimal.getName() +
                         " will cost " + treatmentCost + " Gold. Are you willing to pay this amount? (y/n)");
                 if(answer.equals("y")) {
