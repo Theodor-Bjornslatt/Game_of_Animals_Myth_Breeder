@@ -11,15 +11,15 @@ import java.util.ArrayList;
 
 public class Store implements Serializable {
 
-    private Animal tempAnimal;
-    private Food tempFood;
+    private static Animal tempAnimal;
+    private static Food tempFood;
 
-    private Species chosenSpecies;
-    private Gender chosenGender;
-    private int goldToPay;
-    private double wantedFoodAmount;
+    private static Species chosenSpecies;
+    private static Gender chosenGender;
+    private static int goldToPay;
+    private static double wantedFoodAmount;
 
-    private final String shopKeeper = "Shopkeeper Lucifer";
+    private static final String shopKeeper = "Shopkeeper Lucifer";
     private int unsuccessfulAttempts;
     private boolean leaveStore;
     private boolean madeChange;
@@ -275,12 +275,12 @@ public class Store implements Serializable {
                     int input = Helper.getInputInt();
                     tempAnimal = playerAnimals.get(input - 1);
                     answer = Helper.yesOrNo("\n" + shopKeeper + ":\nI'll pay you " +
-                                                   findAnimalPrice() + " gold for " + tempAnimal.getName() +
+                                                   findAnimalPrice(tempAnimal) + " gold for " + tempAnimal.getName() +
                                                    ". Do you accept? (y/n)");
                     Helper.clearConsole();
                     if (answer.equals("y")) {
                         madeChange = true;
-                        Game.getCurrentPlayer().addGold(findAnimalPrice());
+                        Game.getCurrentPlayer().addGold(findAnimalPrice(tempAnimal));
                         Game.getCurrentPlayer().removeAnimal(input - 1);
                         Helper.clearConsole();
                         System.out.println("You have now sold " + tempAnimal.getName() + " to Myth Store.");
@@ -299,22 +299,21 @@ public class Store implements Serializable {
         }while(!Game.getCurrentPlayer().animals.isEmpty() && !leaveStore);
     }
 
-    public int findAnimalPrice(){
+    public static int findAnimalPrice(Animal animal){
         int price;
         double health;
         double decimal = 0.01;
 
-        health = tempAnimal.getHealth();
+        health = animal.getHealth();
 
-        price = (int) Math.ceil(tempAnimal.getSpecies().price * health * decimal);
+        price = (int) Math.ceil(animal.getSpecies().price * health * decimal);
 
         return price;
     }
 
     public void sellAllAnimals(){
         for(Animal animal : Game.getCurrentPlayer().animals){
-            tempAnimal = animal;
-            Game.getCurrentPlayer().addGold(findAnimalPrice());
+            Game.getCurrentPlayer().addGold(findAnimalPrice(animal));
         }
         Game.getCurrentPlayer().animals.clear();
 
