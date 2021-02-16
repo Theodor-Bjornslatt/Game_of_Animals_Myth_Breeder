@@ -5,13 +5,14 @@ import com.company.enums.HealthStatus;
 
 public class Hospital {
     private static final String doctor = "Doctor Artemis";
-    private final static int treatmentCost = 5;
+    private static int treatmentCost;
     private static boolean noTreatmentAvailable;
     private static boolean treatedAnimals;
 
 
     public static void goToHospital(){
         treatedAnimals = false;
+        noTreatmentAvailable=false;
         Helper.clearConsole();
         System.out.println("\n" + doctor + ":\n" +
                 "Welcome, " + Game.getCurrentPlayer().getName() + ", to my hospital for mythological animals. ");
@@ -19,7 +20,6 @@ public class Hospital {
         while(true){
 
             if(noTreatmentAvailable){
-                noTreatmentAvailable=false;
                 return;
             }
 
@@ -29,10 +29,18 @@ public class Hospital {
 
             if(answer.equals("y")){
                 Helper.printPlayerAnimals();
-                System.out.println("\n" + doctor + ":\nEach treatment costs " + treatmentCost + " Gold. " +
-                        "\nWhich animal do you want me to try to cure?");
+                System.out.println("\n" + doctor + ":\nWhich animal do you want me to try to cure?");
                 Helper.chooseAnimal();
-                tryTreatment();
+                calculateTreatmentCost();
+                answer = Helper.yesOrNo("\n" + doctor + ":\nTreating " + Helper.chosenAnimal.getName() +
+                        " will cost " + treatmentCost + " Gold. Are you willing to pay this amount? (y/n)");
+                if(answer.equals("y")) {
+                    tryTreatment();
+                }
+                else{
+                    System.out.println("\n" + doctor + ":\nAlright then, I won't treat " +
+                            Helper.chosenAnimal.getName());
+                }
             }
             else{
                 Helper.clearConsole();
@@ -41,6 +49,11 @@ public class Hospital {
                 return;
             }
         }
+    }
+
+    public static void calculateTreatmentCost(){
+        double priceDouble = Store.findAnimalPrice(Helper.chosenAnimal) * 0.3;
+        treatmentCost = (int) Math.ceil(priceDouble);
     }
 
     public static void tryTreatment(){
@@ -58,6 +71,7 @@ public class Hospital {
                 Game.getCurrentPlayer().removeGold(treatmentCost);
                 treatedAnimal.setHealthStatus(HealthStatus.HEALTHY);
                 treatedAnimals = true;
+                Helper.clearConsole();
                 System.out.println("\n" + doctor + ":\nI am happy to tell you the treatment worked! " +
                         Helper.chosenAnimal.getName() + " is now healthy again.");
 

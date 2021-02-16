@@ -34,7 +34,7 @@ treatment. If an animal reaches 0 health, it dies at the start
 of the next round.
 
 Animals can regain health by being fed and can only be cured of
-disease by going to the hopital.
+disease by going to the hospital.
 
 Each player must choose to perform ONE of the following moves per turn:
 
@@ -76,7 +76,9 @@ HOSPITALIZE
 The only way to save a diseased animal is by sending it to the
 hospital. If an animal does not receive treatment, it will die at the
 beginning of the player's next round.
-To try curing an animal of its disease, a player must pay 5 gold.
+To try curing an animal of its disease, a player must pay an amount of
+gold dependent on the animal species and health of their animal.
+
 There is a 50% chance that the animal will be cured. If treatment is
 not successful, the animal dies.
 
