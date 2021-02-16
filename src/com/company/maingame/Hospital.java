@@ -57,8 +57,8 @@ public class Hospital {
     }
 
     public static void tryTreatment(){
+        Helper.clearConsole();
         if(Game.getCurrentPlayer().getGoldAmount() < treatmentCost ){
-            Helper.clearConsole();
             System.out.println(doctor + ":\nOh dear! It appears you don't have enough " +
                     "gold to pay for a treatment.\nI'm afraid you'll have to leave for now.");
             Helper.setValidChoice(treatedAnimals);
@@ -71,7 +71,6 @@ public class Hospital {
                 Game.getCurrentPlayer().removeGold(treatmentCost);
                 treatedAnimal.setHealthStatus(HealthStatus.HEALTHY);
                 treatedAnimals = true;
-                Helper.clearConsole();
                 System.out.println("\n" + doctor + ":\nI am happy to tell you the treatment worked! " +
                         Helper.chosenAnimal.getName() + " is now healthy again.");
 
