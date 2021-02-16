@@ -22,7 +22,6 @@ public class Game implements Serializable {
 
     private static Animal animalToMate;
     private static Animal offspring;
-
     private static String chosenName;
     private static Species chosenSpecies;
     private static Gender chosenGender;
